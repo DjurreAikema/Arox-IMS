@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnDestroy, Output} from '@angular/core';
 import {FormGroup, ReactiveFormsModule} from "@angular/forms";
 import {KeyValuePipe} from "@angular/common";
 
@@ -9,11 +9,11 @@ import {KeyValuePipe} from "@angular/common";
   template: `
     <header>
       <h2>{{ title }}</h2>
-      <button (click)="close.emit()">Close</button>
+      <button (click)="handleClose()">Close</button>
     </header>
 
     <section>
-      <form [formGroup]="formGroup" (ngSubmit)="save.emit(); close.emit()">
+      <form [formGroup]="formGroup" (ngSubmit)="handleSave()">
         @for (control of formGroup.controls | keyvalue; track control.key) {
           <div>
             <label [for]="control.key">{{ control.key }}</label>
@@ -58,10 +58,29 @@ import {KeyValuePipe} from "@angular/common";
   ]
 })
 // Responsibility: Dumb component that TODO
-export class FormModalComponent {
+export class FormModalComponent implements OnDestroy {
   @Input({required: true}) formGroup!: FormGroup;
   @Input({required: true}) title!: string;
 
   @Output() save: EventEmitter<void> = new EventEmitter<void>();
   @Output() close: EventEmitter<void> = new EventEmitter<void>();
+
+  private closedByButton = false;
+
+  protected handleClose() {
+    this.closedByButton = true;
+    this.close.emit();
+  }
+
+  protected handleSave() {
+    this.closedByButton = true;
+    this.save.emit();
+    this.close.emit();
+  }
+
+  ngOnDestroy() {
+    if (!this.closedByButton) {
+      this.close.emit();
+    }
+  }
 }
