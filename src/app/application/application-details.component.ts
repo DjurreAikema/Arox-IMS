@@ -12,8 +12,6 @@ import {JsonPipe} from "@angular/common";
     RouterLink
   ],
   template: `
-    <button class="button-primary" routerLink="/applications">Applications</button>
-
     @if (application(); as application) {
       {{ application | json }}
     } @else {

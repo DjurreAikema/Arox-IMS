@@ -24,7 +24,7 @@ import {RouterLink} from "@angular/router";
 
         </li>
       } @empty {
-        <p>No customers found, click the add button to create your first customer.</p>
+        <p>No applications found, click the add button to create your first application.</p>
       }
     </ul>
   `,

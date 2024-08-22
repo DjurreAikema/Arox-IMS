@@ -10,6 +10,7 @@ import {RouterLink, RouterOutlet} from '@angular/router';
 
       <nav class="navbar">
         <button class="button-primary" routerLink="/customers">Customers</button>
+        <button class="button-primary" routerLink="/applications">Applications</button>
       </nav>
 
       <router-outlet class="body"/>
@@ -23,8 +24,15 @@ import {RouterLink, RouterOutlet} from '@angular/router';
     }
 
     .navbar {
+      display: flex;
+      flex-flow: row nowrap;
+      gap: 1rem;
+
+      align-items: center;
+
       height: 50px;
       background-color: lightblue;
+      padding: 0 1rem;
     }
   `],
 })
