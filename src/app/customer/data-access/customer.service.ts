@@ -40,7 +40,7 @@ export class CustomerService {
       this.error$.next(err);
       return EMPTY;
     })
-  )
+  );
 
   // --- Reducers (reducers subscribe to the sources and update the actual state)
   constructor() {
