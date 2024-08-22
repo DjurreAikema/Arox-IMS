@@ -11,6 +11,7 @@ import {RouterLink, RouterOutlet} from '@angular/router';
       <nav class="navbar">
         <button class="button-primary" routerLink="/customers">Customers</button>
         <button class="button-primary" routerLink="/applications">Applications</button>
+        <button class="button-primary" routerLink="/tools">Tools</button>
       </nav>
 
       <router-outlet class="body"/>

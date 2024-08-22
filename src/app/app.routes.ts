@@ -19,6 +19,15 @@ export const routes: Routes = [
     path: 'application/:id',
     loadComponent: () => import('./application/application-details.component')
   },
+  // Tool routes
+  {
+    path: 'tools',
+    loadComponent: () => import('./tool/tools.component')
+  },
+  {
+    path: 'tool/:id',
+    loadComponent: () => import('./tool/tool-details.component')
+  },
   // Default route
   {
     path: '',
