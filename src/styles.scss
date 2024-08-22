@@ -9,7 +9,10 @@
 
 // --- Color variables --- //
 :root {
-
+  --color-primary: #32db64;
+  --color-secondary: #2dd36f;
+  --color-dark: #1c1d3b;
+  --color-light: #ffffff;
 }
 
 // --- Global font --- //
@@ -17,3 +20,6 @@ body {
   font-family: Roboto, "Helvetica Neue", sans-serif;
   color: black;
 }
+
+// --- Modals --- //
+@import "global-styles/styles.modal";
