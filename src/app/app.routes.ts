@@ -2,12 +2,12 @@ import {Routes} from '@angular/router';
 
 export const routes: Routes = [
   {
-    path: 'customer',
-    loadComponent: () => import('./customer/customer.component')
+    path: 'customers',
+    loadComponent: () => import('./customer/customers.component')
   },
   {
     path: '',
-    redirectTo: 'customer',
+    redirectTo: 'customers',
     pathMatch: 'full',
   },
 ];

@@ -2,12 +2,12 @@ import {Component, effect, inject, signal} from '@angular/core';
 import {FormBuilder, Validators} from "@angular/forms";
 import {CustomerService} from "./data-access/customer.service";
 import {Customer} from "../shared/interfaces";
-import {CustomerListComponent} from "./ui/customer-list.component";
+import {CustomerListComponent} from "./ui-customers/customer-list.component";
 import {ModalComponent} from "../shared/ui/modal.component";
 import {FormModalComponent} from "../shared/ui/form-modal.component";
 
 @Component({
-  selector: 'app-customer',
+  selector: 'app-customers',
   standalone: true,
   imports: [
     CustomerListComponent,
@@ -55,7 +55,7 @@ import {FormModalComponent} from "../shared/ui/form-modal.component";
   styles: ``
 })
 // Responsibility: Smart component in charge of all customer interactions
-export default class CustomerComponent {
+export default class CustomersComponent {
 
   // --- Dependencies
   public fb: FormBuilder = inject(FormBuilder);
