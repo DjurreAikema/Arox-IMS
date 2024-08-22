@@ -1,10 +1,19 @@
 /* You can add global styles to this file, and also import other style files */
 
-html, body {
-  height: 100%;
+// --- Reset default css values --- //
+@import "global-styles/css-reset";
+
+* {
+  box-sizing: border-box;
 }
 
+// --- Color variables --- //
+:root {
+
+}
+
+// --- Global font --- //
 body {
-  margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
+  color: black;
 }
