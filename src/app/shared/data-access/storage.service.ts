@@ -1,6 +1,6 @@
 import {inject, Injectable, InjectionToken, PLATFORM_ID} from '@angular/core';
 import {Observable, of} from "rxjs";
-import {Application, Customer} from "../interfaces";
+import {Application, Customer, Tool} from "../interfaces";
 
 // https://angularstart.com/standard/modules/angular-quicklists/11/
 export const LOCAL_STORAGE = new InjectionToken<Storage>(
@@ -47,5 +47,18 @@ export class StorageService {
 
   public saveApplications(applications: Application[]): void {
     this.storage.setItem('applications', JSON.stringify(applications));
+  }
+
+// --- Tools --- //
+  public loadTools(): Observable<Tool[]> {
+    const tools = this.storage.getItem('tools');
+    return of(tools
+      ? (JSON.parse(tools) as Tool[])
+      : []
+    );
+  }
+
+  public saveTools(tools: Tool[]): void {
+    this.storage.setItem('tools', JSON.stringify(tools));
   }
 }
