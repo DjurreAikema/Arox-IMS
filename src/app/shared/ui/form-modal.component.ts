@@ -91,7 +91,6 @@ export class FormModalComponent implements OnDestroy {
   }
 
   protected onSubmit() {
-    console.log(this.formGroup)
     if (!this.formGroup.valid) return;
 
     this.closedByButton = true;
