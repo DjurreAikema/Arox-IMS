@@ -2,15 +2,55 @@ import {Component, effect, inject, signal} from '@angular/core';
 import {FormBuilder} from "@angular/forms";
 import {CustomerService} from "./data-access/customer.service";
 import {Customer} from "../shared/interfaces";
+import {CustomerListComponent} from "./ui/customer-list.component";
+import {ModalComponent} from "../shared/ui/modal.component";
+import {FormModalComponent} from "../shared/ui/form-modal.component";
 
 @Component({
   selector: 'app-customer',
   standalone: true,
-  imports: [],
+  imports: [
+    CustomerListComponent,
+    ModalComponent,
+    FormModalComponent
+  ],
   template: `
-    <p>
-      customer works!
-    </p>
+    <header>
+      <h1>Customers</h1>
+      <button (click)="customerBeingEdited.set({})">Add Customer</button>
+    </header>
+
+    <section>
+      <h2>Your customers</h2>
+
+      <app-customer-list
+        [customers]="customerService.customers()"
+        (edit)="customerBeingEdited.set($event)"
+        (delete)="customerService.remove$.next($event)"
+      />
+    </section>
+
+    <app-modal [isOpen]="!!customerBeingEdited()">
+      <ng-template>
+        <app-form-modal
+          [formGroup]="customerForm"
+          [title]="
+            customerBeingEdited()?.name
+                ? customerBeingEdited()!.name!
+                : 'Add customer'
+          "
+          (close)="customerBeingEdited.set(null)"
+          (save)="
+            customerBeingEdited()?.id
+                ? customerService.edit$.next({
+                    id: customerBeingEdited()!.id!,
+                    data: customerForm.getRawValue()
+                })
+                : customerService.add$.next(customerForm.getRawValue())
+            "
+        />
+      </ng-template>
+    </app-modal>
   `,
   styles: ``
 })
