@@ -41,5 +41,4 @@ export default class CustomerDetailsComponent {
       .customers()
       .find((customer) => customer.id === id);
   });
-
 }

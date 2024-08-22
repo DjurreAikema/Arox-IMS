@@ -1,14 +1,32 @@
 import {Component} from '@angular/core';
-import {RouterOutlet} from '@angular/router';
+import {RouterLink, RouterOutlet} from '@angular/router';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, RouterLink],
   template: `
-    <router-outlet></router-outlet>
+    <div class="wrapper">
+
+      <nav class="navbar">
+        <button class="button-primary" routerLink="/customers">Customers</button>
+      </nav>
+
+      <router-outlet class="body"/>
+    </div>
+
   `,
-  styles: [],
+  styles: [`
+    .wrapper {
+      display: flex;
+      flex-flow: column nowrap;
+    }
+
+    .navbar {
+      height: 50px;
+      background-color: lightblue;
+    }
+  `],
 })
 export class AppComponent {
 }
