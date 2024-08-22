@@ -18,8 +18,8 @@ import {RouterLink} from "@angular/router";
           </a>
 
           <div>
-            <button (click)="edit.emit(customer)">Edit</button>
-            <button (click)="delete.emit(customer.id)">Delete</button>
+            <button class="button-success" (click)="edit.emit(customer)">Edit</button>
+            <button class="button-danger" (click)="delete.emit(customer.id)">Delete</button>
           </div>
 
         </li>
@@ -36,9 +36,10 @@ import {RouterLink} from "@angular/router";
       }
 
       li {
-        font-size: 1.5em;
         display: flex;
         justify-content: space-between;
+
+        font-size: 1.2em;
         background: var(--color-light);
         list-style-type: none;
         margin-bottom: 1rem;
