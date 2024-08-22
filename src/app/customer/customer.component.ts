@@ -1,5 +1,5 @@
 import {Component, effect, inject, signal} from '@angular/core';
-import {FormBuilder} from "@angular/forms";
+import {FormBuilder, Validators} from "@angular/forms";
 import {CustomerService} from "./data-access/customer.service";
 import {Customer} from "../shared/interfaces";
 import {CustomerListComponent} from "./ui/customer-list.component";
@@ -66,7 +66,7 @@ export default class CustomerComponent {
 
   // Form for creating/editing customers
   public customerForm = this.fb.nonNullable.group({
-    name: [''],
+    name: ['', [Validators.required, Validators.minLength(3)]],
   });
 
   constructor() {
