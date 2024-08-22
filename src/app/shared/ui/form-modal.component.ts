@@ -11,40 +11,46 @@ import {MatTooltipModule} from "@angular/material/tooltip";
   standalone: true,
   imports: [ReactiveFormsModule, KeyValuePipe, MatFormFieldModule, MatInputModule, JsonPipe, MatIconModule, MatTooltipModule],
   template: `
-    <header>
-      <h2>{{ title }}</h2>
-    </header>
+    <div class="form-wrapper">
+      <header>
+        <h2>{{ title }}</h2>
+      </header>
 
-    <section>
-      <form [formGroup]="formGroup" (ngSubmit)="onSubmit()" #form="ngForm">
-        @for (control of formGroup.controls | keyvalue; track control.key) {
+      <section>
+        <form [formGroup]="formGroup" (ngSubmit)="onSubmit()" #form="ngForm">
+          @for (control of formGroup.controls | keyvalue; track control.key) {
 
-          <!-- TODO: Add support for more control types -->
-          <mat-form-field appearance="fill">
+            <!-- TODO: Add support for more control types -->
+            <mat-form-field appearance="fill">
 
-            <mat-label>{{ control.key }}</mat-label>
+              <mat-label>{{ control.key }}</mat-label>
 
-            <input matNativeControl [formControlName]="control.key"
-                   type="text" placeholder="placeholder">
+              <input matNativeControl [formControlName]="control.key"
+                     type="text" placeholder="placeholder">
 
-            @if ((formGroup.get(control.key)?.dirty || form.submitted) && !formGroup.get(control.key)?.valid) {
-              <mat-icon matSuffix matTooltip="{{ getErrorMessages(control.key) }}">error</mat-icon>
-            }
+              @if ((formGroup.get(control.key)?.dirty || form.submitted) && !formGroup.get(control.key)?.valid) {
+                <mat-icon matSuffix matTooltip="{{ getErrorMessages(control.key) }}">error</mat-icon>
+              }
 
-          </mat-form-field>
+            </mat-form-field>
 
-        }
+          }
 
-        <div class="form-buttons">
-          <button (click)="handleClose()">Close</button>
-          <button type="submit">Save</button>
-        </div>
+          <div class="form-buttons">
+            <button class="button-danger" (click)="handleClose()">Close</button>
+            <button class="button-success" type="submit">Save</button>
+          </div>
 
-      </form>
-    </section>
+        </form>
+      </section>
+    </div>
   `,
   styles: [
     `
+      .form-wrapper {
+        min-width: 300px;
+      }
+
       mat-form-field {
         display: flex;
         flex-direction: column;
@@ -53,12 +59,12 @@ import {MatTooltipModule} from "@angular/material/tooltip";
       .form-buttons {
         display: flex;
         flex-flow: row nowrap;
-        gap: 10px;
+        justify-content: space-between;
+        gap: 1rem;
       }
 
       section button {
         margin-top: 1rem;
-        width: 100%;
       }
     `,
   ]
