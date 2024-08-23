@@ -31,9 +31,16 @@ import {MatChipsModule} from "@angular/material/chips";
               <i class="fa-solid fa-trash"></i>
             </button>
 
-            <button class="button-success small-button" (click)="edit.emit(customer)">
-              <i class="fa-solid fa-pen"></i>
-            </button>
+            <div>
+              <button class="button-success small-button" (click)="edit.emit(customer)">
+                <i class="fa-solid fa-pen"></i>
+              </button>
+
+              <button class="button-primary" routerLink="/customer/{{customer.id}}">
+                Open
+              </button>
+            </div>
+
           </mat-card-footer>
 
         </mat-card>
@@ -90,7 +97,13 @@ import {MatChipsModule} from "@angular/material/chips";
         flex-flow: row nowrap;
         gap: 1rem;
 
-        justify-content: flex-end;
+        justify-content: space-between;
+      }
+
+      mat-card-footer div {
+        display: flex;
+        flex-flow: row nowrap;
+        gap: 1rem;
       }
 
       .add-card {
