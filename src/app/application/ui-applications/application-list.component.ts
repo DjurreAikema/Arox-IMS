@@ -46,16 +46,25 @@ import {MatCard, MatCardContent, MatCardFooter, MatCardHeader, MatCardTitle} fro
           </mat-card-footer>
 
         </mat-card>
-
+      } @empty {
+        @if (!hasAddCard()) {
+          <mat-card>
+            <mat-card-content class="add-card-content">
+              No applications found.
+            </mat-card-content>
+          </mat-card>
+        }
       }
 
-      <mat-card class="add-card" (click)="add.emit()">
+      @if (hasAddCard()) {
+        <mat-card class="add-card" (click)="add.emit()">
 
-        <mat-card-content class="add-card-content">
-          <i class="fa-solid fa-plus"></i>
-        </mat-card-content>
+          <mat-card-content class="add-card-content">
+            <i class="fa-solid fa-plus"></i>
+          </mat-card-content>
 
-      </mat-card>
+        </mat-card>
+      }
     </div>
   `,
   styleUrls: ['../../shared/styles/default-list.scss'],
@@ -66,6 +75,7 @@ export class ApplicationListComponent {
 
   // --- Inputs
   applications = input.required<Application[]>();
+  hasAddCard = input<Boolean>(true);
 
   // --- Outputs
   add = output();

@@ -46,15 +46,25 @@ import {MatCard, MatCardContent, MatCardFooter, MatCardHeader, MatCardTitle} fro
           </mat-card-footer>
 
         </mat-card>
+      } @empty {
+        @if (!hasAddCard()) {
+          <mat-card>
+            <mat-card-content class="add-card-content">
+              No tools found.
+            </mat-card-content>
+          </mat-card>
+        }
       }
 
-      <mat-card class="add-card" (click)="add.emit()">
+      @if (hasAddCard()) {
+        <mat-card class="add-card" (click)="add.emit()">
 
-        <mat-card-content class="add-card-content">
-          <i class="fa-solid fa-plus"></i>
-        </mat-card-content>
+          <mat-card-content class="add-card-content">
+            <i class="fa-solid fa-plus"></i>
+          </mat-card-content>
 
-      </mat-card>
+        </mat-card>
+      }
     </div>
   `,
   styleUrls: ['../../shared/styles/default-list.scss'],
@@ -65,6 +75,7 @@ export class ToolListComponent {
 
   // --- Inputs
   tools = input.required<Tool[]>();
+  hasAddCard = input<Boolean>(true);
 
   // --- Outputs
   add = output();

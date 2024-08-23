@@ -17,38 +17,16 @@ import {FormModalComponent} from "../shared/ui/form-modal.component";
   template: `
     <header>
       <h1>Tools</h1>
-      <button class="button-primary" (click)="toolBeingEdited.set({})">Add Tool</button>
     </header>
 
     <section>
       <app-tool-list
         [tools]="toolService.tools()"
+        [hasAddCard]="false"
         (edit)="toolBeingEdited.set($event)"
         (delete)="toolService.remove$.next($event)"
       />
     </section>
-
-<!--    <app-modal [isOpen]="!!toolBeingEdited()">-->
-<!--      <ng-template>-->
-<!--        <app-form-modal-->
-<!--          [formGroup]="toolForm"-->
-<!--          [title]="-->
-<!--            toolBeingEdited()?.name-->
-<!--                ? toolBeingEdited()!.name!-->
-<!--                : 'Add tool'-->
-<!--          "-->
-<!--          (close)="toolBeingEdited.set(null)"-->
-<!--          (save)="-->
-<!--            toolBeingEdited()?.id-->
-<!--                ? toolService.edit$.next({-->
-<!--                    id: toolBeingEdited()!.id!,-->
-<!--                    data: toolForm.getRawValue()-->
-<!--                })-->
-<!--                : toolService.add$.next(toolForm.getRawValue())-->
-<!--            "-->
-<!--        />-->
-<!--      </ng-template>-->
-<!--    </app-modal>-->
   `,
   styles: [`
     header {

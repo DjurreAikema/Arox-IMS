@@ -22,6 +22,7 @@ import {ModalComponent} from "../shared/ui/modal.component";
     <section>
       <app-application-list
         [applications]="applicationService.applications()"
+        [hasAddCard]="false"
         (edit)="applicationBeingEdited.set($event)"
         (delete)="applicationService.remove$.next($event)"
       />
