@@ -1,8 +1,19 @@
+import {RemoveApplication} from "./application";
+
 export interface Tool {
   id: number;
+  applicationId: number;
   name: string;
 }
 
-export type AddTool = Omit<Tool, 'id'>;
-export type EditTool = { id: Tool['id']; data: AddTool };
+export type AddTool = {
+  item: Omit<Tool, 'id' | 'applicationId'>;
+  applicationId: RemoveApplication;
+}
+
+export type EditTool = {
+  id: Tool['id'];
+  data: AddTool['item'];
+};
+
 export type RemoveTool = Tool['id'];

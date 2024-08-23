@@ -59,12 +59,14 @@ export class ToolService {
 
       // add$ reducer
       .with(this.add$, (state, tool) => ({
-        tools: [...state.tools, this.addIdToTool(tool)],
-      }))
-
-      // remove$ reducer
-      .with(this.remove$, (state, id) => ({
-        tools: state.tools.filter((tool) => tool.id !== id),
+        tools: [
+          ...state.tools,
+          {
+            ...tool.item,
+            id: this.generateId(),
+            applicationId: tool.applicationId
+          }
+        ]
       }))
 
       // edit$ reducer
@@ -74,6 +76,11 @@ export class ToolService {
             ? {...tool, name: update.data.name}
             : tool
         ),
+      }))
+
+      // remove$ reducer
+      .with(this.remove$, (state, id) => ({
+        tools: state.tools.filter((tool) => tool.id !== id),
       }));
 
     // --- Effects (effects are used to chain certain actions to state updates)
@@ -86,13 +93,6 @@ export class ToolService {
   }
 
   // --- Functions (these functions are used exclusively inside this state)
-  private addIdToTool(tool: AddTool) {
-    return {
-      ...tool,
-      id: this.generateId()
-    };
-  }
-
   private generateId() {
     return this.tools().reduce((maxId, tool) => Math.max(maxId, tool.id), 0) + 1;
   }
