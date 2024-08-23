@@ -23,24 +23,22 @@ import {FormModalComponent} from "../shared/ui/form-modal.component";
   template: `
     @if (customer(); as customer) {
       <header>
-        <button class="button-primary" routerLink="/customers">Back</button>
+        <button class="button-primary" routerLink="/customers">< Back</button>
 
-        <div class="title">
-          <h1>{{ customer.name }}</h1>
-        </div>
+        <h1>{{ customer.name }}</h1>
 
-        <div>
-          <button (click)="applicationBeingEdited.set({})">Add Application</button>
-        </div>
+        <button class="button-primary" (click)="applicationBeingEdited.set({})">Add Application +</button>
       </header>
     }
 
-    <app-application-list
-      [applications]="applications()"
-      (add)="applicationBeingEdited.set({})"
-      (edit)="applicationBeingEdited.set($event)"
-      (delete)="applicationService.remove$.next($event)"
-    />
+    <section class="applications-section">
+      <app-application-list
+        [applications]="applications()"
+        (add)="applicationBeingEdited.set({})"
+        (edit)="applicationBeingEdited.set($event)"
+        (delete)="applicationService.remove$.next($event)"
+      />
+    </section>
 
     <app-modal [isOpen]="!!applicationBeingEdited()">
       <ng-template>
@@ -68,14 +66,27 @@ import {FormModalComponent} from "../shared/ui/form-modal.component";
     </app-modal>
   `,
   styles: [`
-    .title {
+    header {
       display: flex;
-      flex-flow: column;
+      flex-flow: row nowrap;
+
+      justify-content: space-between;
       align-items: center;
+
+      padding: 0 1rem;
+
+      border-bottom: 1px solid var(--color-dark);
     }
 
-    button {
-      margin-left: 1rem;
+    h1 {
+      margin: 0;
+      font-size: 1.8em;
+    }
+
+    section.applications-section {
+      padding: 1rem;
+      height: calc(100vh - 120px);
+      overflow-y: auto;
     }
   `]
 })
