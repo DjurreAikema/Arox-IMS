@@ -20,7 +20,7 @@ import {FormModalComponent} from "../shared/ui/form-modal.component";
       <button class="button-primary" (click)="customerBeingEdited.set({})">Add Customer +</button>
     </header>
 
-    <section class="customers-section">
+    <section>
       <app-customer-list
         [customers]="customerService.customers()"
         (add)="customerBeingEdited.set({})"
@@ -69,7 +69,7 @@ import {FormModalComponent} from "../shared/ui/form-modal.component";
       font-size: 1.8em;
     }
 
-    section.customers-section {
+    section {
       padding: 1rem;
       height: calc(100vh - 120px);
       overflow-y: auto;

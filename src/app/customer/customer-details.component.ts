@@ -31,7 +31,7 @@ import {FormModalComponent} from "../shared/ui/form-modal.component";
       </header>
     }
 
-    <section class="applications-section">
+    <section>
       <app-application-list
         [applications]="applications()"
         (add)="applicationBeingEdited.set({})"
@@ -83,7 +83,7 @@ import {FormModalComponent} from "../shared/ui/form-modal.component";
       font-size: 1.8em;
     }
 
-    section.applications-section {
+    section {
       padding: 1rem;
       height: calc(100vh - 120px);
       overflow-y: auto;

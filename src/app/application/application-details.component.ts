@@ -23,23 +23,22 @@ import {ModalComponent} from "../shared/ui/modal.component";
   template: `
     @if (application(); as application) {
       <header>
-        <button class="button-primary" routerLink="/customer/{{application.customerId}}">Back</button>
+        <button class="button-primary" routerLink="/customer/{{application.customerId}}">< Back</button>
 
-        <div class="title">
-          <h1>{{ application.name }}</h1>
-        </div>
+        <h1>{{ application.name }}</h1>
 
-        <div>
-          <button (click)="toolBeingEdited.set({})">Add Tool</button>
-        </div>
+        <button class="button-primary" (click)="toolBeingEdited.set({})">Add Tool +</button>
       </header>
     }
 
-    <app-tool-list
-      [tools]="tools()"
-      (edit)="toolBeingEdited.set($event)"
-      (delete)="toolService.remove$.next($event)"
-    />
+    <section>
+      <app-tool-list
+        [tools]="tools()"
+        (add)="toolBeingEdited.set({})"
+        (edit)="toolBeingEdited.set($event)"
+        (delete)="toolService.remove$.next($event)"
+      />
+    </section>
 
     <app-modal [isOpen]="!!toolBeingEdited()">
       <ng-template>
@@ -67,14 +66,27 @@ import {ModalComponent} from "../shared/ui/modal.component";
     </app-modal>
   `,
   styles:  [`
-    .title {
+    header {
       display: flex;
-      flex-flow: column;
+      flex-flow: row nowrap;
+
+      justify-content: space-between;
       align-items: center;
+
+      padding: 0 1rem;
+
+      border-bottom: 1px solid var(--color-dark);
     }
 
-    button {
-      margin-left: 1rem;
+    h1 {
+      margin: 0;
+      font-size: 1.8em;
+    }
+
+    section {
+      padding: 1rem;
+      height: calc(100vh - 120px);
+      overflow-y: auto;
     }
   `]
 })

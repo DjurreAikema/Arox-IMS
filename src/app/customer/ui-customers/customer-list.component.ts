@@ -44,9 +44,6 @@ import {MatChipsModule} from "@angular/material/chips";
           </mat-card-footer>
 
         </mat-card>
-
-      } @empty {
-        <p>No customers found, click the add button to create your first customer.</p>
       }
 
       <mat-card class="add-card" (click)="add.emit()">

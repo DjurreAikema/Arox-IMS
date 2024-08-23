@@ -1,56 +1,64 @@
 import {Component, input, output} from '@angular/core';
 import {Tool, RemoveTool} from "../../shared/interfaces";
 import {RouterLink} from "@angular/router";
+import {MatCard, MatCardContent, MatCardFooter, MatCardHeader, MatCardTitle} from "@angular/material/card";
 
 @Component({
   selector: 'app-tool-list',
   standalone: true,
   imports: [
-    RouterLink
+    RouterLink,
+    MatCard,
+    MatCardContent,
+    MatCardFooter,
+    MatCardHeader,
+    MatCardTitle
   ],
   template: `
-    <ul>
+    <div class="list">
       @for (tool of tools(); track tool.id) {
-        <li>
 
-          <a routerLink="/tool/{{tool.id}}">
-            {{ tool.name }}
-          </a>
+        <mat-card>
 
-          <div>
-            <button class="button-success" (click)="edit.emit(tool)">Edit</button>
-            <button class="button-danger" (click)="delete.emit(tool.id)">Delete</button>
-          </div>
+          <mat-card-header>
+            <mat-card-title>{{ tool.name }}</mat-card-title>
+          </mat-card-header>
 
-        </li>
-      } @empty {
-        <p>No tools found, click the add button to create your first tool.</p>
+          <mat-card-content>
+            <p>Description</p>
+          </mat-card-content>
+
+          <mat-card-footer>
+            <button class="button-danger small-button" (click)="delete.emit(tool.id)">
+              <i class="fa-solid fa-trash"></i>
+            </button>
+
+            <div>
+              <button class="button-success small-button" (click)="edit.emit(tool)">
+                <i class="fa-solid fa-pen"></i>
+              </button>
+
+              <button class="button-primary" routerLink="/tool/{{tool.id}}">
+                Open
+              </button>
+            </div>
+
+          </mat-card-footer>
+
+        </mat-card>
       }
-    </ul>
+
+      <mat-card class="add-card" (click)="add.emit()">
+
+        <mat-card-content class="add-card-content">
+          <i class="fa-solid fa-plus"></i>
+        </mat-card-content>
+
+      </mat-card>
+    </div>
   `,
-  styles: [
-    `
-      ul {
-        padding: 0;
-        margin: 0;
-      }
-
-      li {
-        display: flex;
-        justify-content: space-between;
-
-        font-size: 1.2em;
-        background: var(--color-light);
-        list-style-type: none;
-        margin-bottom: 1rem;
-        padding: 1rem;
-
-        button {
-          margin-left: 1rem;
-        }
-      }
-    `,
-  ]
+  styleUrls: ['../../shared/styles/default-list.scss'],
+  styles: [``]
 })
 // responsibility: Dumb component that displays a list of tools
 export class ToolListComponent {
@@ -59,6 +67,7 @@ export class ToolListComponent {
   tools = input.required<Tool[]>();
 
   // --- Outputs
+  add = output();
   edit = output<Tool>();
   delete = output<RemoveTool>();
 
