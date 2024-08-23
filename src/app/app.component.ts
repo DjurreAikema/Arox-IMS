@@ -20,7 +20,6 @@ import {RouterLink, RouterOutlet} from '@angular/router';
 
       <div class="sidebar">
         <button class="button-primary" (click)="toggleSidebar()">Toggle Sidebar</button>
-        Sidebar content
       </div>
 
       <div class="body">
