@@ -59,12 +59,14 @@ export class ApplicationService {
 
       // add$ reducer
       .with(this.add$, (state, application) => ({
-        applications: [...state.applications, this.addId(application)],
-      }))
-
-      // remove$ reducer
-      .with(this.remove$, (state, id) => ({
-        applications: state.applications.filter((application) => application.id !== id),
+        applications: [
+          ...state.applications,
+          {
+            ...application.item,
+            id: this.generateId(),
+            customerId: application.customerId
+          },
+        ],
       }))
 
       // edit$ reducer
@@ -74,6 +76,11 @@ export class ApplicationService {
             ? {...application, name: update.data.name}
             : application
         ),
+      }))
+
+      // remove$ reducer
+      .with(this.remove$, (state, id) => ({
+        applications: state.applications.filter((application) => application.id !== id),
       }));
 
     // --- Effects (effects are used to chain certain actions to state updates)
@@ -86,13 +93,6 @@ export class ApplicationService {
   }
 
   // --- Functions (these functions are used exclusively inside this state)
-  private addId(obj: AddApplication) {
-    return {
-      ...obj,
-      id: this.generateId()
-    };
-  }
-
   private generateId() {
     return this.applications().reduce((maxId, obj) => Math.max(maxId, obj.id), 0) + 1;
   }

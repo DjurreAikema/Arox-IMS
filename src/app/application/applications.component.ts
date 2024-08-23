@@ -32,23 +32,23 @@ import {ModalComponent} from "../shared/ui/modal.component";
 
     <app-modal [isOpen]="!!applicationBeingEdited()">
       <ng-template>
-        <app-form-modal
-          [formGroup]="applicationForm"
-          [title]="
-            applicationBeingEdited()?.name
-                ? applicationBeingEdited()!.name!
-                : 'Add application'
-          "
-          (close)="applicationBeingEdited.set(null)"
-          (save)="
-            applicationBeingEdited()?.id
-                ? applicationService.edit$.next({
-                    id: applicationBeingEdited()!.id!,
-                    data: applicationForm.getRawValue()
-                })
-                : applicationService.add$.next(applicationForm.getRawValue())
-            "
-        />
+<!--        <app-form-modal-->
+<!--          [formGroup]="applicationForm"-->
+<!--          [title]="-->
+<!--            applicationBeingEdited()?.name-->
+<!--                ? applicationBeingEdited()!.name!-->
+<!--                : 'Add application'-->
+<!--          "-->
+<!--          (close)="applicationBeingEdited.set(null)"-->
+<!--          (save)="-->
+<!--            applicationBeingEdited()?.id-->
+<!--                ? applicationService.edit$.next({-->
+<!--                    id: applicationBeingEdited()!.id!,-->
+<!--                    data: applicationForm.getRawValue()-->
+<!--                })-->
+<!--                : applicationService.add$.next(applicationForm.getRawValue())-->
+<!--            "-->
+<!--        />-->
       </ng-template>
     </app-modal>
   `,
