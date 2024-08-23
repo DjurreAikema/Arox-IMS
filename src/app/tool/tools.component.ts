@@ -30,27 +30,27 @@ import {FormModalComponent} from "../shared/ui/form-modal.component";
       />
     </section>
 
-    <app-modal [isOpen]="!!toolBeingEdited()">
-      <ng-template>
-        <app-form-modal
-          [formGroup]="toolForm"
-          [title]="
-            toolBeingEdited()?.name
-                ? toolBeingEdited()!.name!
-                : 'Add tool'
-          "
-          (close)="toolBeingEdited.set(null)"
-          (save)="
-            toolBeingEdited()?.id
-                ? toolService.edit$.next({
-                    id: toolBeingEdited()!.id!,
-                    data: toolForm.getRawValue()
-                })
-                : toolService.add$.next(toolForm.getRawValue())
-            "
-        />
-      </ng-template>
-    </app-modal>
+<!--    <app-modal [isOpen]="!!toolBeingEdited()">-->
+<!--      <ng-template>-->
+<!--        <app-form-modal-->
+<!--          [formGroup]="toolForm"-->
+<!--          [title]="-->
+<!--            toolBeingEdited()?.name-->
+<!--                ? toolBeingEdited()!.name!-->
+<!--                : 'Add tool'-->
+<!--          "-->
+<!--          (close)="toolBeingEdited.set(null)"-->
+<!--          (save)="-->
+<!--            toolBeingEdited()?.id-->
+<!--                ? toolService.edit$.next({-->
+<!--                    id: toolBeingEdited()!.id!,-->
+<!--                    data: toolForm.getRawValue()-->
+<!--                })-->
+<!--                : toolService.add$.next(toolForm.getRawValue())-->
+<!--            "-->
+<!--        />-->
+<!--      </ng-template>-->
+<!--    </app-modal>-->
   `,
   styles: ``
 })
