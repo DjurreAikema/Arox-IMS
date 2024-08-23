@@ -13,7 +13,9 @@ import {RouterLink, RouterOutlet} from '@angular/router';
       </div>
 
       <div class="navbar">
-        Navbar
+        <a class="nav-button" routerLink="customers">Customers</a>
+        <a class="nav-button" routerLink="applications">Applications</a>
+        <a class="nav-button" routerLink="tools">Tools</a>
       </div>
 
       <div class="sidebar">
@@ -73,9 +75,24 @@ import {RouterLink, RouterOutlet} from '@angular/router';
       justify-content: flex-start;
       align-items: center;
 
+      @extend .navbar-general;
+    }
+
+    .nav-button {
+      height: 100%;
       padding: 0 1rem;
 
-      @extend .navbar-general;
+      text-decoration: none;
+      color: white;
+
+      display: flex;
+      flex-flow: row nowrap;
+      align-items: center;
+    }
+
+    .nav-button:hover {
+      background-color: #2e2f61; // Lighter version of --color-dark
+      cursor: pointer;
     }
 
     // Sidebar (bottom left)
@@ -90,7 +107,7 @@ import {RouterLink, RouterOutlet} from '@angular/router';
     // Body (bottom right)
     .body {
       grid-area: body;
-      overflow-x: hidden;
+      overflow: hidden;
       padding: 5px;
 
       background-color: var(--color-penumbra);

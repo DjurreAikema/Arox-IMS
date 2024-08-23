@@ -17,12 +17,10 @@ import {FormModalComponent} from "../shared/ui/form-modal.component";
   template: `
     <header>
       <h1>Customers</h1>
-      <button class="button-primary" (click)="customerBeingEdited.set({})">Add Customer</button>
+      <button class="button-primary" (click)="customerBeingEdited.set({})">Add Customer +</button>
     </header>
 
-    <section>
-      <h2>Your customers</h2>
-
+    <section class="customer-section">
       <app-customer-list
         [customers]="customerService.customers()"
         (edit)="customerBeingEdited.set($event)"
@@ -52,7 +50,30 @@ import {FormModalComponent} from "../shared/ui/form-modal.component";
       </ng-template>
     </app-modal>
   `,
-  styles: ``
+  styles: [`
+    header {
+      display: flex;
+      flex-flow: row nowrap;
+
+      justify-content: space-between;
+      align-items: center;
+
+      padding: 0 1rem;
+
+      border-bottom: 1px solid var(--color-dark);
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 1.8em;
+    }
+
+    section.customer-section {
+      padding: 1rem;
+      height: calc(100vh - 120px); /* Adjust based on your header height */
+      overflow-y: auto;
+    }
+  `]
 })
 // Responsibility: Smart component in charge of all customer interactions
 export default class CustomersComponent {

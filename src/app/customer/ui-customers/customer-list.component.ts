@@ -1,53 +1,76 @@
 import {Component, input, output} from '@angular/core';
 import {Customer, RemoveCustomer} from "../../shared/interfaces";
 import {RouterLink} from "@angular/router";
+import {MatCardModule} from "@angular/material/card";
+import {MatChipsModule} from "@angular/material/chips";
 
 @Component({
   selector: 'app-customer-list',
   standalone: true,
   imports: [
-    RouterLink
+    RouterLink,
+    MatCardModule,
+    MatChipsModule
   ],
   template: `
-    <ul>
+    <div class="customer-list">
       @for (customer of customers(); track customer.id) {
-        <li>
 
-          <a routerLink="/customer/{{customer.id}}">
-            {{ customer.name }}
-          </a>
+        <mat-card>
 
-          <div>
+          <mat-card-header>
+            <mat-card-title>{{ customer.name }}</mat-card-title>
+          </mat-card-header>
+
+          <mat-card-content>
+            <p>Description</p>
+          </mat-card-content>
+
+          <mat-card-footer>
             <button class="button-success" (click)="edit.emit(customer)">Edit</button>
             <button class="button-danger" (click)="delete.emit(customer.id)">Delete</button>
-          </div>
+          </mat-card-footer>
 
-        </li>
+        </mat-card>
+
       } @empty {
         <p>No customers found, click the add button to create your first customer.</p>
       }
-    </ul>
+    </div>
   `,
   styles: [
     `
-      ul {
-        padding: 0;
-        margin: 0;
+      :host {
+        display: flex;
+        flex-flow: column nowrap;
+        height: 100%;
       }
 
-      li {
+      .customer-list {
         display: flex;
-        justify-content: space-between;
+        flex-flow: row wrap;
+        gap: 2rem;
+        overflow-y: auto;
+        height: 100%;
+      }
 
-        font-size: 1.2em;
-        background: var(--color-light);
-        list-style-type: none;
-        margin-bottom: 1rem;
+      mat-card {
         padding: 1rem;
+      }
 
-        button {
-          margin-left: 1rem;
-        }
+      mat-card-header {
+        padding: 0;
+        border-bottom: 1px solid var(--color-dark);
+      }
+
+      mat-card-content {
+        padding: 1rem 0;
+      }
+
+      mat-card-footer {
+        display: flex;
+        flex-flow: row nowrap;
+        gap: 1rem;
       }
     `,
   ]
