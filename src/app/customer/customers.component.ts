@@ -17,7 +17,7 @@ import {FormModalComponent} from "../shared/ui/form-modal.component";
   template: `
     <header>
       <h1>Customers</h1>
-      <button class="button-primary" (click)="customerBeingEdited.set({})">Add Customer +</button>
+      <button class="button-success" (click)="customerBeingEdited.set({})">Add Customer +</button>
     </header>
 
     <section>

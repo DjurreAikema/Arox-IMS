@@ -25,9 +25,9 @@ import {ModalComponent} from "../shared/ui/modal.component";
       <header>
         <button class="button-primary" routerLink="/customer/{{application.customerId}}">< Back</button>
 
-        <h1>{{ application.name }}</h1>
+        <h1>Application: {{ application.name }}</h1>
 
-        <button class="button-primary" (click)="toolBeingEdited.set({})">Add Tool +</button>
+        <button class="button-success" (click)="toolBeingEdited.set({})">Add Tool +</button>
       </header>
     }
 

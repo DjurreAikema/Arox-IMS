@@ -25,9 +25,9 @@ import {FormModalComponent} from "../shared/ui/form-modal.component";
       <header>
         <button class="button-primary" routerLink="/customers">< Back</button>
 
-        <h1>{{ customer.name }}</h1>
+        <h1>Customer: {{ customer.name }}</h1>
 
-        <button class="button-primary" (click)="applicationBeingEdited.set({})">Add Application +</button>
+        <button class="button-success" (click)="applicationBeingEdited.set({})">Add Application +</button>
       </header>
     }
 

@@ -13,12 +13,31 @@ import {JsonPipe} from "@angular/common";
   ],
   template: `
     @if (tool(); as tool) {
-      {{ tool | json }}
-    } @else {
-      <p>No tool</p>
+      <header>
+        <button class="button-primary" routerLink="/application/{{tool.applicationId}}">< Back</button>
+
+        <h1>Tool: {{ tool.name }}</h1>
+      </header>
     }
   `,
-  styles: ``
+  styles: [`
+    header {
+      display: flex;
+      flex-flow: row nowrap;
+
+      justify-content: space-between;
+      align-items: center;
+
+      padding: 0 1rem;
+
+      border-bottom: 1px solid var(--color-dark);
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 1.8em;
+    }
+  `]
 })
 // Responsibility: Smart component in charge of showing a tool's details
 // Get the tool by its id, get this id from the url parameters
