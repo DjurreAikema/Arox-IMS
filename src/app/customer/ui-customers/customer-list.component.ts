@@ -13,7 +13,7 @@ import {MatChipsModule} from "@angular/material/chips";
     MatChipsModule
   ],
   template: `
-    <div class="customer-list">
+    <div class="list">
       @for (customer of customers(); track customer.id) {
 
         <mat-card>
@@ -58,71 +58,8 @@ import {MatChipsModule} from "@angular/material/chips";
       </mat-card>
     </div>
   `,
-  styles: [
-    `
-      .customer-list {
-        height: 100%;
-        width: 100%;
-
-        display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 2rem;
-      }
-
-      mat-card {
-        padding: 1rem;
-        max-height: 200px;
-      }
-
-      mat-card-header {
-        padding: 0;
-        border-bottom: 1px solid var(--color-dark);
-      }
-
-      mat-card-title {
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-      }
-
-      mat-card-content {
-        padding: 1rem 0;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        height: 100%;
-      }
-
-      mat-card-footer {
-        display: flex;
-        flex-flow: row nowrap;
-        gap: 1rem;
-
-        justify-content: space-between;
-      }
-
-      mat-card-footer div {
-        display: flex;
-        flex-flow: row nowrap;
-        gap: 1rem;
-      }
-
-      .add-card {
-        background-color: rgba(40, 167, 69, 0.1);
-        transition: background-color 0.2s ease;
-      }
-
-      .add-card:hover {
-        cursor: pointer;
-        background-color: rgba(40, 167, 69, 0.3);
-      }
-
-      .add-card-content {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
-    `,
-  ]
+  styleUrls: ['../../shared/styles/overview-page.scss'],
+  styles: [``]
 })
 // responsibility: Dumb component that displays a list of customers
 export class CustomerListComponent {
