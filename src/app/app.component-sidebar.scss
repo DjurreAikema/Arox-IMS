@@ -1,0 +1,22 @@
+// Sidebar (bottom left)
+.sidebar {
+  grid-area: sidebar;
+  overflow: hidden;
+
+  padding: 1rem;
+  border-right: 1px solid var(--color-dark);
+
+  position: relative;
+  z-index: 1;
+  //transition: width 0.3s ease;
+  height: calc(100dvh - 50px); // Maintain height excluding navbar
+}
+
+.sidebar-expanded .sidebar {
+  position: absolute;
+  width: 440px;
+  height: calc(100dvh - 50px); // Maintain height excluding navbar
+  z-index: 2;
+  background-color: var(--color-light);
+  bottom: 0;
+}

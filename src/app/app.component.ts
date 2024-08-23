@@ -6,7 +6,7 @@ import {RouterLink, RouterOutlet} from '@angular/router';
   standalone: true,
   imports: [RouterOutlet, RouterLink],
   template: `
-    <div class="wrapper">
+    <div class="wrapper" [class.sidebar-expanded]="isSidebarExpanded">
 
       <div class="navbar-logo">
         Logo
@@ -19,7 +19,8 @@ import {RouterLink, RouterOutlet} from '@angular/router';
       </div>
 
       <div class="sidebar">
-        Sidebar
+        <button class="button-primary" (click)="toggleSidebar()">Toggle Sidebar</button>
+        Sidebar content
       </div>
 
       <div class="body">
@@ -28,6 +29,7 @@ import {RouterLink, RouterOutlet} from '@angular/router';
 
     </div>
   `,
+  styleUrls: ['./app.component-sidebar.scss', "./app.component-navbar.scss"],
   styles: [`
     .wrapper {
       display: grid;
@@ -48,62 +50,8 @@ import {RouterLink, RouterOutlet} from '@angular/router';
       width: 100dvw;
     }
 
-    .navbar-general {
-      background-color: var(--color-dark);
-      border-bottom: 5px solid var(--color-secondary);
-      color: white;
-    }
-
-    // Logo (top left)
-    .navbar-logo {
-      grid-area: navbar-logo;
-      overflow: hidden;
-
-      display: flex;
-      justify-content: center;
-      align-items: center;
-
-      @extend .navbar-general;
-    }
-
-    // Navbar (top right)
-    .navbar {
-      grid-area: navbar;
-      overflow: hidden;
-
-      display: flex;
-      justify-content: flex-start;
-      align-items: center;
-
-      @extend .navbar-general;
-    }
-
-    .nav-button {
-      height: 100%;
-      padding: 0 1rem;
-
-      text-decoration: none;
-      color: white;
-
-      display: flex;
-      flex-flow: row nowrap;
-      align-items: center;
-
-      user-select: none;
-    }
-
-    .nav-button:hover {
-      background-color: #2e2f61; // Lighter version of --color-dark
-      cursor: pointer;
-    }
-
-    // Sidebar (bottom left)
-    .sidebar {
-      grid-area: sidebar;
-      overflow: hidden;
-
-      padding: 1rem;
-      border-right: 1px solid var(--color-dark);
+    .wrapper.sidebar-expanded .sidebar {
+      width: 440px;
     }
 
     // Body (bottom right)
@@ -117,4 +65,10 @@ import {RouterLink, RouterOutlet} from '@angular/router';
   `],
 })
 export class AppComponent {
+
+  protected isSidebarExpanded = false;
+
+  protected toggleSidebar() {
+    this.isSidebarExpanded = !this.isSidebarExpanded;
+  }
 }

@@ -1,0 +1,48 @@
+.navbar-general {
+  background-color: var(--color-dark);
+  border-bottom: 5px solid var(--color-secondary);
+  color: white;
+}
+
+// Logo (top left)
+.navbar-logo {
+  grid-area: navbar-logo;
+  overflow: hidden;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  @extend .navbar-general;
+}
+
+// Navbar (top right)
+.navbar {
+  grid-area: navbar;
+  overflow: hidden;
+
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+
+  @extend .navbar-general;
+}
+
+.nav-button {
+  height: 100%;
+  padding: 0 1rem;
+
+  text-decoration: none;
+  color: white;
+
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+
+  user-select: none;
+}
+
+.nav-button:hover {
+  background-color: #2e2f61; // Lighter version of --color-dark
+  cursor: pointer;
+}
