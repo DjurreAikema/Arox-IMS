@@ -27,8 +27,13 @@ import {MatChipsModule} from "@angular/material/chips";
           </mat-card-content>
 
           <mat-card-footer>
-            <button class="button-danger" (click)="delete.emit(customer.id)">Delete</button>
-            <button class="small-button button-success" (click)="edit.emit(customer)">Edit</button>
+            <button class="button-danger small-button" (click)="delete.emit(customer.id)">
+              <i class="fa-solid fa-trash"></i>
+            </button>
+
+            <button class="button-success small-button" (click)="edit.emit(customer)">
+              <i class="fa-solid fa-pen"></i>
+            </button>
           </mat-card-footer>
 
         </mat-card>
@@ -45,7 +50,7 @@ import {MatChipsModule} from "@angular/material/chips";
         width: 100%;
 
         display: grid;
-        grid-template-columns: repeat(4, minmax(0, 1fr));
+        grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 2rem;
       }
 

@@ -32,7 +32,7 @@
 // Specific buttons
 .small-button {
   @extend .button;
-  width: 32.5px !important;
+  min-width: 32.5px;
 }
 
 // Primary
