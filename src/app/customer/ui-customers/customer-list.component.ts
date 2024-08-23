@@ -41,6 +41,14 @@ import {MatChipsModule} from "@angular/material/chips";
       } @empty {
         <p>No customers found, click the add button to create your first customer.</p>
       }
+
+      <mat-card class="add-card" (click)="add.emit()">
+
+        <mat-card-content class="add-card-content">
+          <i class="fa-solid fa-plus"></i>
+        </mat-card-content>
+
+      </mat-card>
     </div>
   `,
   styles: [
@@ -50,12 +58,13 @@ import {MatChipsModule} from "@angular/material/chips";
         width: 100%;
 
         display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
+        grid-template-columns: repeat(3, minmax(0, 1fr));
         gap: 2rem;
       }
 
       mat-card {
         padding: 1rem;
+        max-height: 200px;
       }
 
       mat-card-header {
@@ -67,14 +76,13 @@ import {MatChipsModule} from "@angular/material/chips";
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
-        max-width: 350px;
       }
 
       mat-card-content {
         padding: 1rem 0;
-        height: 95px;
         overflow: hidden;
         text-overflow: ellipsis;
+        height: 100%;
       }
 
       mat-card-footer {
@@ -83,6 +91,22 @@ import {MatChipsModule} from "@angular/material/chips";
         gap: 1rem;
 
         justify-content: flex-end;
+      }
+
+      .add-card {
+        background-color: rgba(40, 167, 69, 0.1);
+        transition: background-color 0.2s ease;
+      }
+
+      .add-card:hover {
+        cursor: pointer;
+        background-color: rgba(40, 167, 69, 0.3);
+      }
+
+      .add-card-content {
+        display: flex;
+        align-items: center;
+        justify-content: center;
       }
     `,
   ]
@@ -94,6 +118,7 @@ export class CustomerListComponent {
   customers = input.required<Customer[]>();
 
   // --- Outputs
+  add = output();
   edit = output<Customer>();
   delete = output<RemoveCustomer>();
 

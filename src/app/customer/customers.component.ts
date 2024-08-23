@@ -23,6 +23,7 @@ import {FormModalComponent} from "../shared/ui/form-modal.component";
     <section class="customer-section">
       <app-customer-list
         [customers]="customerService.customers()"
+        (add)="customerBeingEdited.set({})"
         (edit)="customerBeingEdited.set($event)"
         (delete)="customerService.remove$.next($event)"
       />
