@@ -58,7 +58,7 @@ import {MatChipsModule} from "@angular/material/chips";
       </mat-card>
     </div>
   `,
-  styleUrls: ['../../shared/styles/overview-page.scss'],
+  styleUrls: ['../../shared/styles/default-list.scss'],
   styles: [``]
 })
 // responsibility: Dumb component that displays a list of customers

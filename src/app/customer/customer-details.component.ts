@@ -37,6 +37,7 @@ import {FormModalComponent} from "../shared/ui/form-modal.component";
 
     <app-application-list
       [applications]="applications()"
+      (add)="applicationBeingEdited.set({})"
       (edit)="applicationBeingEdited.set($event)"
       (delete)="applicationService.remove$.next($event)"
     />

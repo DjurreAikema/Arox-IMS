@@ -1,56 +1,65 @@
 import {Component, input, output} from '@angular/core';
 import {Application, RemoveApplication} from "../../shared/interfaces";
 import {RouterLink} from "@angular/router";
+import {MatCard, MatCardContent, MatCardFooter, MatCardHeader, MatCardTitle} from "@angular/material/card";
 
 @Component({
   selector: 'app-application-list',
   standalone: true,
   imports: [
-    RouterLink
+    RouterLink,
+    MatCard,
+    MatCardContent,
+    MatCardFooter,
+    MatCardHeader,
+    MatCardTitle
   ],
   template: `
-    <ul>
+    <div class="list">
       @for (application of applications(); track application.id) {
-        <li>
 
-          <a routerLink="/application/{{application.id}}">
-            {{ application.name }}
-          </a>
+        <mat-card>
 
-          <div>
-            <button class="button-success" (click)="edit.emit(application)">Edit</button>
-            <button class="button-danger" (click)="delete.emit(application.id)">Delete</button>
-          </div>
+          <mat-card-header>
+            <mat-card-title>{{ application.name }}</mat-card-title>
+          </mat-card-header>
 
-        </li>
-      } @empty {
-        <p>No applications found, click the add button to create your first application.</p>
+          <mat-card-content>
+            <p>Description</p>
+          </mat-card-content>
+
+          <mat-card-footer>
+            <button class="button-danger small-button" (click)="delete.emit(application.id)">
+              <i class="fa-solid fa-trash"></i>
+            </button>
+
+            <div>
+              <button class="button-success small-button" (click)="edit.emit(application)">
+                <i class="fa-solid fa-pen"></i>
+              </button>
+
+              <button class="button-primary" routerLink="/application/{{application.id}}">
+                Open
+              </button>
+            </div>
+
+          </mat-card-footer>
+
+        </mat-card>
+
       }
-    </ul>
+
+      <mat-card class="add-card" (click)="add.emit()">
+
+        <mat-card-content class="add-card-content">
+          <i class="fa-solid fa-plus"></i>
+        </mat-card-content>
+
+      </mat-card>
+    </div>
   `,
-  styles: [
-    `
-      ul {
-        padding: 0;
-        margin: 0;
-      }
-
-      li {
-        display: flex;
-        justify-content: space-between;
-
-        font-size: 1.2em;
-        background: var(--color-light);
-        list-style-type: none;
-        margin-bottom: 1rem;
-        padding: 1rem;
-
-        button {
-          margin-left: 1rem;
-        }
-      }
-    `,
-  ]
+  styleUrls: ['../../shared/styles/default-list.scss'],
+  styles: [``]
 })
 // responsibility: Dumb component that displays a list of applications
 export class ApplicationListComponent {
@@ -59,6 +68,7 @@ export class ApplicationListComponent {
   applications = input.required<Application[]>();
 
   // --- Outputs
+  add = output();
   edit = output<Application>();
   delete = output<RemoveApplication>();
 }
