@@ -6,6 +6,8 @@
 
   border-radius: 3px;
   border: none;
+
+  user-select: none;
 }
 
 .button:hover {
@@ -30,7 +32,7 @@
 // Specific buttons
 .small-button {
   @extend .button;
-  width: 32.5px;
+  width: 32.5px !important;
 }
 
 // Primary

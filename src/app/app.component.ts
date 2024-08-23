@@ -88,6 +88,8 @@ import {RouterLink, RouterOutlet} from '@angular/router';
       display: flex;
       flex-flow: row nowrap;
       align-items: center;
+
+      user-select: none;
     }
 
     .nav-button:hover {
