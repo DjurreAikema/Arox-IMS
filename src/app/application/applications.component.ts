@@ -17,42 +17,40 @@ import {ModalComponent} from "../shared/ui/modal.component";
   template: `
     <header>
       <h1>Applications</h1>
-      <button class="button-primary" (click)="applicationBeingEdited.set({})">Add Application</button>
     </header>
 
     <section>
-      <h2>Your applications</h2>
-
       <app-application-list
         [applications]="applicationService.applications()"
         (edit)="applicationBeingEdited.set($event)"
         (delete)="applicationService.remove$.next($event)"
       />
     </section>
-
-    <app-modal [isOpen]="!!applicationBeingEdited()">
-      <ng-template>
-<!--        <app-form-modal-->
-<!--          [formGroup]="applicationForm"-->
-<!--          [title]="-->
-<!--            applicationBeingEdited()?.name-->
-<!--                ? applicationBeingEdited()!.name!-->
-<!--                : 'Add application'-->
-<!--          "-->
-<!--          (close)="applicationBeingEdited.set(null)"-->
-<!--          (save)="-->
-<!--            applicationBeingEdited()?.id-->
-<!--                ? applicationService.edit$.next({-->
-<!--                    id: applicationBeingEdited()!.id!,-->
-<!--                    data: applicationForm.getRawValue()-->
-<!--                })-->
-<!--                : applicationService.add$.next(applicationForm.getRawValue())-->
-<!--            "-->
-<!--        />-->
-      </ng-template>
-    </app-modal>
   `,
-  styles: ``
+  styles: [`
+    header {
+      display: flex;
+      flex-flow: row nowrap;
+
+      justify-content: space-between;
+      align-items: center;
+
+      padding: 0 1rem;
+
+      border-bottom: 1px solid var(--color-dark);
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 1.8em;
+    }
+
+    section {
+      padding: 1rem;
+      height: calc(100vh - 120px);
+      overflow-y: auto;
+    }
+  `]
 })
 // Responsibility: Smart component in charge of all application interactions
 export default class ApplicationsComponent {
