@@ -5,6 +5,7 @@ import {Customer} from "../shared/interfaces";
 import {CustomerListComponent} from "./ui-customers/customer-list.component";
 import {ModalComponent} from "../shared/ui/modal.component";
 import {FormModalComponent} from "../shared/ui/form-modal.component";
+import {ConfirmModalComponent} from "../shared/ui/confirm-modal.component";
 
 @Component({
   selector: 'app-customers',
@@ -12,11 +13,12 @@ import {FormModalComponent} from "../shared/ui/form-modal.component";
   imports: [
     CustomerListComponent,
     ModalComponent,
-    FormModalComponent
+    FormModalComponent,
+    ConfirmModalComponent
   ],
   template: `
     <header>
-      <h1>Customers</h1>
+      <h1>Customers and buns</h1>
       <button class="button-success" (click)="customerBeingEdited.set({})">Add Customer +</button>
     </header>
 
@@ -25,7 +27,7 @@ import {FormModalComponent} from "../shared/ui/form-modal.component";
         [customers]="customerService.customers()"
         (add)="customerBeingEdited.set({})"
         (edit)="customerBeingEdited.set($event)"
-        (delete)="customerService.remove$.next($event)"
+        (delete)="customerToDelete.set($event)"
       />
     </section>
 
@@ -47,6 +49,17 @@ import {FormModalComponent} from "../shared/ui/form-modal.component";
                 })
                 : customerService.add$.next(customerForm.getRawValue())
             "
+        />
+      </ng-template>
+    </app-modal>
+
+    <app-modal [isOpen]="!!customerToDelete()">
+      <ng-template>
+        <app-confirm-modal
+          title="Delete Customer"
+          message="Are you sure you want to delete this customer?"
+          (confirm)="deleteCustomer()"
+          (cancel)="customerToDelete.set(null)"
         />
       </ng-template>
     </app-modal>
@@ -83,8 +96,13 @@ export default class CustomersComponent {
   public fb: FormBuilder = inject(FormBuilder);
   public customerService: CustomerService = inject(CustomerService);
 
+
+  // --- Properties
   // Track the customer that is currently being edited
   public customerBeingEdited = signal<Partial<Customer> | null>(null);
+
+  // Track the customer that is currently being deleted
+  public customerToDelete = signal<number | null>(null);
 
   // Form for creating/editing customers
   public customerForm = this.fb.nonNullable.group({
@@ -102,5 +120,13 @@ export default class CustomersComponent {
         });
       }
     });
+  }
+
+  // --- Functions
+  protected deleteCustomer() {
+    if (this.customerToDelete()) {
+      this.customerService.remove$.next(this.customerToDelete()!);
+      this.customerToDelete.set(null);
+    }
   }
 }

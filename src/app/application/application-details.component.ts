@@ -150,6 +150,7 @@ export default class ApplicationDetailsComponent {
   // Form for creating/editing tools
   public toolForm = this.fb.nonNullable.group({
     name: ['', [Validators.required, Validators.minLength(3)]],
+    apiUrl: ['', [Validators.required, Validators.minLength(3)]],
   });
 
   constructor() {

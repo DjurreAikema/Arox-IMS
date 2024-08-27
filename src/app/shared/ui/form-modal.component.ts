@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnDestroy, Output} from '@angular/core';
+import {Component, input, OnDestroy, output} from '@angular/core';
 import {FormGroup, ReactiveFormsModule} from "@angular/forms";
 import {JsonPipe, KeyValuePipe} from "@angular/common";
 import {MatFormFieldModule} from "@angular/material/form-field";
@@ -13,12 +13,12 @@ import {MatTooltipModule} from "@angular/material/tooltip";
   template: `
     <div class="form-wrapper">
       <header>
-        <h2>{{ title }}</h2>
+        <h2>{{ title() }}</h2>
       </header>
 
       <section>
-        <form [formGroup]="formGroup" (ngSubmit)="onSubmit()" #form="ngForm">
-          @for (control of formGroup.controls | keyvalue; track control.key) {
+        <form [formGroup]="formGroup()" (ngSubmit)="onSubmit()" #form="ngForm">
+          @for (control of formGroup().controls | keyvalue; track control.key) {
 
             <!-- TODO: Add support for more control types -->
             <mat-form-field appearance="fill">
@@ -28,7 +28,7 @@ import {MatTooltipModule} from "@angular/material/tooltip";
               <input matNativeControl [formControlName]="control.key"
                      type="text" placeholder="placeholder">
 
-              @if ((formGroup.get(control.key)?.dirty || form.submitted) && !formGroup.get(control.key)?.valid) {
+              @if ((formGroup().get(control.key)?.dirty || form.submitted) && !formGroup().get(control.key)?.valid) {
                 <mat-icon matSuffix matTooltip="{{ getErrorMessages(control.key) }}">error</mat-icon>
               }
 
@@ -79,15 +79,16 @@ import {MatTooltipModule} from "@angular/material/tooltip";
 // Responsibility: Dumb component that renders a form inside a modal based on a supplied formGroup
 export class FormModalComponent implements OnDestroy {
 
-  // Input TODO signal inputs
-  @Input({required: true}) formGroup!: FormGroup;
-  @Input({required: true}) title!: string;
+  // --- Inputs
+  formGroup = input.required<FormGroup>();
+  title = input.required<string>();
 
-  // Output TODO signal outputs
-  @Output() save: EventEmitter<void> = new EventEmitter<void>();
-  @Output() close: EventEmitter<void> = new EventEmitter<void>();
+  // --- Outputs
+  save = output();
+  close = output();
 
-  // Properties
+
+  // --- Properties
   private closedByButton = false;
 
   // Lifecycle
@@ -104,7 +105,7 @@ export class FormModalComponent implements OnDestroy {
   }
 
   protected onSubmit() {
-    if (!this.formGroup.valid) return;
+    if (!this.formGroup().valid) return;
 
     this.closedByButton = true;
     this.save.emit();
@@ -112,7 +113,7 @@ export class FormModalComponent implements OnDestroy {
   }
 
   protected getErrorMessages(controlName: string): string {
-    const control = this.formGroup.get(controlName);
+    const control = this.formGroup().get(controlName);
     if (!control || !control.errors) return '';
 
     return Object.keys(control.errors).map(errorKey => {
