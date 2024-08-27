@@ -1,16 +1,13 @@
-import {Component, computed, effect, inject, signal} from '@angular/core';
+import {Component, computed, inject, signal} from '@angular/core';
 import {CustomerService} from "./data-access/customer.service";
 import {ActivatedRoute, RouterLink} from "@angular/router";
 import {toSignal} from "@angular/core/rxjs-interop";
 import {JsonPipe} from "@angular/common";
 import {ApplicationService} from "../application/data-access/application.service";
-import {FormBuilder, Validators} from "@angular/forms";
 import {Application} from "../shared/interfaces";
 import {ApplicationListComponent} from "../application/ui-applications/application-list.component";
-import {ModalComponent} from "../shared/ui/modal.component";
-import {FormModalComponent} from "../shared/ui/form-modal.component";
 import {MatCard, MatCardContent} from "@angular/material/card";
-import {MatBadge} from "@angular/material/badge";
+import {ApplicationFormComponent} from "../application/ui-applications/application-form.component";
 
 @Component({
   selector: 'app-customer-details',
@@ -19,13 +16,12 @@ import {MatBadge} from "@angular/material/badge";
     JsonPipe,
     RouterLink,
     ApplicationListComponent,
-    ModalComponent,
-    FormModalComponent,
     MatCard,
     MatCardContent,
-    MatBadge
+    ApplicationFormComponent
   ],
   template: `
+    <!-- Header -->
     @if (customer(); as customer) {
       <header>
         <button class="button-primary" routerLink="/customers">< Back</button>
@@ -37,11 +33,12 @@ import {MatBadge} from "@angular/material/badge";
 
       <mat-card class="list-header">
         <mat-card-content>
-          All applications belonging to {{ customer.name }} ({{applicationService.applicationsCount()}})
+          All applications belonging to {{ customer.name }} ({{ applicationService.applicationsCount() }})
         </mat-card-content>
       </mat-card>
     }
 
+    <!-- List -->
     <section>
       <app-application-list
         [applications]="applications()"
@@ -51,30 +48,22 @@ import {MatBadge} from "@angular/material/badge";
       />
     </section>
 
-    <app-modal [isOpen]="!!applicationBeingEdited()">
-      <ng-template>
-        <app-form-modal
-          [formGroup]="applicationForm"
-          [title]="
-            applicationBeingEdited()?.name
-                ? applicationBeingEdited()!.name!
-                : 'Add application'
-          "
-          (close)="applicationBeingEdited.set(null)"
-          (save)="
+    <!-- Form modal -->
+    <app-application-form
+      [applicationBeingEdited]="applicationBeingEdited()"
+      (close)="applicationBeingEdited.set(null)"
+      (save)="
             applicationBeingEdited()?.id
               ? applicationService.edit$.next({
                 id: applicationBeingEdited()!.id!,
-                data: applicationForm.getRawValue()
+                data: $event
               })
               : applicationService.add$.next({
-                item: applicationForm.getRawValue(),
+                item: $event,
                 customerId: customer()?.id!
               })
           "
-        />
-      </ng-template>
-    </app-modal>
+    />
   `,
   styles: [`
     header {
@@ -124,7 +113,6 @@ export default class CustomerDetailsComponent {
   protected applicationService: ApplicationService = inject(ApplicationService);
 
   private route: ActivatedRoute = inject(ActivatedRoute);
-  private fb: FormBuilder = inject(FormBuilder);
 
   // --- Properties
   public params = toSignal(this.route.paramMap);
@@ -148,22 +136,4 @@ export default class CustomerDetailsComponent {
 
   // Track the application that is currently being edited
   public applicationBeingEdited = signal<Partial<Application> | null>(null);
-
-  // Form for creating/editing applications
-  public applicationForm = this.fb.nonNullable.group({
-    name: ['', [Validators.required, Validators.minLength(3)]],
-  });
-
-  constructor() {
-    // Reset `applicationForm` when `applicationBeingEdited()` is null
-    effect((): void => {
-      const application: Partial<Application> | null = this.applicationBeingEdited();
-      if (!application) this.applicationForm.reset(); // Imperative code
-      else {
-        this.applicationForm.patchValue({
-          name: application.name
-        });
-      }
-    });
-  }
 }

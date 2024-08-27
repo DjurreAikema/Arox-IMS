@@ -12,11 +12,13 @@ import {CustomerFormComponent} from "./ui-customers/customer-form.component";
     CustomerFormComponent
   ],
   template: `
+    <!-- Header -->
     <header>
       <h1>Customers</h1>
       <button class="button-success" (click)="customerBeingEdited.set({})">Add Customer +</button>
     </header>
 
+    <!-- List -->
     <section>
       <app-customer-list
         [customers]="customerService.customers()"
@@ -26,6 +28,7 @@ import {CustomerFormComponent} from "./ui-customers/customer-form.component";
       />
     </section>
 
+    <!-- Form modal -->
     <app-customer-form
       [customerBeingEdited]="customerBeingEdited()"
       (close)="customerBeingEdited.set(null)"

@@ -20,6 +20,7 @@ import {ModalComponent} from "../../shared/ui/modal.component";
     <div class="list">
       @for (customer of customers(); track customer.id) {
 
+        <!-- Customer Card -->
         <mat-card>
 
           <mat-card-header>
@@ -50,6 +51,7 @@ import {ModalComponent} from "../../shared/ui/modal.component";
         </mat-card>
       }
 
+      <!-- Add card -->
       <mat-card class="add-card" (click)="add.emit()">
 
         <mat-card-content class="add-card-content">
@@ -62,12 +64,14 @@ import {ModalComponent} from "../../shared/ui/modal.component";
     <!-- Delete modal -->
     <app-modal [isOpen]="!!customerToDelete()">
       <ng-template>
+
         <app-confirm-modal
           title="Delete Customer"
           message="Are you sure you want to delete this customer?"
           (confirm)="deleteCustomer()"
           (cancel)="customerToDelete.set(null)"
         />
+
       </ng-template>
     </app-modal>
   `,
