@@ -70,7 +70,7 @@ import {ToolOutputFormComponent} from "./ui-tool-outputs/tool-output-form.compon
           "
     />
 
-    <!-- ToolOutputForm modal TODO -->
+    <!-- ToolOutputForm modal -->
     <app-tool-output-form
       [outputBeingEdited]="toolOutputBeingEdited()"
       (close)="toolOutputBeingEdited.set(null)"
