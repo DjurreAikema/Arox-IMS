@@ -49,6 +49,7 @@ import {MatTooltipModule} from "@angular/material/tooltip";
     `
       .form-wrapper {
         min-width: 300px;
+        max-width: 1000px;
       }
 
       mat-form-field {
@@ -65,6 +66,12 @@ import {MatTooltipModule} from "@angular/material/tooltip";
 
       section button {
         margin-top: 1rem;
+      }
+
+      h2 {
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
       }
     `,
   ]
