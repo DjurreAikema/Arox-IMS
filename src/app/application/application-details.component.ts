@@ -6,8 +6,6 @@ import {JsonPipe} from "@angular/common";
 import {ToolService} from "../tool/data-access/tool.service";
 import {Tool} from "../shared/interfaces";
 import {ToolListComponent} from "../tool/ui-tools/tool-list.component";
-import {FormModalComponent} from "../shared/ui/form-modal.component";
-import {ModalComponent} from "../shared/ui/modal.component";
 import {MatCard, MatCardContent} from "@angular/material/card";
 import {ToolFormComponent} from "../tool/ui-tools/tool-form.component";
 
@@ -18,8 +16,6 @@ import {ToolFormComponent} from "../tool/ui-tools/tool-form.component";
     JsonPipe,
     RouterLink,
     ToolListComponent,
-    FormModalComponent,
-    ModalComponent,
     MatCard,
     MatCardContent,
     ToolFormComponent

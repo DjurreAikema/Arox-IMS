@@ -51,7 +51,7 @@ export class ToolFormComponent {
     apiUrl: 'API url'
   }, {
     // Placeholders
-    name: 'Tool name here',
+    name: 'Tool name',
     apiUrl: 'https://localhost:8080'
   });
 

@@ -1,18 +1,15 @@
-import {Component, effect, inject, signal} from '@angular/core';
-import {FormBuilder, Validators} from "@angular/forms";
+import {Component, inject, signal} from '@angular/core';
 import {CustomerService} from "./data-access/customer.service";
 import {Customer} from "../shared/interfaces";
 import {CustomerListComponent} from "./ui-customers/customer-list.component";
-import {ModalComponent} from "../shared/ui/modal.component";
-import {FormModalComponent} from "../shared/ui/form-modal.component";
+import {CustomerFormComponent} from "./ui-customers/customer-form.component";
 
 @Component({
   selector: 'app-customers',
   standalone: true,
   imports: [
     CustomerListComponent,
-    ModalComponent,
-    FormModalComponent
+    CustomerFormComponent
   ],
   template: `
     <header>
@@ -29,27 +26,18 @@ import {FormModalComponent} from "../shared/ui/form-modal.component";
       />
     </section>
 
-    <app-modal [isOpen]="!!customerBeingEdited()">
-      <ng-template>
-        <app-form-modal
-          [formGroup]="customerForm"
-          [title]="
-            customerBeingEdited()?.name
-                ? customerBeingEdited()!.name!
-                : 'Add customer'
-          "
-          (close)="customerBeingEdited.set(null)"
-          (save)="
+    <app-customer-form
+      [customerBeingEdited]="customerBeingEdited()"
+      (close)="customerBeingEdited.set(null)"
+      (save)="
             customerBeingEdited()?.id
                 ? customerService.edit$.next({
                     id: customerBeingEdited()!.id!,
-                    data: customerForm.getRawValue()
+                    data: $event
                 })
-                : customerService.add$.next(customerForm.getRawValue())
-            "
-        />
-      </ng-template>
-    </app-modal>
+                : customerService.add$.next($event)
+        "
+    />
   `,
   styles: [`
     header {
@@ -80,27 +68,9 @@ import {FormModalComponent} from "../shared/ui/form-modal.component";
 export default class CustomersComponent {
 
   // --- Dependencies
-  public fb: FormBuilder = inject(FormBuilder);
   public customerService: CustomerService = inject(CustomerService);
 
   // Track the customer that is currently being edited
   public customerBeingEdited = signal<Partial<Customer> | null>(null);
 
-  // Form for creating/editing customers
-  public customerForm = this.fb.nonNullable.group({
-    name: ['', [Validators.required, Validators.minLength(3)]],
-  });
-
-  constructor() {
-    // Reset `customerForm` when `customerBeingEdited()` is null
-    effect((): void => {
-      const customer: Partial<Customer> | null = this.customerBeingEdited();
-      if (!customer) this.customerForm.reset(); // Imperative code
-      else {
-        this.customerForm.patchValue({
-          name: customer.name
-        });
-      }
-    });
-  }
 }
