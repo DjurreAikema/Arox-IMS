@@ -56,7 +56,6 @@ import {ModalComponent} from "../../shared/ui/modal.component";
                 Execute
               </button>
             </div>
-
           </mat-card-footer>
 
         </mat-card>
