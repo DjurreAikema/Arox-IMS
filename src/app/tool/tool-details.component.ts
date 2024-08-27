@@ -150,7 +150,8 @@ export default class ToolDetailsComponent {
       else {
         this.toolInputForm.patchValue({
           name: toolInput.name,
-          label: toolInput.label
+          label: toolInput.label,
+          type: toolInput.type
         });
       }
     });
