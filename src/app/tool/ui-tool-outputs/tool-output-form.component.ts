@@ -48,9 +48,11 @@ export class ToolOutputFormComponent {
   }, {
     // Labels
     name: 'Name',
+    type: 'Output Type',
   }, {
     // Placeholders
-    name: 'Application name',
+    name: '',
+    type: '',
   });
 
   constructor() {

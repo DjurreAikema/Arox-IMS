@@ -49,8 +49,8 @@ export class ToolInputFormComponent {
   }, {
     // Labels
     name: 'Name',
-    label: 'Input label',
-    type: 'Input type',
+    label: 'Input Label',
+    type: 'Input Type',
   }, {
     // Placeholders
     name: '',
