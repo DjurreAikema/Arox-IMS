@@ -3,6 +3,8 @@ import {AddTool, Tool, EditTool, RemoveTool, RemoveApplication} from "../../shar
 import {StorageService} from "../../shared/data-access/storage.service";
 import {catchError, EMPTY, map, merge, Observable, Subject} from "rxjs";
 import {connect} from "ngxtension/connect";
+import {ToolInputService} from "./tool-input.service";
+import {ToolOutputService} from "./tool-output.service";
 
 // State interface
 export interface ToolState {
@@ -17,6 +19,8 @@ export interface ToolState {
 export class ToolService {
 
   private storageService: StorageService = inject(StorageService);
+  private toolInputService: ToolInputService = inject(ToolInputService);
+  private toolOutputService: ToolOutputService = inject(ToolOutputService);
 
   // --- State (state is initialized with default values here)
   private state: WritableSignal<ToolState> = signal<ToolState>({
@@ -82,14 +86,23 @@ export class ToolService {
       }))
 
       // remove$ reducer
-      .with(this.remove$, (state, id) => ({
-        tools: state.tools.filter((tool) => tool.id !== id),
-      }))
+      .with(this.remove$, (state, id) => {
+        this.toolInputService.toolRemoved$.next(id);
+        this.toolOutputService.toolRemoved$.next(id);
+
+        return {
+          tools: state.tools.filter((tool) => tool.id !== id),
+        };
+      })
 
       // applicationRemoved$ reducer
-      .with(this.applicationRemoved$, (state, applicationId) => ({
-        tools: state.tools.filter((tool) => tool.applicationId !== applicationId)
-      }));
+      .with(this.applicationRemoved$, (state, applicationId) => {
+        const toolsToRemove = state.tools.filter((tool) => tool.applicationId === applicationId);
+        toolsToRemove.forEach((tool) => this.remove$.next(tool.id));
+        return {
+          tools: state.tools.filter((tool) => tool.applicationId !== applicationId)
+        }
+      });
 
     // --- Effects (effects are used to chain certain actions to state updates)
     effect((): void => {

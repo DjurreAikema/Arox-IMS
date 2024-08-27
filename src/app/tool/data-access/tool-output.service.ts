@@ -1,5 +1,5 @@
 import {computed, effect, inject, Injectable, Signal, signal, WritableSignal} from '@angular/core';
-import {AddToolOutput, EditToolOutput, RemoveToolOutput, ToolOutput} from "../../shared/interfaces";
+import {AddToolOutput, EditToolOutput, RemoveTool, RemoveToolOutput, ToolOutput} from "../../shared/interfaces";
 import {StorageService} from "../../shared/data-access/storage.service";
 import {catchError, EMPTY, map, merge, Observable, Subject} from "rxjs";
 import {connect} from "ngxtension/connect";
@@ -33,6 +33,8 @@ export class ToolOutputService {
   public add$: Subject<AddToolOutput> = new Subject<AddToolOutput>();
   public edit$: Subject<EditToolOutput> = new Subject<EditToolOutput>();
   public remove$: Subject<RemoveToolOutput> = new Subject<RemoveToolOutput>();
+
+  public toolRemoved$: Subject<RemoveTool> = new Subject<RemoveTool>()
 
   private error$: Subject<string> = new Subject<string>();
   private toolOutputsLoaded$: Observable<ToolOutput[]> = this.storageService.loadToolOutputs().pipe(
@@ -82,6 +84,11 @@ export class ToolOutputService {
       // remove$ reducer
       .with(this.remove$, (state, id) => ({
         toolOutputs: state.toolOutputs.filter((toolOutput) => toolOutput.id !== id),
+      }))
+
+      // toolRemoved$ reducer
+      .with(this.toolRemoved$, (state, toolId) => ({
+        toolOutputs: state.toolOutputs.filter((input) => input.toolId !== toolId)
       }));
 
     // --- Effects (effects are used to chain certain actions to state updates)
