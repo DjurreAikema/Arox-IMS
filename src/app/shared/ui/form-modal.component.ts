@@ -18,7 +18,7 @@ import {MatTooltipModule} from "@angular/material/tooltip";
 
       <section>
         <form [formGroup]="formGroup()" (ngSubmit)="onSubmit()" #form="ngForm">
-          @for (control of formGroup().controls | keyvalue; track control.key) {
+          @for (control of formGroup().controls | keyvalue: originalOrder; track control.key) {
 
             <!-- TODO: Add support for more control types -->
             <mat-form-field appearance="fill">
@@ -128,5 +128,9 @@ export class FormModalComponent implements OnDestroy {
           return `Error: ${errorKey}`;
       }
     }).join(', ');
+  }
+
+  protected originalOrder = (a: any, b: any): number => {
+    return 0;
   }
 }
