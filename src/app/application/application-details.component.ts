@@ -21,6 +21,7 @@ import {ToolFormComponent} from "../tool/ui-tools/tool-form.component";
     ToolFormComponent
   ],
   template: `
+    <!-- Header -->
     @if (application(); as application) {
       <header>
         <button class="button-primary" routerLink="/customer/{{application.customerId}}">< Back</button>
@@ -37,6 +38,7 @@ import {ToolFormComponent} from "../tool/ui-tools/tool-form.component";
       </mat-card>
     }
 
+    <!-- List -->
     <section>
       <app-tool-list
         [tools]="tools()"
@@ -46,6 +48,7 @@ import {ToolFormComponent} from "../tool/ui-tools/tool-form.component";
       />
     </section>
 
+    <!-- Form modal -->
     <app-tool-form
       [toolBeingEdited]="toolBeingEdited()"
       (close)="toolBeingEdited.set(null)"

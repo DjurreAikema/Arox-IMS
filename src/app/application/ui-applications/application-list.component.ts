@@ -22,6 +22,7 @@ import {ModalComponent} from "../../shared/ui/modal.component";
     <div class="list">
       @for (application of applications(); track application.id) {
 
+        <!-- Application Card -->
         <mat-card>
 
           <mat-card-header>
@@ -50,8 +51,10 @@ import {ModalComponent} from "../../shared/ui/modal.component";
           </mat-card-footer>
 
         </mat-card>
+
       } @empty {
         @if (!hasAddCard()) {
+          <!-- No application found card -->
           <mat-card>
             <mat-card-content class="add-card-content">
               No applications found.
@@ -61,6 +64,7 @@ import {ModalComponent} from "../../shared/ui/modal.component";
       }
 
       @if (hasAddCard()) {
+        <!-- Add card -->
         <mat-card class="add-card" (click)="add.emit()">
 
           <mat-card-content class="add-card-content">
@@ -74,12 +78,14 @@ import {ModalComponent} from "../../shared/ui/modal.component";
     <!-- Delete modal -->
     <app-modal [isOpen]="!!applicationToDelete()">
       <ng-template>
+
         <app-confirm-modal
           title="Delete Application"
           message="Are you sure you want to delete this application?"
           (confirm)="deleteApplication()"
           (cancel)="applicationToDelete.set(null)"
         />
+
       </ng-template>
     </app-modal>
   `,
