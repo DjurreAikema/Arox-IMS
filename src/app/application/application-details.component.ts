@@ -4,12 +4,13 @@ import {ActivatedRoute, RouterLink} from "@angular/router";
 import {toSignal} from "@angular/core/rxjs-interop";
 import {JsonPipe} from "@angular/common";
 import {ToolService} from "../tool/data-access/tool.service";
-import {FormBuilder, Validators} from "@angular/forms";
+import {FormControl, Validators} from "@angular/forms";
 import {Tool} from "../shared/interfaces";
 import {ToolListComponent} from "../tool/ui-tools/tool-list.component";
 import {FormModalComponent} from "../shared/ui/form-modal.component";
 import {ModalComponent} from "../shared/ui/modal.component";
 import {MatCard, MatCardContent} from "@angular/material/card";
+import {CustomFormGroup} from "../shared/utils/custom-form-group";
 
 @Component({
   selector: 'app-application-details',
@@ -122,7 +123,6 @@ export default class ApplicationDetailsComponent {
   protected toolService: ToolService = inject(ToolService);
 
   private route: ActivatedRoute = inject(ActivatedRoute);
-  private fb: FormBuilder = inject(FormBuilder);
 
   // --- Properties
   public params = toSignal(this.route.paramMap);
@@ -148,9 +148,15 @@ export default class ApplicationDetailsComponent {
   public toolBeingEdited = signal<Partial<Tool> | null>(null);
 
   // Form for creating/editing tools
-  public toolForm = this.fb.nonNullable.group({
-    name: ['', [Validators.required, Validators.minLength(3)]],
-    apiUrl: ['', [Validators.required, Validators.minLength(3)]],
+  public toolForm = new CustomFormGroup({
+    name: new FormControl('', [Validators.required, Validators.minLength(3)]),
+    apiUrl: new FormControl('', [Validators.required, Validators.minLength(3)]),
+  }, {
+    name: 'Name',
+    apiUrl: 'API url'
+  }, {
+    name: 'Tool name here',
+    apiUrl: 'https://localhost:8080'
   });
 
   constructor() {
@@ -160,7 +166,7 @@ export default class ApplicationDetailsComponent {
       if (!tool) this.toolForm.reset(); // Imperative code
       else {
         this.toolForm.patchValue({
-          name: tool.name
+          ...tool
         });
       }
     });

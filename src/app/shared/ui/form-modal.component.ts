@@ -1,10 +1,11 @@
 import {Component, input, OnDestroy, output} from '@angular/core';
-import {FormGroup, ReactiveFormsModule} from "@angular/forms";
+import {ReactiveFormsModule} from "@angular/forms";
 import {JsonPipe, KeyValuePipe} from "@angular/common";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
 import {MatIconModule} from "@angular/material/icon";
 import {MatTooltipModule} from "@angular/material/tooltip";
+import {CustomFormGroup} from "../utils/custom-form-group";
 
 @Component({
   selector: 'app-form-modal',
@@ -23,10 +24,12 @@ import {MatTooltipModule} from "@angular/material/tooltip";
             <!-- TODO: Add support for more control types -->
             <mat-form-field appearance="fill">
 
-              <mat-label>{{ control.key }}</mat-label>
+              <mat-label>{{ (this.formGroup().labels[control.key] || '') }}</mat-label>
 
-              <input matNativeControl [formControlName]="control.key"
-                     type="text" placeholder="placeholder">
+              <input matNativeControl
+                     [formControlName]="control.key"
+                     type="text"
+                     [placeholder]="(this.formGroup().placeholders[control.key] || '')">
 
               @if ((formGroup().get(control.key)?.dirty || form.submitted) && !formGroup().get(control.key)?.valid) {
                 <mat-icon matSuffix matTooltip="{{ getErrorMessages(control.key) }}">error</mat-icon>
@@ -80,7 +83,7 @@ import {MatTooltipModule} from "@angular/material/tooltip";
 export class FormModalComponent implements OnDestroy {
 
   // --- Inputs
-  formGroup = input.required<FormGroup>();
+  formGroup = input.required<CustomFormGroup>();
   title = input.required<string>();
 
   // --- Outputs

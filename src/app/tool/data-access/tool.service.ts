@@ -80,7 +80,7 @@ export class ToolService {
       .with(this.edit$, (state, update) => ({
         tools: state.tools.map((tool) =>
           tool.id === update.id
-            ? {...tool, name: update.data.name}
+            ? {...tool, ...update.data}
             : tool
         ),
       }))

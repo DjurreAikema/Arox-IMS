@@ -29,7 +29,10 @@ import {ModalComponent} from "../../shared/ui/modal.component";
           </mat-card-header>
 
           <mat-card-content>
-            <p>Description</p>
+            <ul>
+              <li>ApiUrl: </li>
+              <span>{{ tool.apiUrl }}</span>
+            </ul>
           </mat-card-content>
 
           <mat-card-footer>
