@@ -41,6 +41,10 @@ import {MatCard, MatCardContent, MatCardFooter, MatCardHeader, MatCardTitle} fro
               <button class="button-primary" routerLink="/tool/{{tool.id}}">
                 Open
               </button>
+
+              <button class="button-warning">
+                Execute
+              </button>
             </div>
 
           </mat-card-footer>
