@@ -29,15 +29,17 @@ import {MatCard, MatCardContent, MatCardFooter, MatCardHeader, MatCardTitle} fro
           </mat-card-content>
 
           <mat-card-footer>
-            <button class="button-danger small-button" (click)="delete.emit(tool.id)">
-              <i class="fa-solid fa-trash"></i>
-            </button>
-
             <div>
+              <button class="button-danger small-button" (click)="delete.emit(tool.id)">
+                <i class="fa-solid fa-trash"></i>
+              </button>
+
               <button class="button-success small-button" (click)="edit.emit(tool)">
                 <i class="fa-solid fa-pen"></i>
               </button>
-
+            </div>
+            
+            <div>
               <button class="button-primary" routerLink="/tool/{{tool.id}}">
                 Open
               </button>
