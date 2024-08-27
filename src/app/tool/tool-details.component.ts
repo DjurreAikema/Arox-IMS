@@ -30,14 +30,16 @@ import {ModalComponent} from "../shared/ui/modal.component";
     }
 
     <section>
-      <app-tool-input-list class="half"
+      <app-tool-input-list
+        class="half"
         [toolInputs]="toolInputs()"
         (add)="toolInputBeingEdited.set({})"
         (edit)="toolInputBeingEdited.set($event)"
         (delete)="toolInputService.remove$.next($event)"
       />
 
-      <app-tool-input-list class="half"
+      <app-tool-input-list
+        class="half"
         [toolInputs]="toolInputs()"
         (add)="toolInputBeingEdited.set({})"
         (edit)="toolInputBeingEdited.set($event)"
@@ -89,12 +91,9 @@ import {ModalComponent} from "../shared/ui/modal.component";
     }
 
     section {
-      display: flex;
-      flex-flow: row nowrap;
-    }
-
-    .half {
-      flex: 1;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: 1rem;
       padding: 1rem;
     }
   `]
@@ -110,6 +109,7 @@ export default class ToolDetailsComponent {
   private route: ActivatedRoute = inject(ActivatedRoute);
   private fb: FormBuilder = inject(FormBuilder);
 
+
   // --- Properties
   public params = toSignal(this.route.paramMap);
 
@@ -121,8 +121,8 @@ export default class ToolDetailsComponent {
       .find((tool) => tool.id === id);
   });
 
+
   // --- ToolInputs
-  // ToolInputs for the selected tool
   public toolInputs = computed(() => {
     const id = Number(this.params()?.get('id'));
     return this.toolInputService
@@ -140,8 +140,11 @@ export default class ToolDetailsComponent {
     type: [0, [Validators.required]],
   });
 
+
+  // --- Effects
   constructor() {
     effect((): void => {
+      // ToolInputs
       const toolInput: Partial<ToolInput> | null = this.toolInputBeingEdited();
       if (!toolInput) this.toolInputForm.reset(); // Imperative code
       else {

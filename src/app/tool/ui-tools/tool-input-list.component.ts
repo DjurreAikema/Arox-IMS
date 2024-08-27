@@ -12,22 +12,25 @@ import {RouterLink} from "@angular/router";
     <ul>
 
       <li>
-        <button class="button-success" (click)="add.emit()">Add</button>
+        <p>Tool Inputs:</p>
+        <button class="button-success" (click)="add.emit()">Add Tool Input</button>
       </li>
 
       @for (toolInput of toolInputs(); track toolInput.id) {
         <li>
-          <p>
-            Name: {{ toolInput.name }}
-          </p>
+          <div>
+            <p>
+              <span>Name: </span>{{ toolInput.name }}
+            </p>
 
-          <p>
-            Label: {{ toolInput.label }}
-          </p>
+            <p>
+              <span>Label: </span>{{ toolInput.label }}
+            </p>
 
-          <p>
-            Type: {{ toolInput.type }}
-          </p>
+            <p>
+              <span>Type: </span>{{ toolInput.type }}
+            </p>
+          </div>
 
           <div>
             <button class="button-success small-button" (click)="edit.emit(toolInput)"><i class="fa-solid fa-pen"></i></button>
@@ -47,17 +50,28 @@ import {RouterLink} from "@angular/router";
       }
 
       li {
+        display: grid;
+        grid-template-columns: minmax(0, .8fr) minmax(0, .2fr);
+        gap: 1rem;
+        padding: 1rem;
+
         font-size: 1.2em;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
         background: var(--color-light);
         list-style-type: none;
         margin-bottom: 1rem;
-        padding: 1rem;
+
+        div {
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+        }
 
         button {
           margin-left: 1rem;
+        }
+
+        span {
+          font-weight: 500;
         }
       }
 
