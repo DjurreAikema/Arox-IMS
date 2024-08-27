@@ -9,6 +9,7 @@ import {Tool} from "../shared/interfaces";
 import {ToolListComponent} from "../tool/ui-tools/tool-list.component";
 import {FormModalComponent} from "../shared/ui/form-modal.component";
 import {ModalComponent} from "../shared/ui/modal.component";
+import {MatCard, MatCardContent} from "@angular/material/card";
 
 @Component({
   selector: 'app-application-details',
@@ -18,7 +19,9 @@ import {ModalComponent} from "../shared/ui/modal.component";
     RouterLink,
     ToolListComponent,
     FormModalComponent,
-    ModalComponent
+    ModalComponent,
+    MatCard,
+    MatCardContent
   ],
   template: `
     @if (application(); as application) {
@@ -29,6 +32,12 @@ import {ModalComponent} from "../shared/ui/modal.component";
 
         <button class="button-success" (click)="toolBeingEdited.set({})">Add Tool +</button>
       </header>
+
+      <mat-card class="list-header">
+        <mat-card-content>
+          All tool belonging to {{ application.name }} ({{toolService.toolsCount()}})
+        </mat-card-content>
+      </mat-card>
     }
 
     <section>
@@ -87,6 +96,20 @@ import {ModalComponent} from "../shared/ui/modal.component";
       padding: 1rem;
       height: calc(100vh - 120px);
       overflow-y: auto;
+    }
+
+    .list-header {
+      display: flex;
+      flex-flow: row nowrap;
+      justify-content: center;
+
+      background-color: var(--color-light);
+      margin: 1rem 1rem 0 1rem;
+      padding: 0;
+
+      mat-card-content {
+        padding: 5px;
+      }
     }
   `]
 })
