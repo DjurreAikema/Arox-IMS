@@ -6,9 +6,11 @@ import {JsonPipe} from "@angular/common";
 import {ToolInputListComponent} from "./ui-tools/tool-input-list.component";
 import {ToolInputService} from "./data-access/tool-input.service";
 import {FormBuilder, Validators} from "@angular/forms";
-import {ToolInput} from "../shared/interfaces";
+import {ToolInput, ToolOutput} from "../shared/interfaces";
 import {FormModalComponent} from "../shared/ui/form-modal.component";
 import {ModalComponent} from "../shared/ui/modal.component";
+import {ToolOutputService} from "./data-access/tool-output.service";
+import {ToolOutputListComponent} from "./ui-tools/tool-output-list.component";
 
 @Component({
   selector: 'app-tool-details',
@@ -18,7 +20,8 @@ import {ModalComponent} from "../shared/ui/modal.component";
     RouterLink,
     ToolInputListComponent,
     FormModalComponent,
-    ModalComponent
+    ModalComponent,
+    ToolOutputListComponent
   ],
   template: `
     @if (tool(); as tool) {
@@ -38,15 +41,16 @@ import {ModalComponent} from "../shared/ui/modal.component";
         (delete)="toolInputService.remove$.next($event)"
       />
 
-      <app-tool-input-list
+      <app-tool-output-list
         class="half"
-        [toolInputs]="toolInputs()"
-        (add)="toolInputBeingEdited.set({})"
-        (edit)="toolInputBeingEdited.set($event)"
-        (delete)="toolInputService.remove$.next($event)"
+        [toolOutputs]="toolOutputs()"
+        (add)="toolOutputBeingEdited.set({})"
+        (edit)="toolOutputBeingEdited.set($event)"
+        (delete)="toolOutputService.remove$.next($event)"
       />
     </section>
 
+    <!-- ToolInputForm Modal -->
     <app-modal [isOpen]="!!toolInputBeingEdited()">
       <ng-template>
         <app-form-modal
@@ -65,6 +69,32 @@ import {ModalComponent} from "../shared/ui/modal.component";
               })
               : toolInputService.add$.next({
                 item: toolInputForm.getRawValue(),
+                toolId: tool()?.id!
+              })
+          "
+        />
+      </ng-template>
+    </app-modal>
+
+    <!-- ToolOutputForm Modal -->
+    <app-modal [isOpen]="!!toolOutputBeingEdited()">
+      <ng-template>
+        <app-form-modal
+          [formGroup]="toolOutputForm"
+          [title]="
+            toolOutputBeingEdited()?.name
+                ? toolOutputBeingEdited()!.name!
+                : 'Add Output'
+          "
+          (close)="toolOutputBeingEdited.set(null)"
+          (save)="
+            toolOutputBeingEdited()?.id
+              ? toolOutputService.edit$.next({
+                id: toolOutputBeingEdited()!.id!,
+                data: toolOutputForm.getRawValue()
+              })
+              : toolOutputService.add$.next({
+                item: toolOutputForm.getRawValue(),
                 toolId: tool()?.id!
               })
           "
@@ -105,6 +135,7 @@ export default class ToolDetailsComponent {
   // --- Dependencies
   protected toolService: ToolService = inject(ToolService);
   protected toolInputService: ToolInputService = inject(ToolInputService);
+  protected toolOutputService: ToolOutputService = inject(ToolOutputService);
 
   private route: ActivatedRoute = inject(ActivatedRoute);
   private fb: FormBuilder = inject(FormBuilder);
@@ -127,7 +158,7 @@ export default class ToolDetailsComponent {
     const id = Number(this.params()?.get('id'));
     return this.toolInputService
       .toolInputs()
-      .filter((tool) => tool.toolId == id)
+      .filter((toolInput) => toolInput.toolId == id)
   });
 
   // Track the toolInput that is currently being edited
@@ -137,6 +168,24 @@ export default class ToolDetailsComponent {
   public toolInputForm = this.fb.nonNullable.group({
     name: ['', [Validators.required, Validators.minLength(3)]],
     label: ['', [Validators.required]],
+    type: [0, [Validators.required]],
+  });
+
+
+  // --- ToolOutputs
+  public toolOutputs = computed(() => {
+    const id = Number(this.params()?.get('id'));
+    return this.toolOutputService
+      .toolOutputs()
+      .filter((toolOutput) => toolOutput.toolId == id)
+  });
+
+  // Track the toolInput that is currently being edited
+  public toolOutputBeingEdited = signal<Partial<ToolOutput> | null>(null);
+
+  // Form for creating/editing toolOutputs
+  public toolOutputForm = this.fb.nonNullable.group({
+    name: ['', [Validators.required, Validators.minLength(3)]],
     type: [0, [Validators.required]],
   });
 
@@ -152,6 +201,16 @@ export default class ToolDetailsComponent {
           name: toolInput.name,
           label: toolInput.label,
           type: toolInput.type
+        });
+      }
+
+      // ToolOutputs
+      const toolOutput: Partial<ToolOutput> | null = this.toolOutputBeingEdited();
+      if (!toolOutput) this.toolOutputForm.reset(); // Imperative code
+      else {
+        this.toolOutputForm.patchValue({
+          name: toolOutput.name,
+          type: toolOutput.type
         });
       }
     });
