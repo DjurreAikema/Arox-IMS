@@ -21,6 +21,7 @@ import {ModalComponent} from "../../shared/ui/modal.component";
       </li>
 
       @for (toolInput of toolInputs(); track toolInput.id) {
+        <!-- Tool input -->
         <li>
           <div>
             <p>
@@ -49,12 +50,14 @@ import {ModalComponent} from "../../shared/ui/modal.component";
     <!-- Delete modal -->
     <app-modal [isOpen]="!!toolInputToDelete()">
       <ng-template>
+
         <app-confirm-modal
           title="Delete Tool Input"
           message="Are you sure you want to delete this tool input?"
           (confirm)="deleteToolInput()"
           (cancel)="toolInputToDelete.set(null)"
         />
+
       </ng-template>
     </app-modal>
   `,

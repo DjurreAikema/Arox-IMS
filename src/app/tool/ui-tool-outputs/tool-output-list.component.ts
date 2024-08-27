@@ -19,6 +19,7 @@ import {ModalComponent} from "../../shared/ui/modal.component";
       </li>
 
       @for (toolOutput of toolOutputs(); track toolOutput.id) {
+        <!-- Tool output -->
         <li>
           <div>
             <p>
@@ -43,12 +44,14 @@ import {ModalComponent} from "../../shared/ui/modal.component";
     <!-- Delete modal -->
     <app-modal [isOpen]="!!toolOutputToDelete()">
       <ng-template>
+
         <app-confirm-modal
           title="Delete Tool Output"
           message="Are you sure you want to delete this tool output?"
           (confirm)="deleteToolOutput()"
           (cancel)="toolOutputToDelete.set(null)"
         />
+
       </ng-template>
     </app-modal>
   `,

@@ -1,29 +1,24 @@
-import {Component, effect, inject, signal} from '@angular/core';
-import {FormBuilder, Validators} from "@angular/forms";
+import {Component, inject} from '@angular/core';
 import {ToolService} from "./data-access/tool.service";
-import {Tool} from "../shared/interfaces";
 import {ToolListComponent} from "./ui-tools/tool-list.component";
-import {ModalComponent} from "../shared/ui/modal.component";
-import {FormModalComponent} from "../shared/ui/form-modal.component";
 
 @Component({
   selector: 'app-tools',
   standalone: true,
   imports: [
-    ToolListComponent,
-    ModalComponent,
-    FormModalComponent
+    ToolListComponent
   ],
   template: `
+    <!-- Header -->
     <header>
       <h1>Tools</h1>
     </header>
 
+    <!-- List -->
     <section>
       <app-tool-list
         [tools]="toolService.tools()"
         [hasAddCard]="false"
-        (edit)="toolBeingEdited.set($event)"
         (delete)="toolService.remove$.next($event)"
       />
     </section>
@@ -57,27 +52,6 @@ import {FormModalComponent} from "../shared/ui/form-modal.component";
 export default class ToolsComponent {
 
   // --- Dependencies
-  public fb: FormBuilder = inject(FormBuilder);
   public toolService: ToolService = inject(ToolService);
 
-  // Track the tool that is currently being edited
-  public toolBeingEdited = signal<Partial<Tool> | null>(null);
-
-  // Form for creating/editing tools
-  public toolForm = this.fb.nonNullable.group({
-    name: ['', [Validators.required, Validators.minLength(3)]],
-  });
-
-  constructor() {
-    // Reset `toolForm` when `toolBeingEdited()` is null
-    effect((): void => {
-      const tool: Partial<Tool> | null = this.toolBeingEdited();
-      if (!tool) this.toolForm.reset(); // Imperative code
-      else {
-        this.toolForm.patchValue({
-          name: tool.name
-        });
-      }
-    });
-  }
 }

@@ -24,6 +24,7 @@ import {ToolOutputListComponent} from "./ui-tool-outputs/tool-output-list.compon
     ToolOutputListComponent
   ],
   template: `
+    <!-- Header -->
     @if (tool(); as tool) {
       <header>
         <button class="button-primary" routerLink="/application/{{tool.applicationId}}">< Back</button>
@@ -32,7 +33,9 @@ import {ToolOutputListComponent} from "./ui-tool-outputs/tool-output-list.compon
       </header>
     }
 
+    <!-- Lists -->
     <section>
+      <!-- Inputs -->
       <app-tool-input-list
         class="half"
         [toolInputs]="toolInputs()"
@@ -41,6 +44,7 @@ import {ToolOutputListComponent} from "./ui-tool-outputs/tool-output-list.compon
         (delete)="toolInputService.remove$.next($event)"
       />
 
+      <!-- Outputs -->
       <app-tool-output-list
         class="half"
         [toolOutputs]="toolOutputs()"
@@ -50,7 +54,7 @@ import {ToolOutputListComponent} from "./ui-tool-outputs/tool-output-list.compon
       />
     </section>
 
-    <!-- ToolInputForm Modal -->
+    <!-- ToolInputForm Modal TODO -->
     <app-modal [isOpen]="!!toolInputBeingEdited()">
       <ng-template>
         <app-form-modal
@@ -76,7 +80,7 @@ import {ToolOutputListComponent} from "./ui-tool-outputs/tool-output-list.compon
       </ng-template>
     </app-modal>
 
-    <!-- ToolOutputForm Modal -->
+    <!-- ToolOutputForm Modal TODO -->
     <app-modal [isOpen]="!!toolOutputBeingEdited()">
       <ng-template>
         <app-form-modal

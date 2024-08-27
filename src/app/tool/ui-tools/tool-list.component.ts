@@ -22,6 +22,7 @@ import {ModalComponent} from "../../shared/ui/modal.component";
     <div class="list">
       @for (tool of tools(); track tool.id) {
 
+        <!-- Tool card -->
         <mat-card>
 
           <mat-card-header>
@@ -61,6 +62,7 @@ import {ModalComponent} from "../../shared/ui/modal.component";
         </mat-card>
       } @empty {
         @if (!hasAddCard()) {
+          <!-- No tools found card -->
           <mat-card>
             <mat-card-content class="add-card-content">
               No tools found.
@@ -70,6 +72,7 @@ import {ModalComponent} from "../../shared/ui/modal.component";
       }
 
       @if (hasAddCard()) {
+        <!-- Add card -->
         <mat-card class="add-card" (click)="add.emit()">
 
           <mat-card-content class="add-card-content">
@@ -83,12 +86,14 @@ import {ModalComponent} from "../../shared/ui/modal.component";
     <!-- Delete modal -->
     <app-modal [isOpen]="!!toolToDelete()">
       <ng-template>
+
         <app-confirm-modal
           title="Delete Tool"
           message="Are you sure you want to delete this tool?"
           (confirm)="deleteTool()"
           (cancel)="toolToDelete.set(null)"
         />
+
       </ng-template>
     </app-modal>
   `,

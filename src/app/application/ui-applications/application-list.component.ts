@@ -22,7 +22,7 @@ import {ModalComponent} from "../../shared/ui/modal.component";
     <div class="list">
       @for (application of applications(); track application.id) {
 
-        <!-- Application Card -->
+        <!-- Application card -->
         <mat-card>
 
           <mat-card-header>
@@ -54,7 +54,7 @@ import {ModalComponent} from "../../shared/ui/modal.component";
 
       } @empty {
         @if (!hasAddCard()) {
-          <!-- No application found card -->
+          <!-- No applications found card -->
           <mat-card>
             <mat-card-content class="add-card-content">
               No applications found.
