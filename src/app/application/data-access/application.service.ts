@@ -1,5 +1,5 @@
 import {computed, effect, inject, Injectable, Signal, signal, WritableSignal} from '@angular/core';
-import {AddApplication, Application, EditApplication, RemoveApplication} from "../../shared/interfaces";
+import {AddApplication, Application, EditApplication, RemoveApplication, RemoveCustomer} from "../../shared/interfaces";
 import {StorageService} from "../../shared/data-access/storage.service";
 import {catchError, EMPTY, map, merge, Observable, Subject} from "rxjs";
 import {connect} from "ngxtension/connect";
@@ -34,6 +34,8 @@ export class ApplicationService {
   public add$: Subject<AddApplication> = new Subject<AddApplication>();
   public edit$: Subject<EditApplication> = new Subject<EditApplication>();
   public remove$: Subject<RemoveApplication> = new Subject<RemoveApplication>();
+
+  public customerRemoved$: Subject<RemoveCustomer> = new Subject<RemoveCustomer>();
 
   private error$: Subject<string> = new Subject<string>();
   private applicationsLoaded$: Observable<Application[]> = this.storageService.loadApplications().pipe(
@@ -82,6 +84,11 @@ export class ApplicationService {
       // remove$ reducer
       .with(this.remove$, (state, id) => ({
         applications: state.applications.filter((application) => application.id !== id),
+      }))
+
+      // customerRemoved$ reducer
+      .with(this.customerRemoved$, (state, customerId) => ({
+        applications: state.applications.filter((application) => application.customerId !== customerId)
       }));
 
     // --- Effects (effects are used to chain certain actions to state updates)

@@ -3,6 +3,7 @@ import {AddCustomer, Customer, EditCustomer, RemoveCustomer} from "../../shared/
 import {StorageService} from "../../shared/data-access/storage.service";
 import {catchError, EMPTY, map, merge, Observable, Subject} from "rxjs";
 import {connect} from "ngxtension/connect";
+import {ApplicationService} from "../../application/data-access/application.service";
 
 // State interface
 export interface CustomerState {
@@ -17,6 +18,7 @@ export interface CustomerState {
 export class CustomerService {
 
   private storageService: StorageService = inject(StorageService);
+  private applicationService: ApplicationService = inject(ApplicationService);
 
   // --- State (state is initialized with default values here)
   private state: WritableSignal<CustomerState> = signal<CustomerState>({
@@ -32,7 +34,7 @@ export class CustomerService {
   // --- Sources (the state gets updated when these sources get a new value, the rest of the application can use these sources to alter the data in the state)
   public add$: Subject<AddCustomer> = new Subject<AddCustomer>();
   public edit$: Subject<EditCustomer> = new Subject<EditCustomer>();
-  public remove$: Subject<RemoveCustomer> = new Subject<RemoveCustomer>();
+  public remove$: Subject<RemoveCustomer> = this.applicationService.customerRemoved$;
 
   private error$: Subject<string> = new Subject<string>();
   private customersLoaded$: Observable<Customer[]> = this.storageService.loadCustomers().pipe(
