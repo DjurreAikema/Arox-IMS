@@ -1,16 +1,15 @@
-import {Component, computed, effect, inject, signal} from '@angular/core';
+import {Component, computed, inject, signal} from '@angular/core';
 import {ToolService} from "./data-access/tool.service";
 import {ActivatedRoute, RouterLink} from "@angular/router";
 import {toSignal} from "@angular/core/rxjs-interop";
 import {JsonPipe} from "@angular/common";
 import {ToolInputListComponent} from "./ui-tool-inputs/tool-input-list.component";
 import {ToolInputService} from "./data-access/tool-input.service";
-import {FormBuilder, Validators} from "@angular/forms";
 import {ToolInput, ToolOutput} from "../shared/interfaces";
-import {FormModalComponent} from "../shared/ui/form-modal.component";
-import {ModalComponent} from "../shared/ui/modal.component";
 import {ToolOutputService} from "./data-access/tool-output.service";
 import {ToolOutputListComponent} from "./ui-tool-outputs/tool-output-list.component";
+import {ToolInputFormComponent} from "./ui-tool-inputs/tool-input-form.component";
+import {ToolOutputFormComponent} from "./ui-tool-outputs/tool-output-form.component";
 
 @Component({
   selector: 'app-tool-details',
@@ -19,9 +18,9 @@ import {ToolOutputListComponent} from "./ui-tool-outputs/tool-output-list.compon
     JsonPipe,
     RouterLink,
     ToolInputListComponent,
-    FormModalComponent,
-    ModalComponent,
-    ToolOutputListComponent
+    ToolOutputListComponent,
+    ToolInputFormComponent,
+    ToolOutputFormComponent
   ],
   template: `
     <!-- Header -->
@@ -54,57 +53,39 @@ import {ToolOutputListComponent} from "./ui-tool-outputs/tool-output-list.compon
       />
     </section>
 
-    <!-- ToolInputForm Modal TODO -->
-    <app-modal [isOpen]="!!toolInputBeingEdited()">
-      <ng-template>
-        <app-form-modal
-          [formGroup]="toolInputForm"
-          [title]="
-            toolInputBeingEdited()?.name
-                ? toolInputBeingEdited()!.name!
-                : 'Add Input'
-          "
-          (close)="toolInputBeingEdited.set(null)"
-          (save)="
+    <!-- ToolInputForm modal -->
+    <app-tool-input-form
+      [inputBeingEdited]="toolInputBeingEdited()"
+      (close)="toolInputBeingEdited.set(null)"
+      (save)="
             toolInputBeingEdited()?.id
               ? toolInputService.edit$.next({
                 id: toolInputBeingEdited()!.id!,
-                data: toolInputForm.getRawValue()
+                data: $event
               })
               : toolInputService.add$.next({
-                item: toolInputForm.getRawValue(),
+                item: $event,
                 toolId: tool()?.id!
               })
           "
-        />
-      </ng-template>
-    </app-modal>
+    />
 
-    <!-- ToolOutputForm Modal TODO -->
-    <app-modal [isOpen]="!!toolOutputBeingEdited()">
-      <ng-template>
-        <app-form-modal
-          [formGroup]="toolOutputForm"
-          [title]="
-            toolOutputBeingEdited()?.name
-                ? toolOutputBeingEdited()!.name!
-                : 'Add Output'
-          "
-          (close)="toolOutputBeingEdited.set(null)"
-          (save)="
+    <!-- ToolOutputForm modal TODO -->
+    <app-tool-output-form
+      [outputBeingEdited]="toolOutputBeingEdited()"
+      (close)="toolOutputBeingEdited.set(null)"
+      (save)="
             toolOutputBeingEdited()?.id
               ? toolOutputService.edit$.next({
                 id: toolOutputBeingEdited()!.id!,
-                data: toolOutputForm.getRawValue()
+                data: $event
               })
               : toolOutputService.add$.next({
-                item: toolOutputForm.getRawValue(),
+                item: $event,
                 toolId: tool()?.id!
               })
           "
-        />
-      </ng-template>
-    </app-modal>
+    />
   `,
   styles: [`
     header {
@@ -142,7 +123,6 @@ export default class ToolDetailsComponent {
   protected toolOutputService: ToolOutputService = inject(ToolOutputService);
 
   private route: ActivatedRoute = inject(ActivatedRoute);
-  private fb: FormBuilder = inject(FormBuilder);
 
 
   // --- Properties
@@ -168,13 +148,6 @@ export default class ToolDetailsComponent {
   // Track the toolInput that is currently being edited
   public toolInputBeingEdited = signal<Partial<ToolInput> | null>(null);
 
-  // Form for creating/editing toolInputs
-  public toolInputForm = this.fb.nonNullable.group({
-    name: ['', [Validators.required, Validators.minLength(3)]],
-    label: ['', [Validators.required]],
-    type: [0, [Validators.required]],
-  });
-
 
   // --- ToolOutputs
   public toolOutputs = computed(() => {
@@ -186,37 +159,4 @@ export default class ToolDetailsComponent {
 
   // Track the toolInput that is currently being edited
   public toolOutputBeingEdited = signal<Partial<ToolOutput> | null>(null);
-
-  // Form for creating/editing toolOutputs
-  public toolOutputForm = this.fb.nonNullable.group({
-    name: ['', [Validators.required, Validators.minLength(3)]],
-    type: [0, [Validators.required]],
-  });
-
-
-  // --- Effects
-  constructor() {
-    effect((): void => {
-      // ToolInputs
-      const toolInput: Partial<ToolInput> | null = this.toolInputBeingEdited();
-      if (!toolInput) this.toolInputForm.reset(); // Imperative code
-      else {
-        this.toolInputForm.patchValue({
-          name: toolInput.name,
-          label: toolInput.label,
-          type: toolInput.type
-        });
-      }
-
-      // ToolOutputs
-      const toolOutput: Partial<ToolOutput> | null = this.toolOutputBeingEdited();
-      if (!toolOutput) this.toolOutputForm.reset(); // Imperative code
-      else {
-        this.toolOutputForm.patchValue({
-          name: toolOutput.name,
-          type: toolOutput.type
-        });
-      }
-    });
-  }
 }
