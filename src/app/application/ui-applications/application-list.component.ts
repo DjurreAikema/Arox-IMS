@@ -1,7 +1,9 @@
-import {Component, input, output} from '@angular/core';
+import {Component, input, output, signal} from '@angular/core';
 import {Application, RemoveApplication} from "../../shared/interfaces";
 import {RouterLink} from "@angular/router";
 import {MatCard, MatCardContent, MatCardFooter, MatCardHeader, MatCardTitle} from "@angular/material/card";
+import {ConfirmModalComponent} from "../../shared/ui/confirm-modal.component";
+import {ModalComponent} from "../../shared/ui/modal.component";
 
 @Component({
   selector: 'app-application-list',
@@ -12,7 +14,9 @@ import {MatCard, MatCardContent, MatCardFooter, MatCardHeader, MatCardTitle} fro
     MatCardContent,
     MatCardFooter,
     MatCardHeader,
-    MatCardTitle
+    MatCardTitle,
+    ConfirmModalComponent,
+    ModalComponent
   ],
   template: `
     <div class="list">
@@ -29,7 +33,7 @@ import {MatCard, MatCardContent, MatCardFooter, MatCardHeader, MatCardTitle} fro
           </mat-card-content>
 
           <mat-card-footer>
-            <button class="button-danger small-button" (click)="delete.emit(application.id)">
+            <button class="button-danger small-button" (click)="applicationToDelete.set(application.id)">
               <i class="fa-solid fa-trash"></i>
             </button>
 
@@ -66,6 +70,18 @@ import {MatCard, MatCardContent, MatCardFooter, MatCardHeader, MatCardTitle} fro
         </mat-card>
       }
     </div>
+
+    <!-- Delete modal -->
+    <app-modal [isOpen]="!!applicationToDelete()">
+      <ng-template>
+        <app-confirm-modal
+          title="Delete Application"
+          message="Are you sure you want to delete this application?"
+          (confirm)="deleteApplication()"
+          (cancel)="applicationToDelete.set(null)"
+        />
+      </ng-template>
+    </app-modal>
   `,
   styleUrls: ['../../shared/styles/default-list.scss'],
   styles: [``]
@@ -81,4 +97,14 @@ export class ApplicationListComponent {
   add = output();
   edit = output<Application>();
   delete = output<RemoveApplication>();
+
+  // --- Properties
+  protected applicationToDelete = signal<RemoveApplication | null>(null);
+
+  protected deleteApplication() {
+    if (this.applicationToDelete()) {
+      this.delete.emit(this.applicationToDelete()!)
+      this.applicationToDelete.set(null);
+    }
+  }
 }

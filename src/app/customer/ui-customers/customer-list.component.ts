@@ -1,8 +1,10 @@
-import {Component, input, output} from '@angular/core';
+import {Component, input, output, signal} from '@angular/core';
 import {Customer, RemoveCustomer} from "../../shared/interfaces";
 import {RouterLink} from "@angular/router";
 import {MatCardModule} from "@angular/material/card";
 import {MatChipsModule} from "@angular/material/chips";
+import {ConfirmModalComponent} from "../../shared/ui/confirm-modal.component";
+import {ModalComponent} from "../../shared/ui/modal.component";
 
 @Component({
   selector: 'app-customer-list',
@@ -10,7 +12,9 @@ import {MatChipsModule} from "@angular/material/chips";
   imports: [
     RouterLink,
     MatCardModule,
-    MatChipsModule
+    MatChipsModule,
+    ConfirmModalComponent,
+    ModalComponent
   ],
   template: `
     <div class="list">
@@ -27,7 +31,7 @@ import {MatChipsModule} from "@angular/material/chips";
           </mat-card-content>
 
           <mat-card-footer>
-            <button class="button-danger small-button" (click)="delete.emit(customer.id)">
+            <button class="button-danger small-button" (click)="customerToDelete.set(customer.id)">
               <i class="fa-solid fa-trash"></i>
             </button>
 
@@ -54,6 +58,18 @@ import {MatChipsModule} from "@angular/material/chips";
 
       </mat-card>
     </div>
+
+    <!-- Delete modal -->
+    <app-modal [isOpen]="!!customerToDelete()">
+      <ng-template>
+        <app-confirm-modal
+          title="Delete Customer"
+          message="Are you sure you want to delete this customer?"
+          (confirm)="deleteCustomer()"
+          (cancel)="customerToDelete.set(null)"
+        />
+      </ng-template>
+    </app-modal>
   `,
   styleUrls: ['../../shared/styles/default-list.scss'],
   styles: [``]
@@ -69,4 +85,13 @@ export class CustomerListComponent {
   edit = output<Customer>();
   delete = output<RemoveCustomer>();
 
+  // --- Properties
+  protected customerToDelete = signal<RemoveCustomer | null>(null);
+
+  protected deleteCustomer() {
+    if (this.customerToDelete()) {
+      this.delete.emit(this.customerToDelete()!)
+      this.customerToDelete.set(null);
+    }
+  }
 }
