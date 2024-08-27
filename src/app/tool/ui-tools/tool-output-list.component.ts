@@ -1,10 +1,15 @@
-import {Component, input, output} from '@angular/core';
+import {Component, input, output, signal} from '@angular/core';
 import {RemoveToolOutput, ToolOutput} from "../../shared/interfaces";
+import {ConfirmModalComponent} from "../../shared/ui/confirm-modal.component";
+import {ModalComponent} from "../../shared/ui/modal.component";
 
 @Component({
   selector: 'app-tool-output-list',
   standalone: true,
-  imports: [],
+  imports: [
+    ConfirmModalComponent,
+    ModalComponent
+  ],
   template: `
     <ul>
 
@@ -27,13 +32,25 @@ import {RemoveToolOutput, ToolOutput} from "../../shared/interfaces";
 
           <div>
             <button class="button-success small-button" (click)="edit.emit(toolOutput)"><i class="fa-solid fa-pen"></i></button>
-            <button class="button-danger small-button" (click)="delete.emit(toolOutput.id)"><i class="fa-solid fa-trash"></i></button>
+            <button class="button-danger small-button" (click)="toolOutputToDelete.set(toolOutput.id)"><i class="fa-solid fa-trash"></i></button>
           </div>
         </li>
       } @empty {
         <p>Click the add button to create your first tool output.</p>
       }
     </ul>
+
+    <!-- Delete modal -->
+    <app-modal [isOpen]="!!toolOutputToDelete()">
+      <ng-template>
+        <app-confirm-modal
+          title="Delete Tool Output"
+          message="Are you sure you want to delete this tool output?"
+          (confirm)="deleteToolOutput()"
+          (cancel)="toolOutputToDelete.set(null)"
+        />
+      </ng-template>
+    </app-modal>
   `,
   styles: [
     `
@@ -85,4 +102,13 @@ export class ToolOutputListComponent {
   edit = output<ToolOutput>();
   delete = output<RemoveToolOutput>()
 
+  // --- Properties
+  protected toolOutputToDelete = signal<RemoveToolOutput | null>(null);
+
+  protected deleteToolOutput() {
+    if (this.toolOutputToDelete()) {
+      this.delete.emit(this.toolOutputToDelete()!)
+      this.toolOutputToDelete.set(null);
+    }
+  }
 }

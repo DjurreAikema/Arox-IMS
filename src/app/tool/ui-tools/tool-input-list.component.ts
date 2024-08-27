@@ -1,12 +1,16 @@
-import {Component, input, output} from '@angular/core';
+import {Component, input, output, signal} from '@angular/core';
 import {RemoveToolInput, ToolInput} from "../../shared/interfaces";
 import {RouterLink} from "@angular/router";
+import {ConfirmModalComponent} from "../../shared/ui/confirm-modal.component";
+import {ModalComponent} from "../../shared/ui/modal.component";
 
 @Component({
   selector: 'app-tool-input-list',
   standalone: true,
   imports: [
-    RouterLink
+    RouterLink,
+    ConfirmModalComponent,
+    ModalComponent
   ],
   template: `
     <ul>
@@ -34,13 +38,25 @@ import {RouterLink} from "@angular/router";
 
           <div>
             <button class="button-success small-button" (click)="edit.emit(toolInput)"><i class="fa-solid fa-pen"></i></button>
-            <button class="button-danger small-button" (click)="delete.emit(toolInput.id)"><i class="fa-solid fa-trash"></i></button>
+            <button class="button-danger small-button" (click)="toolInputToDelete.set(toolInput.id)"><i class="fa-solid fa-trash"></i></button>
           </div>
         </li>
       } @empty {
         <p>Click the add button to create your first tool input.</p>
       }
     </ul>
+
+    <!-- Delete modal -->
+    <app-modal [isOpen]="!!toolInputToDelete()">
+      <ng-template>
+        <app-confirm-modal
+          title="Delete Tool Input"
+          message="Are you sure you want to delete this tool input?"
+          (confirm)="deleteToolInput()"
+          (cancel)="toolInputToDelete.set(null)"
+        />
+      </ng-template>
+    </app-modal>
   `,
   styles: [
     `
@@ -92,4 +108,13 @@ export class ToolInputListComponent {
   edit = output<ToolInput>();
   delete = output<RemoveToolInput>()
 
+  // --- Properties
+  protected toolInputToDelete = signal<RemoveToolInput | null>(null);
+
+  protected deleteToolInput() {
+    if (this.toolInputToDelete()) {
+      this.delete.emit(this.toolInputToDelete()!)
+      this.toolInputToDelete.set(null);
+    }
+  }
 }

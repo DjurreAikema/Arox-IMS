@@ -1,7 +1,9 @@
-import {Component, input, output} from '@angular/core';
+import {Component, input, output, signal} from '@angular/core';
 import {Tool, RemoveTool} from "../../shared/interfaces";
 import {RouterLink} from "@angular/router";
 import {MatCard, MatCardContent, MatCardFooter, MatCardHeader, MatCardTitle} from "@angular/material/card";
+import {ConfirmModalComponent} from "../../shared/ui/confirm-modal.component";
+import {ModalComponent} from "../../shared/ui/modal.component";
 
 @Component({
   selector: 'app-tool-list',
@@ -12,7 +14,9 @@ import {MatCard, MatCardContent, MatCardFooter, MatCardHeader, MatCardTitle} fro
     MatCardContent,
     MatCardFooter,
     MatCardHeader,
-    MatCardTitle
+    MatCardTitle,
+    ConfirmModalComponent,
+    ModalComponent
   ],
   template: `
     <div class="list">
@@ -30,7 +34,7 @@ import {MatCard, MatCardContent, MatCardFooter, MatCardHeader, MatCardTitle} fro
 
           <mat-card-footer>
             <div>
-              <button class="button-danger small-button" (click)="delete.emit(tool.id)">
+              <button class="button-danger small-button" (click)="toolToDelete.set(tool.id)">
                 <i class="fa-solid fa-trash"></i>
               </button>
 
@@ -38,7 +42,7 @@ import {MatCard, MatCardContent, MatCardFooter, MatCardHeader, MatCardTitle} fro
                 <i class="fa-solid fa-pen"></i>
               </button>
             </div>
-            
+
             <div>
               <button class="button-primary" routerLink="/tool/{{tool.id}}">
                 Open
@@ -72,6 +76,18 @@ import {MatCard, MatCardContent, MatCardFooter, MatCardHeader, MatCardTitle} fro
         </mat-card>
       }
     </div>
+
+    <!-- Delete modal -->
+    <app-modal [isOpen]="!!toolToDelete()">
+      <ng-template>
+        <app-confirm-modal
+          title="Delete Tool"
+          message="Are you sure you want to delete this tool?"
+          (confirm)="deleteTool()"
+          (cancel)="toolToDelete.set(null)"
+        />
+      </ng-template>
+    </app-modal>
   `,
   styleUrls: ['../../shared/styles/default-list.scss'],
   styles: [``]
@@ -88,4 +104,13 @@ export class ToolListComponent {
   edit = output<Tool>();
   delete = output<RemoveTool>();
 
+  // --- Properties
+  protected toolToDelete = signal<RemoveTool | null>(null);
+
+  protected deleteTool() {
+    if (this.toolToDelete()) {
+      this.delete.emit(this.toolToDelete()!)
+      this.toolToDelete.set(null);
+    }
+  }
 }
