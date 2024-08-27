@@ -3,14 +3,14 @@ import {ToolService} from "./data-access/tool.service";
 import {ActivatedRoute, RouterLink} from "@angular/router";
 import {toSignal} from "@angular/core/rxjs-interop";
 import {JsonPipe} from "@angular/common";
-import {ToolInputListComponent} from "./ui-tools/tool-input-list.component";
+import {ToolInputListComponent} from "./ui-tool-inputs/tool-input-list.component";
 import {ToolInputService} from "./data-access/tool-input.service";
 import {FormBuilder, Validators} from "@angular/forms";
 import {ToolInput, ToolOutput} from "../shared/interfaces";
 import {FormModalComponent} from "../shared/ui/form-modal.component";
 import {ModalComponent} from "../shared/ui/modal.component";
 import {ToolOutputService} from "./data-access/tool-output.service";
-import {ToolOutputListComponent} from "./ui-tools/tool-output-list.component";
+import {ToolOutputListComponent} from "./ui-tool-outputs/tool-output-list.component";
 
 @Component({
   selector: 'app-tool-details',
