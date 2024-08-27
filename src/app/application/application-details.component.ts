@@ -1,16 +1,15 @@
-import {Component, computed, effect, inject, signal} from '@angular/core';
+import {Component, computed, inject, signal} from '@angular/core';
 import {ApplicationService} from "./data-access/application.service";
 import {ActivatedRoute, RouterLink} from "@angular/router";
 import {toSignal} from "@angular/core/rxjs-interop";
 import {JsonPipe} from "@angular/common";
 import {ToolService} from "../tool/data-access/tool.service";
-import {FormControl, Validators} from "@angular/forms";
 import {Tool} from "../shared/interfaces";
 import {ToolListComponent} from "../tool/ui-tools/tool-list.component";
 import {FormModalComponent} from "../shared/ui/form-modal.component";
 import {ModalComponent} from "../shared/ui/modal.component";
 import {MatCard, MatCardContent} from "@angular/material/card";
-import {CustomFormGroup} from "../shared/utils/custom-form-group";
+import {ToolFormComponent} from "../tool/ui-tools/tool-form.component";
 
 @Component({
   selector: 'app-application-details',
@@ -22,7 +21,8 @@ import {CustomFormGroup} from "../shared/utils/custom-form-group";
     FormModalComponent,
     ModalComponent,
     MatCard,
-    MatCardContent
+    MatCardContent,
+    ToolFormComponent
   ],
   template: `
     @if (application(); as application) {
@@ -36,7 +36,7 @@ import {CustomFormGroup} from "../shared/utils/custom-form-group";
 
       <mat-card class="list-header">
         <mat-card-content>
-          All tool belonging to {{ application.name }} ({{toolService.toolsCount()}})
+          All tool belonging to {{ application.name }} ({{ toolService.toolsCount() }})
         </mat-card-content>
       </mat-card>
     }
@@ -50,32 +50,23 @@ import {CustomFormGroup} from "../shared/utils/custom-form-group";
       />
     </section>
 
-    <app-modal [isOpen]="!!toolBeingEdited()">
-      <ng-template>
-        <app-form-modal
-          [formGroup]="toolForm"
-          [title]="
-            toolBeingEdited()?.name
-                ? toolBeingEdited()!.name!
-                : 'Add tool'
-          "
-          (close)="toolBeingEdited.set(null)"
-          (save)="
+    <app-tool-form
+      [toolBeingEdited]="toolBeingEdited()"
+      (close)="toolBeingEdited.set(null)"
+      (save)="
             toolBeingEdited()?.id
               ? toolService.edit$.next({
                 id: toolBeingEdited()!.id!,
-                data: toolForm.getRawValue()
+                data: $event
               })
               : toolService.add$.next({
-                item: toolForm.getRawValue(),
+                item: $event,
                 applicationId: application()?.id!
               })
           "
-        />
-      </ng-template>
-    </app-modal>
+    />
   `,
-  styles:  [`
+  styles: [`
     header {
       display: flex;
       flex-flow: row nowrap;
@@ -146,29 +137,4 @@ export default class ApplicationDetailsComponent {
 
   // Track the tool that is currently being edited
   public toolBeingEdited = signal<Partial<Tool> | null>(null);
-
-  // Form for creating/editing tools
-  public toolForm = new CustomFormGroup({
-    name: new FormControl('', [Validators.required, Validators.minLength(3)]),
-    apiUrl: new FormControl('', [Validators.required, Validators.minLength(3)]),
-  }, {
-    name: 'Name',
-    apiUrl: 'API url'
-  }, {
-    name: 'Tool name here',
-    apiUrl: 'https://localhost:8080'
-  });
-
-  constructor() {
-    // Reset `toolForm` when `toolBeingEdited()` is null
-    effect((): void => {
-      const tool: Partial<Tool> | null = this.toolBeingEdited();
-      if (!tool) this.toolForm.reset(); // Imperative code
-      else {
-        this.toolForm.patchValue({
-          ...tool
-        });
-      }
-    });
-  }
 }
