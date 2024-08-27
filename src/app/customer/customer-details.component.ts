@@ -9,6 +9,8 @@ import {Application} from "../shared/interfaces";
 import {ApplicationListComponent} from "../application/ui-applications/application-list.component";
 import {ModalComponent} from "../shared/ui/modal.component";
 import {FormModalComponent} from "../shared/ui/form-modal.component";
+import {MatCard, MatCardContent} from "@angular/material/card";
+import {MatBadge} from "@angular/material/badge";
 
 @Component({
   selector: 'app-customer-details',
@@ -18,7 +20,10 @@ import {FormModalComponent} from "../shared/ui/form-modal.component";
     RouterLink,
     ApplicationListComponent,
     ModalComponent,
-    FormModalComponent
+    FormModalComponent,
+    MatCard,
+    MatCardContent,
+    MatBadge
   ],
   template: `
     @if (customer(); as customer) {
@@ -29,6 +34,12 @@ import {FormModalComponent} from "../shared/ui/form-modal.component";
 
         <button class="button-success" (click)="applicationBeingEdited.set({})">Add Application +</button>
       </header>
+
+      <mat-card class="list-header">
+        <mat-card-content>
+          All applications belonging to {{ customer.name }} ({{applicationService.applicationsCount()}})
+        </mat-card-content>
+      </mat-card>
     }
 
     <section>
@@ -85,8 +96,22 @@ import {FormModalComponent} from "../shared/ui/form-modal.component";
 
     section {
       padding: 1rem;
-      height: calc(100vh - 120px);
+      height: calc(100vh - 200px);
       overflow-y: auto;
+    }
+
+    .list-header {
+      display: flex;
+      flex-flow: row nowrap;
+      justify-content: center;
+
+      background-color: var(--color-light);
+      margin: 1rem 1rem 0 1rem;
+      padding: 0;
+
+      mat-card-content {
+        padding: 5px;
+      }
     }
   `]
 })

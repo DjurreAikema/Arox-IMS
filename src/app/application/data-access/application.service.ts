@@ -27,6 +27,7 @@ export class ApplicationService {
 
   // --- Selectors (the rest of the application can access the data in this service via these selectors)
   public applications: Signal<Application[]> = computed(() => this.state().applications);
+  public applicationsCount: Signal<number> = computed(() => this.state().applications.length);
   public loaded: Signal<boolean> = computed(() => this.state().loaded);
 
   // --- Sources (the state gets updated when these sources get a new value, the rest of the application can use these sources to alter the data in the state)
