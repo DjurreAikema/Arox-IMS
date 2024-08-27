@@ -3,6 +3,7 @@ import {AddApplication, Application, EditApplication, RemoveApplication, RemoveC
 import {StorageService} from "../../shared/data-access/storage.service";
 import {catchError, EMPTY, map, merge, Observable, Subject} from "rxjs";
 import {connect} from "ngxtension/connect";
+import {ToolService} from "../../tool/data-access/tool.service";
 
 // State interface
 export interface ApplicationState {
@@ -17,6 +18,7 @@ export interface ApplicationState {
 export class ApplicationService {
 
   private storageService: StorageService = inject(StorageService);
+  private toolService: ToolService = inject(ToolService);
 
   // --- State (state is initialized with default values here)
   private state: WritableSignal<ApplicationState> = signal<ApplicationState>({
@@ -33,7 +35,7 @@ export class ApplicationService {
   // --- Sources (the state gets updated when these sources get a new value, the rest of the application can use these sources to alter the data in the state)
   public add$: Subject<AddApplication> = new Subject<AddApplication>();
   public edit$: Subject<EditApplication> = new Subject<EditApplication>();
-  public remove$: Subject<RemoveApplication> = new Subject<RemoveApplication>();
+  public remove$: Subject<RemoveApplication> = this.toolService.applicationRemoved$;
 
   public customerRemoved$: Subject<RemoveCustomer> = new Subject<RemoveCustomer>();
 
@@ -87,9 +89,13 @@ export class ApplicationService {
       }))
 
       // customerRemoved$ reducer
-      .with(this.customerRemoved$, (state, customerId) => ({
-        applications: state.applications.filter((application) => application.customerId !== customerId)
-      }));
+      .with(this.customerRemoved$, (state, customerId) => {
+        const applicationsToRemove = state.applications.filter((application) => application.customerId === customerId);
+        applicationsToRemove.forEach((application) => this.remove$.next(application.id));
+        return {
+          applications: state.applications.filter((application) => application.customerId !== customerId)
+        };
+      });
 
     // --- Effects (effects are used to chain certain actions to state updates)
     effect((): void => {
