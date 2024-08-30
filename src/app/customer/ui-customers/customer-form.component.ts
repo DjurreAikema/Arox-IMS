@@ -45,12 +45,12 @@ export class CustomerFormComponent {
   public customerForm = new CustomFormGroup({
     name: new FormControl('', [Validators.required, Validators.minLength(3)]),
   }, {
-    // Labels
-    name: 'Name',
-  }, {
-    // Placeholders
-    name: 'Customer name',
-  }, {});
+    // Extra control info
+    name: {
+      label: 'Name',
+      placeholder: 'Customer name'
+    },
+  });
 
   constructor() {
     // Reset `customerForm` when `customerBeingEdited()` is null

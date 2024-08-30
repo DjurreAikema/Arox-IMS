@@ -52,21 +52,18 @@ export class ToolInputFormComponent {
     label: new FormControl('', [Validators.required]),
     type: new FormControl(ToolInputTypeEnum.Text, [Validators.required]),
   }, {
-    // Labels
-    name: 'Name',
-    label: 'Input Label',
-    type: 'Input Type',
-  }, {
-    // Placeholders
-    name: '',
-    label: '',
-    type: '',
-  }, {
-    // Input types
-    type: 'select'
-  }, {
-    // Select input lists
-    type: this.selectOptionsService.getToolInputTypeOptions()
+    // Extra control info
+    name: {
+      label: 'Name'
+    },
+    label: {
+      label: 'Input label'
+    },
+    type: {
+      label: 'Input type',
+      type: 'select',
+      selectOptions: this.selectOptionsService.getToolInputTypeOptions()
+    },
   });
 
   constructor() {

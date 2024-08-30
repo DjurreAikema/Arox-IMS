@@ -46,14 +46,16 @@ export class ToolFormComponent {
     name: new FormControl('', [Validators.required, Validators.minLength(3)]),
     apiUrl: new FormControl('', [Validators.required, Validators.minLength(3)]),
   }, {
-    // Labels
-    name: 'Name',
-    apiUrl: 'API url'
-  }, {
-    // Placeholders
-    name: 'Tool name',
-    apiUrl: 'https://localhost:8080'
-  }, {});
+    // Extra control info
+    name: {
+      label: 'Name',
+      placeholder: 'Tool name'
+    },
+    apiUrl: {
+      label: 'API url',
+      placeholder: 'https://localhost:8080'
+    },
+  });
 
   constructor() {
     // Reset `toolForm` when `toolBeingEdited()` is null

@@ -50,19 +50,15 @@ export class ToolOutputFormComponent {
     name: new FormControl('', [Validators.required, Validators.minLength(3)]),
     type: new FormControl(ToolOutputTypeEnum.Text, [Validators.required]),
   }, {
-    // Labels
-    name: 'Name',
-    type: 'Output Type',
-  }, {
-    // Placeholders
-    name: '',
-    type: '',
-  }, {
-    // Input types
-    type: 'select'
-  }, {
-    // Select input lists
-    type: this.selectOptionsService.getToolOutputTypeOptions()
+    // Extra control info
+    name: {
+      label: 'Name'
+    },
+    type: {
+      label: 'Output type',
+      type: 'select',
+      selectOptions: this.selectOptionsService.getToolOutputTypeOptions()
+    },
   });
 
   constructor() {

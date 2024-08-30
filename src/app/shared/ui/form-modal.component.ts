@@ -25,20 +25,23 @@ import {MatOption, MatSelect} from "@angular/material/select";
             <mat-form-field appearance="fill">
 
               <!-- Input label -->
-              <mat-label>{{ (formGroup().labels[control.key] || '') }}</mat-label>
+              <mat-label>{{ (formGroup().getLabel(control.key) || '') }}</mat-label>
 
               <!-- Input type switch case -->
-              @switch (formGroup().controlTypes[control.key]) {
+              @switch (formGroup().getType(control.key)) {
 
                 <!-- Select input -->
                 @case ('select') {
-                  @if (formGroup().selectOptions) {
+                  @if (formGroup().getOptions(control.key)) {
                     <mat-select [formControlName]="control.key">
-                      @for (option of formGroup().selectOptions![control.key]; track $index) {
+
+                      <!-- Select options -->
+                      @for (option of formGroup().getOptions(control.key); track $index) {
                         <mat-option [value]="option.value">
                           {{ option.label }}
                         </mat-option>
                       }
+
                     </mat-select>
                   } @else {
                     <p>No list found for this select control</p>
@@ -50,7 +53,7 @@ import {MatOption, MatSelect} from "@angular/material/select";
                   <input matNativeControl
                          [formControlName]="control.key"
                          type="number"
-                         [placeholder]="(this.formGroup().placeholders[control.key] || '')">
+                         [placeholder]="this.formGroup().getPlaceholder(control.key)">
                 }
 
                 <!-- Text input (default) -->
@@ -58,7 +61,7 @@ import {MatOption, MatSelect} from "@angular/material/select";
                   <input matNativeControl
                          [formControlName]="control.key"
                          type="text"
-                         [placeholder]="(this.formGroup().placeholders[control.key] || '')">
+                         [placeholder]="this.formGroup().getPlaceholder(control.key)">
                 }
               }
 

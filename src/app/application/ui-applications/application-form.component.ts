@@ -45,12 +45,12 @@ export class ApplicationFormComponent {
   public applicationForm = new CustomFormGroup({
     name: new FormControl('', [Validators.required, Validators.minLength(3)]),
   }, {
-    // Labels
-    name: 'Name',
-  }, {
-    // Placeholders
-    name: 'Application name',
-  }, {});
+    // Extra control info
+    name: {
+      label: 'Name',
+      placeholder: 'Application name'
+    },
+  });
 
   constructor() {
     // Reset `applicationForm` when `applicationBeingEdited()` is null
