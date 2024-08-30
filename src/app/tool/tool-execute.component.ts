@@ -56,7 +56,6 @@ export default class ToolExecuteComponent {
 
   private route: ActivatedRoute = inject(ActivatedRoute);
 
-
   // --- Properties
   public params = toSignal(this.route.paramMap);
 
