@@ -1,8 +1,7 @@
-import {Component, inject, input, OnInit} from '@angular/core';
-import {ToolInput, ToolInputTypeEnum} from "../interfaces";
-import {CustomFormGroup} from "../utils/custom-form-group";
+import {Component, input, OnInit} from '@angular/core';
+import {ToolInput, ToolInputTypeEnum} from "../../shared/interfaces";
+import {CustomFormGroup} from "../../shared/utils/custom-form-group";
 import {FormControl, ReactiveFormsModule} from "@angular/forms";
-import {EnumToTextPipe} from "../pipes/enum-to-text.pipe";
 import {KeyValuePipe} from "@angular/common";
 import {MatFormField, MatLabel, MatSuffix} from "@angular/material/form-field";
 import {MatIcon} from "@angular/material/icon";
@@ -10,7 +9,7 @@ import {MatInput} from "@angular/material/input";
 import {MatOption} from "@angular/material/core";
 import {MatSelect} from "@angular/material/select";
 import {MatTooltip} from "@angular/material/tooltip";
-import {SimpleFormGeneratorComponent} from "./simple-form-generator.component";
+import {SimpleFormGeneratorComponent} from "../../shared/ui/simple-form-generator.component";
 
 @Component({
   selector: 'app-inputs-to-form',
@@ -30,9 +29,21 @@ import {SimpleFormGeneratorComponent} from "./simple-form-generator.component";
   ],
   template: `
     @if (inputsForm) {
-<!--      <app-simple-form-generator-->
-<!--        [formGroup]="inputsForm"-->
-<!--      />-->
+
+      <form [formGroup]="inputsForm" #form="ngForm">
+
+        <app-simple-form-generator
+          [form]="form"
+          [formGroup]="inputsForm"
+        />
+
+        <div class="form-buttons">
+          <button class="button-danger">Clear</button>
+          <button class="button-success">Save</button>
+        </div>
+
+      </form>
+
     } @else {
       <p>No form found.</p>
     }
@@ -40,9 +51,6 @@ import {SimpleFormGeneratorComponent} from "./simple-form-generator.component";
   styles: ``
 })
 export class InputsToFormComponent implements OnInit {
-
-  // --- Dependencies
-  private enumToTextPipe: EnumToTextPipe = inject(EnumToTextPipe);
 
   // --- Inputs
   toolInputs = input.required<ToolInput[]>();
@@ -58,12 +66,28 @@ export class InputsToFormComponent implements OnInit {
       controls[input.name] = new FormControl('');
       controlConfigs[input.name] = {
         label: input.label,
-        placeholder: '',
-        type: this.enumToTextPipe.transform(input.type, ToolInputTypeEnum),
+        placeholder: input.placeholder,
+        type: this.getControlType(input.type),
         selectOptions: []
       };
     });
 
     this.inputsForm = new CustomFormGroup(controls, controlConfigs);
+  }
+
+  // POI: Add to ToolInputTypeEnum
+  private getControlType(type: ToolInputTypeEnum): string {
+    switch (type) {
+
+      case ToolInputTypeEnum.Text:
+        return 'text';
+
+      case ToolInputTypeEnum.Number:
+        return 'number';
+
+      default:
+        return 'text';
+
+    }
   }
 }

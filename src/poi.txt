@@ -1,0 +1,2 @@
+- POI: Add to toolInputForm
+- POI: Add to ToolInputTypeEnum

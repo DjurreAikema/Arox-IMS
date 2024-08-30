@@ -4,12 +4,14 @@ import {ToolInputService} from "./data-access/tool-input.service";
 import {ToolOutputService} from "./data-access/tool-output.service";
 import {ActivatedRoute, RouterLink} from "@angular/router";
 import {toSignal} from "@angular/core/rxjs-interop";
+import {InputsToFormComponent} from "./ui-tool-execute/inputs-to-form.component";
 
 @Component({
   selector: 'app-tool-execute',
   standalone: true,
   imports: [
-    RouterLink
+    RouterLink,
+    InputsToFormComponent
   ],
   template: `
     <!-- Header -->
@@ -20,6 +22,10 @@ import {toSignal} from "@angular/core/rxjs-interop";
         <h1>Tool: {{ tool.name }}</h1>
       </header>
     }
+
+    <app-inputs-to-form
+      [toolInputs]="toolInputs()"
+    />
   `,
   styles: [`
     header {

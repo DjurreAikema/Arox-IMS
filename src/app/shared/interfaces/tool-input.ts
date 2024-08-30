@@ -5,6 +5,7 @@ export interface ToolInput {
   toolId: number;
   name: string;
   label: string;
+  placeholder: string;
   type: ToolInputTypeEnum;
 }
 

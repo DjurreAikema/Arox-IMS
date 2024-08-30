@@ -47,9 +47,11 @@ export class ToolInputFormComponent {
   save = output<{ name: string, label: string, type: number }>();
 
   // Form for creating/editing toolInputs
+  // POI: Add to toolInputForm
   public toolInputForm = new CustomFormGroup({
     name: new FormControl('', [Validators.required, Validators.minLength(3)]),
     label: new FormControl('', [Validators.required]),
+    placeholder: new FormControl(''),
     type: new FormControl(ToolInputTypeEnum.Text, [Validators.required]),
   }, {
     // Extra control info
@@ -58,6 +60,9 @@ export class ToolInputFormComponent {
     },
     label: {
       label: 'Input label'
+    },
+    placeholder: {
+      label: 'Input placeholder'
     },
     type: {
       label: 'Input type',
