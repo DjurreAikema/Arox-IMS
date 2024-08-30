@@ -1,8 +1,9 @@
 import {Component, input, output, signal} from '@angular/core';
-import {RemoveToolInput, ToolInput} from "../../shared/interfaces";
+import {RemoveToolInput, ToolInput, ToolInputTypeEnum} from "../../shared/interfaces";
 import {RouterLink} from "@angular/router";
 import {ConfirmModalComponent} from "../../shared/ui/confirm-modal.component";
 import {ModalComponent} from "../../shared/ui/modal.component";
+import {EnumToTextPipe} from "../../shared/pipes/enum-to-text.pipe";
 
 @Component({
   selector: 'app-tool-input-list',
@@ -10,7 +11,8 @@ import {ModalComponent} from "../../shared/ui/modal.component";
   imports: [
     RouterLink,
     ConfirmModalComponent,
-    ModalComponent
+    ModalComponent,
+    EnumToTextPipe
   ],
   template: `
     <ul>
@@ -33,7 +35,7 @@ import {ModalComponent} from "../../shared/ui/modal.component";
             </p>
 
             <p>
-              <span>Type: </span>{{ toolInput.type }}
+              <span>Type: </span>{{ toolInput.type | enumToText: ToolInputTypeEnum }}
             </p>
           </div>
 
@@ -120,4 +122,6 @@ export class ToolInputListComponent {
       this.toolInputToDelete.set(null);
     }
   }
+
+  protected readonly ToolInputTypeEnum = ToolInputTypeEnum;
 }
