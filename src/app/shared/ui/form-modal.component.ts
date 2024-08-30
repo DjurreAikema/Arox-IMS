@@ -22,11 +22,12 @@ import {MatOption, MatSelect} from "@angular/material/select";
         <form [formGroup]="formGroup()" (ngSubmit)="onSubmit()" #form="ngForm">
           @for (control of formGroup().controls | keyvalue: originalOrder; track control.key) {
 
-            <!-- TODO: Add support for more control types -->
             <mat-form-field appearance="fill">
 
+              <!-- Input label -->
               <mat-label>{{ (formGroup().labels[control.key] || '') }}</mat-label>
 
+              <!-- Input type switch case -->
               @switch (formGroup().controlTypes[control.key]) {
 
                 <!-- Select input -->
@@ -61,6 +62,7 @@ import {MatOption, MatSelect} from "@angular/material/select";
                 }
               }
 
+              <!-- Form errors -->
               @if ((formGroup().get(control.key)?.dirty || form.submitted) && !formGroup().get(control.key)?.valid) {
                 <mat-icon matSuffix matTooltip="{{ getErrorMessages(control.key) }}">error</mat-icon>
               }
@@ -109,7 +111,7 @@ import {MatOption, MatSelect} from "@angular/material/select";
     `,
   ]
 })
-// Responsibility: Dumb component that renders a form inside a modal based on a supplied formGroup
+// Responsibility: Dumb component that renders a form inside a modal based on a supplied CustomFormGroup
 export class FormModalComponent implements OnDestroy {
 
   // --- Inputs
@@ -119,7 +121,6 @@ export class FormModalComponent implements OnDestroy {
   // --- Outputs
   save = output();
   close = output();
-
 
   // --- Properties
   private closedByButton = false;
@@ -145,6 +146,7 @@ export class FormModalComponent implements OnDestroy {
     this.close.emit();
   }
 
+  // Define the error messages for each Validation
   protected getErrorMessages(controlName: string): string {
     const control = this.formGroup().get(controlName);
     if (!control || !control.errors) return '';
@@ -163,6 +165,7 @@ export class FormModalComponent implements OnDestroy {
     }).join(', ');
   }
 
+  // Maintain the order as defined in the formGroup
   protected originalOrder = (a: any, b: any): number => {
     return 0;
   }
