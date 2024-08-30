@@ -39,9 +39,11 @@ export class CustomerFormComponent {
 
   // --- Outputs
   close = output();
+  // POI: Add to CustomerForm
   save = output<{ name: string }>();
 
   // Form for creating/editing customers
+  // POI: Add to CustomerForm
   public customerForm = new CustomFormGroup({
     name: new FormControl('', [Validators.required, Validators.minLength(3)]),
   }, {

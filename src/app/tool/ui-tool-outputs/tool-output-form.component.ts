@@ -43,9 +43,11 @@ export class ToolOutputFormComponent {
 
   // --- Outputs
   close = output();
+  // POI: Add to ToolOutputForm
   save = output<{ name: string, type: number }>();
 
   // Form for creating/editing toolOutputs
+  // POI: Add to ToolOutputForm
   public toolOutputForm = new CustomFormGroup({
     name: new FormControl('', [Validators.required, Validators.minLength(3)]),
     type: new FormControl(ToolOutputTypeEnum.Text, [Validators.required]),

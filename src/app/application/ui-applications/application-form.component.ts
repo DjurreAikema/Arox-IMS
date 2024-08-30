@@ -39,9 +39,11 @@ export class ApplicationFormComponent {
 
   // --- Outputs
   close = output();
+  // POI: Add to ApplicationForm
   save = output<{ name: string }>();
 
   // Form for creating/editing applications
+  // POI: Add to ApplicationForm
   public applicationForm = new CustomFormGroup({
     name: new FormControl('', [Validators.required, Validators.minLength(3)]),
   }, {

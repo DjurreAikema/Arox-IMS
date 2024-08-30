@@ -1,6 +1,7 @@
 export function getErrorMessages(control: any): string {
   if (!control || !control.value.errors) return '';
 
+  // POI: Add messages to form errors
   return Object.keys(control.value.errors).map(errorKey => {
     switch (errorKey) {
 
@@ -12,6 +13,7 @@ export function getErrorMessages(control: any): string {
 
       default:
         return `Error: ${errorKey}`;
+
     }
   }).join(', ');
 }

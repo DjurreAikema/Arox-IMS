@@ -39,9 +39,11 @@ export class ToolFormComponent {
 
   // --- Outputs
   close = output();
+  // POI: Add to ToolForm
   save = output<{ name: string, apiUrl: string }>();
 
   // Form for creating/editing tools
+  // POI: Add to ToolForm
   public toolForm = new CustomFormGroup({
     name: new FormControl('', [Validators.required, Validators.minLength(3)]),
     apiUrl: new FormControl('', [Validators.required, Validators.minLength(3)]),

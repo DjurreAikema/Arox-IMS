@@ -1,2 +1,7 @@
 - POI: Add to toolInputForm
 - POI: Add to ToolInputTypeEnum
+- POI: Add to ApplicationForm
+- POI: Add to CustomerForm
+- POI: Add messages to form errors
+- POI: Add to ToolOutputForm
+- POI: Add to ToolForm

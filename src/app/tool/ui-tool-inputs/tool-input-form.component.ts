@@ -44,7 +44,8 @@ export class ToolInputFormComponent {
 
   // --- Outputs
   close = output();
-  save = output<{ name: string, label: string, type: number }>();
+  // POI: Add to toolInputForm
+  save = output<{ name: string, label: string, placeholder: string, type: number }>();
 
   // Form for creating/editing toolInputs
   // POI: Add to toolInputForm

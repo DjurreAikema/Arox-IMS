@@ -75,6 +75,7 @@ export class InputsToFormComponent implements OnInit {
     this.inputsForm = new CustomFormGroup(controls, controlConfigs);
   }
 
+  // TODO Improve this
   // POI: Add to ToolInputTypeEnum
   private getControlType(type: ToolInputTypeEnum): string {
     switch (type) {
