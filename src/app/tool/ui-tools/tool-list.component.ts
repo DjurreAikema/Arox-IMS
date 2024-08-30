@@ -2,8 +2,8 @@ import {Component, input, output, signal} from '@angular/core';
 import {Tool, RemoveTool} from "../../shared/interfaces";
 import {RouterLink} from "@angular/router";
 import {MatCard, MatCardContent, MatCardFooter, MatCardHeader, MatCardTitle} from "@angular/material/card";
-import {ConfirmModalComponent} from "../../shared/ui/confirm-modal.component";
-import {ModalComponent} from "../../shared/ui/modal.component";
+import {ConfirmModalComponent} from "../../shared/ui/modals/confirm-modal.component";
+import {ModalComponent} from "../../shared/ui/modals/modal.component";
 
 @Component({
   selector: 'app-tool-list',

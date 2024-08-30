@@ -1,6 +1,6 @@
 import {Component, effect, input, output} from '@angular/core';
-import {FormModalComponent} from "../../shared/ui/form-modal.component";
-import {ModalComponent} from "../../shared/ui/modal.component";
+import {FormModalComponent} from "../../shared/ui/modals/form-modal.component";
+import {ModalComponent} from "../../shared/ui/modals/modal.component";
 import {CustomFormGroup} from "../../shared/utils/custom-form-group";
 import {FormControl, Validators} from "@angular/forms";
 import {Tool} from "../../shared/interfaces";

@@ -1,7 +1,7 @@
 import {Component, input, output, signal} from '@angular/core';
 import {RemoveToolOutput, ToolOutput, ToolOutputTypeEnum} from "../../shared/interfaces";
-import {ConfirmModalComponent} from "../../shared/ui/confirm-modal.component";
-import {ModalComponent} from "../../shared/ui/modal.component";
+import {ConfirmModalComponent} from "../../shared/ui/modals/confirm-modal.component";
+import {ModalComponent} from "../../shared/ui/modals/modal.component";
 import {EnumToTextPipe} from "../../shared/pipes/enum-to-text.pipe";
 
 @Component({

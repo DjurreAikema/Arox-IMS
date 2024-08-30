@@ -5,9 +5,9 @@ import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
 import {MatIconModule} from "@angular/material/icon";
 import {MatTooltipModule} from "@angular/material/tooltip";
-import {CustomFormGroup} from "../utils/custom-form-group";
+import {CustomFormGroup} from "../../utils/custom-form-group";
 import {MatOption, MatSelect} from "@angular/material/select";
-import {SimpleFormGeneratorComponent} from "./simple-form-generator.component";
+import {SimpleFormGeneratorComponent} from "../simple-form-generator.component";
 
 @Component({
   selector: 'app-form-modal',
@@ -20,7 +20,7 @@ import {SimpleFormGeneratorComponent} from "./simple-form-generator.component";
       </header>
 
       <section>
-        <form [formGroup]="formGroup()" (ngSubmit)="onSubmit()" #form="ngForm">
+        <form [formGroup]="formGroup()" #form="ngForm">
 
           <app-simple-form-generator
             [form]="form"
@@ -29,7 +29,7 @@ import {SimpleFormGeneratorComponent} from "./simple-form-generator.component";
 
           <div class="form-buttons">
             <button class="button-danger" (click)="handleClose()">Close</button>
-            <button class="button-success" type="submit">Save</button>
+            <button class="button-success" (click)="onSubmit()">Save</button>
           </div>
 
         </form>
