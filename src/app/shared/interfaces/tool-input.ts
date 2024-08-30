@@ -22,4 +22,5 @@ export type RemoveToolInput = ToolInput['id'];
 
 export enum ToolInputTypeEnum {
   Text = 0,
+  Number = 1,
 }

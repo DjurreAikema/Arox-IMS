@@ -50,7 +50,7 @@ export class CustomerFormComponent {
   }, {
     // Placeholders
     name: 'Customer name',
-  });
+  }, {});
 
   constructor() {
     // Reset `customerForm` when `customerBeingEdited()` is null

@@ -50,7 +50,7 @@ export class ApplicationFormComponent {
   }, {
     // Placeholders
     name: 'Application name',
-  });
+  }, {});
 
   constructor() {
     // Reset `applicationForm` when `applicationBeingEdited()` is null

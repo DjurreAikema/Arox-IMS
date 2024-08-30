@@ -53,7 +53,7 @@ export class ToolFormComponent {
     // Placeholders
     name: 'Tool name',
     apiUrl: 'https://localhost:8080'
-  });
+  }, {});
 
   constructor() {
     // Reset `toolForm` when `toolBeingEdited()` is null

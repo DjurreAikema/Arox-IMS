@@ -6,11 +6,12 @@ import {MatInputModule} from "@angular/material/input";
 import {MatIconModule} from "@angular/material/icon";
 import {MatTooltipModule} from "@angular/material/tooltip";
 import {CustomFormGroup} from "../utils/custom-form-group";
+import {MatOption, MatSelect} from "@angular/material/select";
 
 @Component({
   selector: 'app-form-modal',
   standalone: true,
-  imports: [ReactiveFormsModule, KeyValuePipe, MatFormFieldModule, MatInputModule, JsonPipe, MatIconModule, MatTooltipModule],
+  imports: [ReactiveFormsModule, KeyValuePipe, MatFormFieldModule, MatInputModule, JsonPipe, MatIconModule, MatTooltipModule, MatSelect, MatOption],
   template: `
     <div class="form-wrapper">
       <header>
@@ -24,12 +25,41 @@ import {CustomFormGroup} from "../utils/custom-form-group";
             <!-- TODO: Add support for more control types -->
             <mat-form-field appearance="fill">
 
-              <mat-label>{{ (this.formGroup().labels[control.key] || '') }}</mat-label>
+              <mat-label>{{ (formGroup().labels[control.key] || '') }}</mat-label>
 
-              <input matNativeControl
-                     [formControlName]="control.key"
-                     type="text"
-                     [placeholder]="(this.formGroup().placeholders[control.key] || '')">
+              @switch (formGroup().controlTypes[control.key]) {
+
+                <!-- Select input -->
+                @case ('select') {
+                  @if (formGroup().selectOptions) {
+                    <mat-select [formControlName]="control.key">
+                      @for (option of formGroup().selectOptions![control.key]; track $index) {
+                        <mat-option [value]="option.value">
+                          {{ option.label }}
+                        </mat-option>
+                      }
+                    </mat-select>
+                  } @else {
+                    <p>No list found for this select control</p>
+                  }
+                }
+
+                <!-- Text input (default) -->
+                @case ('number') {
+                  <input matNativeControl
+                         [formControlName]="control.key"
+                         type="number"
+                         [placeholder]="(this.formGroup().placeholders[control.key] || '')">
+                }
+
+                <!-- Text input (default) -->
+                @default {
+                  <input matNativeControl
+                         [formControlName]="control.key"
+                         type="text"
+                         [placeholder]="(this.formGroup().placeholders[control.key] || '')">
+                }
+              }
 
               @if ((formGroup().get(control.key)?.dirty || form.submitted) && !formGroup().get(control.key)?.valid) {
                 <mat-icon matSuffix matTooltip="{{ getErrorMessages(control.key) }}">error</mat-icon>

@@ -1,9 +1,10 @@
-import {Component, effect, input, output} from '@angular/core';
+import {Component, effect, inject, input, output} from '@angular/core';
 import {FormModalComponent} from "../../shared/ui/form-modal.component";
 import {ModalComponent} from "../../shared/ui/modal.component";
-import {ToolInput} from "../../shared/interfaces";
+import {ToolInput, ToolInputTypeEnum} from "../../shared/interfaces";
 import {CustomFormGroup} from "../../shared/utils/custom-form-group";
 import {FormControl, Validators} from "@angular/forms";
+import {SelectOptionsService} from "../../shared/data-access/select-options.service";
 
 @Component({
   selector: 'app-tool-input-form',
@@ -32,7 +33,11 @@ import {FormControl, Validators} from "@angular/forms";
   `,
   styles: ``
 })
+// Responsibility: TODO
 export class ToolInputFormComponent {
+
+  // --- Dependencies
+  private selectOptionsService: SelectOptionsService = inject(SelectOptionsService);
 
   // --- Inputs
   inputBeingEdited = input<Partial<ToolInput> | null>(null);
@@ -45,7 +50,7 @@ export class ToolInputFormComponent {
   public toolInputForm = new CustomFormGroup({
     name: new FormControl('', [Validators.required, Validators.minLength(3)]),
     label: new FormControl('', [Validators.required]),
-    type: new FormControl(0, [Validators.required]),
+    type: new FormControl(ToolInputTypeEnum.Text, [Validators.required]),
   }, {
     // Labels
     name: 'Name',
@@ -56,6 +61,12 @@ export class ToolInputFormComponent {
     name: '',
     label: '',
     type: '',
+  }, {
+    // Input types
+    type: 'select'
+  }, {
+    // Select input lists
+    type: this.selectOptionsService.getToolInputTypeOptions()
   });
 
   constructor() {

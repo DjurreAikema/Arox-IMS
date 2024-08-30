@@ -53,7 +53,7 @@ export class ToolOutputFormComponent {
     // Placeholders
     name: '',
     type: '',
-  });
+  }, {});
 
   constructor() {
     effect((): void => {
