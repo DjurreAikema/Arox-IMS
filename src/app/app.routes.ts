@@ -28,6 +28,10 @@ export const routes: Routes = [
     path: 'tool/:id',
     loadComponent: () => import('./tool/tool-details.component')
   },
+  {
+    path: 'tool/:id/execute',
+    loadComponent: () => import('./tool/tool-execute.component')
+  },
   // Default route
   {
     path: '',

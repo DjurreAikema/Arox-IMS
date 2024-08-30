@@ -52,7 +52,7 @@ import {ModalComponent} from "../../shared/ui/modal.component";
                 Open
               </button>
 
-              <button class="button-warning">
+              <button class="button-warning" routerLink="/tool/{{tool.id}}/execute">
                 Execute
               </button>
             </div>
