@@ -1,14 +1,16 @@
 import {Component, input, output, signal} from '@angular/core';
-import {RemoveToolOutput, ToolOutput} from "../../shared/interfaces";
+import {RemoveToolOutput, ToolOutput, ToolOutputTypeEnum} from "../../shared/interfaces";
 import {ConfirmModalComponent} from "../../shared/ui/confirm-modal.component";
 import {ModalComponent} from "../../shared/ui/modal.component";
+import {EnumToTextPipe} from "../../shared/pipes/enum-to-text.pipe";
 
 @Component({
   selector: 'app-tool-output-list',
   standalone: true,
   imports: [
     ConfirmModalComponent,
-    ModalComponent
+    ModalComponent,
+    EnumToTextPipe
   ],
   template: `
     <ul>
@@ -27,7 +29,7 @@ import {ModalComponent} from "../../shared/ui/modal.component";
             </p>
 
             <p>
-              <span>Type: </span>{{ toolOutput.type }}
+              <span>Type: </span>{{ toolOutput.type | enumToText: ToolOutputTypeEnum }}
             </p>
           </div>
 
@@ -114,4 +116,6 @@ export class ToolOutputListComponent {
       this.toolOutputToDelete.set(null);
     }
   }
+
+  protected readonly ToolOutputTypeEnum = ToolOutputTypeEnum;
 }
