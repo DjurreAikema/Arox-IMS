@@ -5,6 +5,7 @@ import {ToolOutputService} from "./data-access/tool-output.service";
 import {ActivatedRoute, RouterLink} from "@angular/router";
 import {toSignal} from "@angular/core/rxjs-interop";
 import {InputsToFormComponent} from "./ui-tool-execute/inputs-to-form.component";
+import {ToolExecuteService} from "./data-access/tool-execute.service";
 
 @Component({
   selector: 'app-tool-execute',
@@ -21,11 +22,12 @@ import {InputsToFormComponent} from "./ui-tool-execute/inputs-to-form.component"
 
         <h1>Tool: {{ tool.name }}</h1>
       </header>
-    }
 
-    <app-inputs-to-form
-      [toolInputs]="toolInputs()"
-    />
+      <app-inputs-to-form
+        [toolInputs]="toolInputs()"
+        (send)="toolExecuteService.postToApi($event, tool.apiUrl)"
+      />
+    }
   `,
   styles: [`
     header {
@@ -59,6 +61,7 @@ export default class ToolExecuteComponent {
   protected toolService: ToolService = inject(ToolService);
   protected toolInputService: ToolInputService = inject(ToolInputService);
   protected toolOutputService: ToolOutputService = inject(ToolOutputService);
+  protected toolExecuteService: ToolExecuteService = inject(ToolExecuteService);
 
   private route: ActivatedRoute = inject(ActivatedRoute);
 

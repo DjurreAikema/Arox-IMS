@@ -1,4 +1,4 @@
-import {Component, input, OnInit} from '@angular/core';
+import {Component, input, OnInit, output} from '@angular/core';
 import {ToolInput, ToolInputTypeEnum} from "../../shared/interfaces";
 import {CustomFormGroup} from "../../shared/utils/custom-form-group";
 import {FormControl, ReactiveFormsModule} from "@angular/forms";
@@ -39,7 +39,7 @@ import {SimpleFormGeneratorComponent} from "../../shared/ui/simple-form-generato
 
         <div class="form-buttons">
           <button class="button-danger">Clear</button>
-          <button class="button-success">Save</button>
+          <button class="button-success" (click)="send.emit(inputsForm.getRawValue())">Send</button>
         </div>
 
       </form>
@@ -54,6 +54,9 @@ export class InputsToFormComponent implements OnInit {
 
   // --- Inputs
   toolInputs = input.required<ToolInput[]>();
+
+  // --- Outputs
+  send = output();
 
   // --- Properties
   public inputsForm?: CustomFormGroup;
