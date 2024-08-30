@@ -48,8 +48,23 @@ export class CustomFormGroup extends FormGroup {
     return this.controlConfigs[controlKey].type;
   }
 
-  public getOptions(controlKey: string): { value: any, label: string}[] {
+  public getOptions(controlKey: string): { value: any, label: string }[] {
     return this.controlConfigs[controlKey].selectOptions;
+  }
+
+  public isDirty(controlKey: string): boolean {
+    const control = this.get(controlKey);
+    return control ? control.dirty : false;
+  }
+
+  public isTouched(controlKey: string): boolean {
+    const control = this.get(controlKey);
+    return control ? control.touched : false;
+  }
+
+  public isValid(controlKey: string): boolean {
+    const control = this.get(controlKey);
+    return control ? control.valid : false;
   }
 
 }

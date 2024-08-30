@@ -66,7 +66,7 @@ import {MatOption, MatSelect} from "@angular/material/select";
               }
 
               <!-- Form errors -->
-              @if ((formGroup().get(control.key)?.dirty || form.submitted) && !formGroup().get(control.key)?.valid) {
+              @if ((formGroup().isTouched(control.key) || form.submitted) && !formGroup().isValid(control.key)) {
                 <mat-icon matSuffix matTooltip="{{ getErrorMessages(control.key) }}">error</mat-icon>
               }
 
