@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {ToolInputTypeEnum} from '../interfaces';
+import {ToolInputTypeEnum, ToolOutputTypeEnum} from '../interfaces';
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +12,13 @@ export class SelectOptionsService {
     return Object.keys(ToolInputTypeEnum)
       .filter(key => isNaN(Number(key)))
       .map((key: any) => ({value: ToolInputTypeEnum[key], label: key}));
+  }
+
+  // Turn ToolOutputTypeEnum into select options for form
+  public getToolOutputTypeOptions() {
+    return Object.keys(ToolOutputTypeEnum)
+      .filter(key => isNaN(Number(key)))
+      .map((key: any) => ({value: ToolOutputTypeEnum[key], label: key}));
   }
 
 }
