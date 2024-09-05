@@ -33,24 +33,26 @@ import {MatTooltip} from "@angular/material/tooltip";
       </mat-expansion-panel-header>
 
       <!-- Panel body -->
-      <app-expansion-panel-list-header text="Applications">
-        <!-- Quick add application button -->
-        <button class="button-success small-button" (click)="addApplication.emit(customer().id)"
-                matTooltip="Quick add application" matTooltipPosition="right">
-          <i class="fa-solid fa-plus"></i>
-        </button>
-      </app-expansion-panel-list-header>
+      @if (filteredApplications(customer().id); as filteredApplications) {
+        <app-expansion-panel-list-header [text]="'Applications (' + filteredApplications.length + ')'">
+          <!-- Quick add application button -->
+          <button class="button-success small-button" (click)="addApplication.emit(customer().id)"
+                  matTooltip="Quick add application" matTooltipPosition="right">
+            <i class="fa-solid fa-plus"></i>
+          </button>
+        </app-expansion-panel-list-header>
 
-      <!-- Application list -->
-      @for (application of filteredApplications(customer().id); track application.id) {
-        <app-application-expansion-panel-item
-          [application]="application"
-          [selected]="selectedApplication()?.id === application.id"
-          (select)="selectApplication.emit($event)"
-          (edit)="editApplication.emit($event)"
-        />
-      } @empty {
-        No applications found
+        <!-- Application list -->
+        @for (application of filteredApplications; track application.id) {
+          <app-application-expansion-panel-item
+            [application]="application"
+            [selected]="selectedApplication()?.id === application.id"
+            (select)="selectApplication.emit($event)"
+            (edit)="editApplication.emit($event)"
+          />
+        } @empty {
+          No applications found
+        }
       }
 
     </mat-expansion-panel>

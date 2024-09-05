@@ -25,6 +25,7 @@ import {Component, input} from '@angular/core';
       padding: 5px 1rem;
       margin-bottom: 5px;
       border-bottom: 1px solid var(--color-secondary);
+      user-select: none;
 
       p {
         margin: 0;
