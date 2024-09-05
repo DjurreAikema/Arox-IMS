@@ -2,13 +2,15 @@ import {Component, input} from '@angular/core';
 import {Application, Customer} from "../../shared/interfaces";
 import {MatExpansionModule} from "@angular/material/expansion";
 import {MatCardTitle} from "@angular/material/card";
+import {ApplicationExpansionPanelItemComponent} from "../../application/ui-applications/application-expansion-panel-item.component";
 
 @Component({
   selector: 'app-customer-expansion-panel-list',
   standalone: true,
   imports: [
     MatExpansionModule,
-    MatCardTitle
+    MatCardTitle,
+    ApplicationExpansionPanelItemComponent
   ],
   template: `
     <mat-accordion>
@@ -26,7 +28,9 @@ import {MatCardTitle} from "@angular/material/card";
           <!-- Panel body -->
           @for (application of applications(); track application.id) {
             @if (application.customerId == customer.id) {
-              {{ application.name }}
+              <app-application-expansion-panel-item
+                [application]="application"
+              />
             } @else {
               No applications
             }
