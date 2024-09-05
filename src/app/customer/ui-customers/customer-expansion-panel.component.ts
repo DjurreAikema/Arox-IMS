@@ -37,7 +37,7 @@ import {MatTooltip} from "@angular/material/tooltip";
         <app-application-expansion-panel-item
           [application]="application"
           [selected]="selectedApplication() === application.id"
-          (select)="selectedApplication.set($event)"
+          (select)="selectApplication.emit($event)"
           (edit)="editApplication.emit($event)"
         />
       } @empty {
@@ -64,14 +64,15 @@ export class CustomerExpansionPanelComponent {
   // --- Inputs
   customer = input.required<Customer>();
   applications = input.required<Application[]>();
+  selectedApplication = input.required<RemoveApplication | null>();
 
   // --- Outputs
+  editApplication = output<Application>();
   addApplication = output<RemoveApplication>();
-  editApplication = output<Application>()
+  selectApplication = output<RemoveApplication | null>();
 
   // --- Properties
   protected readonly panelOpenState = signal(false);
-  protected selectedApplication = signal<RemoveApplication | null>(null);
 
   protected filteredApplications(customerId: number) {
     return this.applications().filter(app => app.customerId === customerId);
