@@ -1,8 +1,8 @@
 import {Component, inject, signal} from '@angular/core';
 import {CustomerService} from "./data-access/customer.service";
 import {Customer} from "../shared/interfaces";
-import {CustomerListComponent} from "./ui-customers/customer-list.component";
-import {CustomerFormComponent} from "./ui-customers/customer-form.component";
+import {CustomerListComponent} from "./ui/customer-list.component";
+import {CustomerFormComponent} from "./ui/customer-form.component";
 
 @Component({
   selector: 'app-customers',

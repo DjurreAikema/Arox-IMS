@@ -5,9 +5,9 @@ import {toSignal} from "@angular/core/rxjs-interop";
 import {JsonPipe} from "@angular/common";
 import {ApplicationService} from "../application/data-access/application.service";
 import {Application} from "../shared/interfaces";
-import {ApplicationListComponent} from "../application/ui-applications/application-list.component";
+import {ApplicationListComponent} from "../application/ui/application-list.component";
 import {MatCard, MatCardContent} from "@angular/material/card";
-import {ApplicationFormComponent} from "../application/ui-applications/application-form.component";
+import {ApplicationFormComponent} from "../application/ui/application-form.component";
 
 @Component({
   selector: 'app-customer-details',

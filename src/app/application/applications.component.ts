@@ -1,6 +1,6 @@
 import {Component, inject} from '@angular/core';
 import {ApplicationService} from "./data-access/application.service";
-import {ApplicationListComponent} from "./ui-applications/application-list.component";
+import {ApplicationListComponent} from "./ui/application-list.component";
 
 @Component({
   selector: 'app-applications',

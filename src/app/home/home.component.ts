@@ -2,11 +2,11 @@ import {Component, computed, inject, signal} from '@angular/core';
 import {CustomerService} from "../customer/data-access/customer.service";
 import {ApplicationService} from "../application/data-access/application.service";
 import {Application, Customer, RemoveApplication} from "../shared/interfaces";
-import {CustomerFormComponent} from "../customer/ui-customers/customer-form.component";
+import {CustomerFormComponent} from "../customer/ui/customer-form.component";
 import {MatTooltip} from "@angular/material/tooltip";
-import {ApplicationFormComponent} from "../application/ui-applications/application-form.component";
+import {ApplicationFormComponent} from "../application/ui/application-form.component";
 import {MatAccordion} from "@angular/material/expansion";
-import {CustomerExpansionPanelComponent} from "../customer/ui-customers/customer-expansion-panel.component";
+import {CustomerExpansionPanelComponent} from "./ui/customer-expansion-panel.component";
 import {ToolService} from "../tool/data-access/tool.service";
 import {ToolListComponent} from "./ui/tool-list.component";
 

@@ -2,7 +2,7 @@ import {Component, input, output, signal} from '@angular/core';
 import {MatExpansionModule} from "@angular/material/expansion";
 import {Application, Customer, RemoveApplication} from "../../shared/interfaces";
 import {ExpansionPanelListHeaderComponent} from "../../shared/ui/expansion-panel-list-header.component";
-import {ApplicationExpansionPanelItemComponent} from "../../application/ui-applications/application-expansion-panel-item.component";
+import {ApplicationExpansionPanelItemComponent} from "./application-expansion-panel-item.component";
 import {MatTooltip} from "@angular/material/tooltip";
 
 @Component({
