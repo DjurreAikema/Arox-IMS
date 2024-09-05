@@ -71,7 +71,7 @@ export class InputsToFormComponent implements OnInit {
         label: input.label,
         placeholder: input.placeholder,
         type: this.getControlType(input.type),
-        selectOptions: ['a', 'b']
+        selectOptions: [{value: 'a', label: 'aa'}, {value: 'b', label: 'bb'}]
       };
     });
 
