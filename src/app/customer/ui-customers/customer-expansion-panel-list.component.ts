@@ -1,4 +1,4 @@
-import {Component, input, signal} from '@angular/core';
+import {Component, input, output, signal} from '@angular/core';
 import {Application, Customer, RemoveApplication} from "../../shared/interfaces";
 import {MatExpansionModule} from "@angular/material/expansion";
 import {MatCardTitle} from "@angular/material/card";
@@ -33,8 +33,8 @@ import {MatTooltip} from "@angular/material/tooltip";
           <app-expansion-panel-list-header
             text="Applications">
 
-            <button class="button-success small-button"
-                    matTooltip="Add customer" matTooltipPosition="right">
+            <button class="button-success small-button" (click)="add.emit()"
+                    matTooltip="Quick add application" matTooltipPosition="right">
               <i class="fa-solid fa-plus"></i>
             </button>
 
@@ -55,7 +55,11 @@ import {MatTooltip} from "@angular/material/tooltip";
 
     </mat-accordion>
   `,
-  styles: ``
+  styles: [`
+    mat-expansion-panel-header {
+      user-select: none;
+    }
+  `]
 })
 // responsibility: Dumb component that displays a list of customers as an expansion panel (material ui)
 export class CustomerExpansionPanelListComponent {
@@ -63,6 +67,9 @@ export class CustomerExpansionPanelListComponent {
   // --- Inputs
   customers = input.required<Customer[]>();
   applications = input.required<Application[]>();
+
+  // --- Outputs
+  add = output();
 
   // --- Properties
   protected selectedApplication = signal<RemoveApplication | null>(null);
