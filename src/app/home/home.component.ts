@@ -1,7 +1,7 @@
 import {Component, computed, inject, signal} from '@angular/core';
 import {CustomerService} from "../customer/data-access/customer.service";
 import {ApplicationService} from "../application/data-access/application.service";
-import {Application, Customer, RemoveApplication} from "../shared/interfaces";
+import {Application, Customer} from "../shared/interfaces";
 import {CustomerFormComponent} from "../customer/ui/customer-form.component";
 import {MatTooltip} from "@angular/material/tooltip";
 import {ApplicationFormComponent} from "../application/ui/application-form.component";
@@ -60,7 +60,7 @@ import {ToolListComponent} from "./ui/tool-list.component";
 
         <!-- Right section header -->
         <header class="list-header">
-          <h4>Tools</h4>
+          <h4>Tools {{ selectedApplication() ? 'for ' + selectedApplication()?.name : '' }}</h4>
         </header>
 
         <app-tool-list
@@ -136,12 +136,12 @@ export default class HomeComponent {
 
   // Track the application that is currently being edited
   protected applicationBeingEdited = signal<Partial<Application> | null>(null);
-  protected selectedApplication = signal<RemoveApplication | null>(null);
+  protected selectedApplication = signal<Application | null>(null);
 
   protected tools = computed(() => {
     return this.toolService
       .tools()
-      .filter((tool) => tool.applicationId == this.selectedApplication())
-  })
+      .filter((tool) => tool.applicationId == this.selectedApplication()?.id)
+  });
 
 }

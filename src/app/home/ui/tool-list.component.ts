@@ -32,25 +32,15 @@ import {RouterLink} from "@angular/router";
         </mat-card-content>
 
         <mat-card-footer>
-          <div>
-            <button class="button-danger small-button">
-              <i class="fa-solid fa-trash"></i>
-            </button>
 
-            <button class="button-success small-button" (click)="edit.emit(tool)">
-              <i class="fa-solid fa-pen"></i>
-            </button>
-          </div>
+          <button class="button-info" routerLink="/tool/{{tool.id}}">
+            Edit tool
+          </button>
 
-          <div>
-            <button class="button-primary" routerLink="/tool/{{tool.id}}">
-              Open
-            </button>
+          <button class="button-warning" routerLink="/tool/{{tool.id}}/execute">
+            Execute tool
+          </button>
 
-            <button class="button-warning" routerLink="/tool/{{tool.id}}/execute">
-              Execute
-            </button>
-          </div>
         </mat-card-footer>
 
       </mat-card>

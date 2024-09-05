@@ -1,5 +1,5 @@
 import {Component, input, output} from '@angular/core';
-import {Application, RemoveApplication} from "../../shared/interfaces";
+import {Application} from "../../shared/interfaces";
 import {MatTooltip} from "@angular/material/tooltip";
 
 @Component({
@@ -11,7 +11,7 @@ import {MatTooltip} from "@angular/material/tooltip";
   template: `
     <div class="expansion-panel-item"
          [class.selected]="selected()"
-         (click)="select.emit(application().id)">
+         (click)="select.emit(application())">
 
       <p>
         {{ application().name }}
@@ -59,7 +59,7 @@ export class ApplicationExpansionPanelItemComponent {
   selected = input.required<Boolean>();
 
   // --- Outputs
-  select = output<RemoveApplication>();
+  select = output<Application>();
   edit = output<Application>();
 
   // --- Functions
