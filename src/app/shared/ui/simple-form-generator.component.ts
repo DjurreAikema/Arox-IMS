@@ -43,8 +43,8 @@ import {getErrorMessages} from "../utils/get-error-messages";
 
                 <!-- Select options -->
                 @for (option of formGroup().getOptions(control.key); track $index) {
-                  <mat-option [value]="option.value">
-                    {{ option.label }}
+                  <mat-option [value]="option">
+                    {{ option }}
                   </mat-option>
                 }
 

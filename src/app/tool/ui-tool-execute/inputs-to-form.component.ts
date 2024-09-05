@@ -71,7 +71,7 @@ export class InputsToFormComponent implements OnInit {
         label: input.label,
         placeholder: input.placeholder,
         type: this.getControlType(input.type),
-        selectOptions: []
+        selectOptions: ['a', 'b']
       };
     });
 
@@ -83,11 +83,11 @@ export class InputsToFormComponent implements OnInit {
   private getControlType(type: ToolInputTypeEnum): string {
     switch (type) {
 
-      case ToolInputTypeEnum.Text:
-        return 'text';
-
       case ToolInputTypeEnum.Number:
         return 'number';
+
+      case ToolInputTypeEnum.Select:
+        return 'select';
 
       default:
         return 'text';
