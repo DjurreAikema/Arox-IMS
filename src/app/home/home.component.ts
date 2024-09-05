@@ -1,20 +1,22 @@
 import {Component, inject, signal} from '@angular/core';
-import {CustomerExpansionPanelListComponent} from "../customer/ui-customers/customer-expansion-panel-list.component";
 import {CustomerService} from "../customer/data-access/customer.service";
 import {ApplicationService} from "../application/data-access/application.service";
 import {Application, Customer} from "../shared/interfaces";
 import {CustomerFormComponent} from "../customer/ui-customers/customer-form.component";
 import {MatTooltip} from "@angular/material/tooltip";
 import {ApplicationFormComponent} from "../application/ui-applications/application-form.component";
+import {MatAccordion} from "@angular/material/expansion";
+import {CustomerExpansionPanelComponent} from "../customer/ui-customers/customer-expansion-panel.component";
 
 @Component({
   selector: 'app-home',
   standalone: true,
   imports: [
-    CustomerExpansionPanelListComponent,
     CustomerFormComponent,
     MatTooltip,
-    ApplicationFormComponent
+    ApplicationFormComponent,
+    MatAccordion,
+    CustomerExpansionPanelComponent
   ],
   template: `
     <div class="wrapper">
@@ -29,16 +31,21 @@ import {ApplicationFormComponent} from "../application/ui-applications/applicati
           </button>
         </div>
 
-        <app-customer-expansion-panel-list
-          [customers]="customerService.customers()"
-          [applications]="applicationService.applications()"
-          (addApplication)="applicationBeingEdited.set({customerId: $event})"
-        />
+        <mat-accordion>
+          @for (customer of customerService.customers(); track customer.id) {
+            <app-customer-expansion-panel
+                [customer]="customer"
+                [applications]="applicationService.applications()"
+                (addApplication)="applicationBeingEdited.set({customerId: $event})"
+            />
+          }
+        </mat-accordion>
+
       </div>
 
       <div>
         <h4>Tools</h4>
-        right side
+        Tools for
       </div>
 
     </div>
