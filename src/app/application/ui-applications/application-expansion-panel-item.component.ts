@@ -44,6 +44,7 @@ import {MatTooltip} from "@angular/material/tooltip";
 
     .expansion-panel-item:hover {
       cursor: pointer;
+      background-color: #ebe9ed;
     }
 
     .expansion-panel-item.selected {
@@ -61,10 +62,6 @@ export class ApplicationExpansionPanelItemComponent {
   select = output<number>();
 
   // --- Functions
-  protected clickTest() {
-    console.log("clicked")
-  }
-
   protected onButtonClick(event: MouseEvent) {
     event.stopPropagation();
     console.log("button clicked");

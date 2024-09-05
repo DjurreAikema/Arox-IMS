@@ -32,7 +32,7 @@ import {ApplicationFormComponent} from "../application/ui-applications/applicati
         <app-customer-expansion-panel-list
           [customers]="customerService.customers()"
           [applications]="applicationService.applications()"
-          (add)="applicationBeingEdited.set({customerId: $event})"
+          (addApplication)="applicationBeingEdited.set({customerId: $event})"
         />
       </div>
 

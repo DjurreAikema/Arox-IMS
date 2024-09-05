@@ -30,16 +30,17 @@ import {MatTooltip} from "@angular/material/tooltip";
           </mat-expansion-panel-header>
 
           <!-- Panel body -->
-          <app-expansion-panel-list-header
-            text="Applications">
+          <app-expansion-panel-list-header text="Applications">
 
-            <button class="button-success small-button" (click)="add.emit(customer.id)"
+            <!-- Quick add application button -->
+            <button class="button-success small-button" (click)="addApplication.emit(customer.id)"
                     matTooltip="Quick add application" matTooltipPosition="right">
               <i class="fa-solid fa-plus"></i>
             </button>
 
           </app-expansion-panel-list-header>
 
+          <!-- Application list -->
           @for (application of filteredApplications(customer.id); track application.id) {
             <app-application-expansion-panel-item
               [application]="application"
@@ -69,7 +70,7 @@ export class CustomerExpansionPanelListComponent {
   applications = input.required<Application[]>();
 
   // --- Outputs
-  add = output<number>();
+  addApplication = output<number>();
 
   // --- Properties
   protected selectedApplication = signal<RemoveApplication | null>(null);

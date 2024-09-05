@@ -11,9 +11,7 @@ import {Component, input} from '@angular/core';
         {{ text() }}
       </p>
 
-      <ng-content class="panel-buttons">
-
-      </ng-content>
+      <ng-content class="panel-buttons"></ng-content>
 
     </div>
   `,
