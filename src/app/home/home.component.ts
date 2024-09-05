@@ -2,9 +2,10 @@ import {Component, inject, signal} from '@angular/core';
 import {CustomerExpansionPanelListComponent} from "../customer/ui-customers/customer-expansion-panel-list.component";
 import {CustomerService} from "../customer/data-access/customer.service";
 import {ApplicationService} from "../application/data-access/application.service";
-import {Customer} from "../shared/interfaces";
+import {Application, Customer} from "../shared/interfaces";
 import {CustomerFormComponent} from "../customer/ui-customers/customer-form.component";
 import {MatTooltip} from "@angular/material/tooltip";
+import {ApplicationFormComponent} from "../application/ui-applications/application-form.component";
 
 @Component({
   selector: 'app-home',
@@ -12,7 +13,8 @@ import {MatTooltip} from "@angular/material/tooltip";
   imports: [
     CustomerExpansionPanelListComponent,
     CustomerFormComponent,
-    MatTooltip
+    MatTooltip,
+    ApplicationFormComponent
   ],
   template: `
     <div class="wrapper">
@@ -30,6 +32,7 @@ import {MatTooltip} from "@angular/material/tooltip";
         <app-customer-expansion-panel-list
           [customers]="customerService.customers()"
           [applications]="applicationService.applications()"
+          (add)="applicationBeingEdited.set({customerId: $event})"
         />
       </div>
 
@@ -52,6 +55,23 @@ import {MatTooltip} from "@angular/material/tooltip";
                 })
                 : customerService.add$.next($event)
         "
+    />
+
+    <!-- Application form modal -->
+    <app-application-form
+      [applicationBeingEdited]="applicationBeingEdited()"
+      (close)="applicationBeingEdited.set(null)"
+      (save)="
+            applicationBeingEdited()?.id
+              ? applicationService.edit$.next({
+                id: applicationBeingEdited()!.id!,
+                data: $event
+              })
+              : applicationService.add$.next({
+                item: $event,
+                customerId: applicationBeingEdited()!.customerId!
+              })
+          "
     />
   `,
   styles: [`
@@ -84,5 +104,8 @@ export default class HomeComponent {
 
   // Track the customer that is currently being edited
   public customerBeingEdited = signal<Partial<Customer> | null>(null);
+
+  // Track the application that is currently being edited
+  public applicationBeingEdited = signal<Partial<Application> | null>(null);
 
 }

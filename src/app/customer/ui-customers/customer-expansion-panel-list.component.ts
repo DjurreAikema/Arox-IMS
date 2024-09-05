@@ -33,7 +33,7 @@ import {MatTooltip} from "@angular/material/tooltip";
           <app-expansion-panel-list-header
             text="Applications">
 
-            <button class="button-success small-button" (click)="add.emit()"
+            <button class="button-success small-button" (click)="add.emit(customer.id)"
                     matTooltip="Quick add application" matTooltipPosition="right">
               <i class="fa-solid fa-plus"></i>
             </button>
@@ -69,7 +69,7 @@ export class CustomerExpansionPanelListComponent {
   applications = input.required<Application[]>();
 
   // --- Outputs
-  add = output();
+  add = output<number>();
 
   // --- Properties
   protected selectedApplication = signal<RemoveApplication | null>(null);
