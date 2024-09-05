@@ -1,4 +1,4 @@
-import {Component, input} from '@angular/core';
+import {Component, input, output} from '@angular/core';
 import {Application} from "../../shared/interfaces";
 
 @Component({
@@ -6,7 +6,10 @@ import {Application} from "../../shared/interfaces";
   standalone: true,
   imports: [],
   template: `
-    <div class="expansion-panel-item" (click)="clickTest()">
+    <div class="expansion-panel-item"
+         [class.selected]="selected()"
+         (click)="select.emit(application().id)">
+
       <p>
         {{ application().name }}
       </p>
@@ -16,6 +19,7 @@ import {Application} from "../../shared/interfaces";
           <i class="fa-solid fa-pen"></i>
         </button>
       </div>
+
     </div>
   `,
   styles: [`
@@ -26,6 +30,7 @@ import {Application} from "../../shared/interfaces";
       align-items: center;
 
       padding: 1rem;
+      margin-bottom: 5px;
       border-bottom: 1px solid var(--color-secondary);
 
       p {
@@ -34,8 +39,11 @@ import {Application} from "../../shared/interfaces";
     }
 
     .expansion-panel-item:hover {
-      background-color: lightyellow;
       cursor: pointer;
+    }
+
+    .expansion-panel-item.selected {
+      background-color: #f0f0f0;
     }
   `]
 })
@@ -43,6 +51,10 @@ export class ApplicationExpansionPanelItemComponent {
 
   // --- Inputs
   application = input.required<Application>();
+  selected = input.required<Boolean>();
+
+  // --- Outputs
+  select = output<number>();
 
   // --- Functions
   protected clickTest() {

@@ -1,5 +1,5 @@
-import {Component, input} from '@angular/core';
-import {Application, Customer} from "../../shared/interfaces";
+import {Component, input, signal} from '@angular/core';
+import {Application, Customer, RemoveApplication} from "../../shared/interfaces";
 import {MatExpansionModule} from "@angular/material/expansion";
 import {MatCardTitle} from "@angular/material/card";
 import {ApplicationExpansionPanelItemComponent} from "../../application/ui-applications/application-expansion-panel-item.component";
@@ -26,14 +26,14 @@ import {ApplicationExpansionPanelItemComponent} from "../../application/ui-appli
           </mat-expansion-panel-header>
 
           <!-- Panel body -->
-          @for (application of applications(); track application.id) {
-            @if (application.customerId == customer.id) {
-              <app-application-expansion-panel-item
-                [application]="application"
-              />
-            } @else {
-              No applications
-            }
+          @for (application of filteredApplications(customer.id); track application.id) {
+            <app-application-expansion-panel-item
+              [application]="application"
+              [selected]="selectedApplication() === application.id"
+              (select)="selectedApplication.set($event)"
+            />
+          } @empty {
+            No applications found
           }
 
         </mat-expansion-panel>
@@ -49,5 +49,12 @@ export class CustomerExpansionPanelListComponent {
   // --- Inputs
   customers = input.required<Customer[]>();
   applications = input.required<Application[]>();
+
+  // --- Properties
+  protected selectedApplication = signal<RemoveApplication | null>(null);
+
+  protected filteredApplications(customerId: number) {
+    return this.applications().filter(app => app.customerId === customerId);
+  }
 
 }
