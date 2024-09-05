@@ -18,7 +18,7 @@ import {MatTooltip} from "@angular/material/tooltip";
       </p>
 
       <div class="panel-buttons">
-        <button class="button-success small-button" (click)="onButtonClick($event)"
+        <button class="button-info small-button" (click)="onButtonClick($event)"
                 matTooltip="Edit application" matTooltipPosition="right">
           <i class="fa-solid fa-pen"></i>
         </button>
