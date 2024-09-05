@@ -3,6 +3,7 @@ import {Application, Customer, RemoveApplication} from "../../shared/interfaces"
 import {MatExpansionModule} from "@angular/material/expansion";
 import {MatCardTitle} from "@angular/material/card";
 import {ApplicationExpansionPanelItemComponent} from "../../application/ui-applications/application-expansion-panel-item.component";
+import {ExpansionPanelListHeaderComponent} from "../../shared/ui/expansion-panel-list-header.component";
 
 @Component({
   selector: 'app-customer-expansion-panel-list',
@@ -10,7 +11,8 @@ import {ApplicationExpansionPanelItemComponent} from "../../application/ui-appli
   imports: [
     MatExpansionModule,
     MatCardTitle,
-    ApplicationExpansionPanelItemComponent
+    ApplicationExpansionPanelItemComponent,
+    ExpansionPanelListHeaderComponent
   ],
   template: `
     <mat-accordion>
@@ -26,6 +28,11 @@ import {ApplicationExpansionPanelItemComponent} from "../../application/ui-appli
           </mat-expansion-panel-header>
 
           <!-- Panel body -->
+          <app-expansion-panel-list-header
+            text="Applications">
+            Here be buttons
+          </app-expansion-panel-list-header>
+
           @for (application of filteredApplications(customer.id); track application.id) {
             <app-application-expansion-panel-item
               [application]="application"
