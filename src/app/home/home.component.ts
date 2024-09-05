@@ -43,6 +43,9 @@ import {ToolListComponent} from "./ui/tool-list.component";
               [customer]="customer"
               [applications]="applicationService.applications()"
               [selectedApplication]="selectedApplication()"
+
+              (editCustomer)="customerBeingEdited.set($event)"
+
               (addApplication)="applicationBeingEdited.set({customerId: $event})"
               (editApplication)="applicationBeingEdited.set($event)"
               (selectApplication)="selectedApplication.set($event)"

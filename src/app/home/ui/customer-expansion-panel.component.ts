@@ -19,8 +19,17 @@ import {MatTooltip} from "@angular/material/tooltip";
 
       <!-- Panel header -->
       <mat-expansion-panel-header>
+
         <mat-panel-title>{{ customer().name }}</mat-panel-title>
-        <mat-panel-description>[buttons here?]</mat-panel-description>
+
+        <!-- Panel header buttons -->
+        <mat-panel-description>
+          <button class="button-info small-button" (click)="onButtonClick($event)"
+                  matTooltip="Edit customer" matTooltipPosition="right">
+            <i class="fa-solid fa-pen"></i>
+          </button>
+        </mat-panel-description>
+
       </mat-expansion-panel-header>
 
       <!-- Panel body -->
@@ -56,6 +65,10 @@ import {MatTooltip} from "@angular/material/tooltip";
       border-top-right-radius: 0 !important;
       border-top-left-radius: 0 !important;
     }
+
+    mat-panel-description {
+      justify-content: flex-end;
+    }
   `]
 })
 // Responsibility: TODO
@@ -67,6 +80,8 @@ export class CustomerExpansionPanelComponent {
   selectedApplication = input.required<RemoveApplication | null>();
 
   // --- Outputs
+  editCustomer = output<Customer>();
+
   editApplication = output<Application>();
   addApplication = output<RemoveApplication>();
   selectApplication = output<RemoveApplication | null>();
@@ -76,6 +91,11 @@ export class CustomerExpansionPanelComponent {
 
   protected filteredApplications(customerId: number) {
     return this.applications().filter(app => app.customerId === customerId);
+  }
+
+  protected onButtonClick(event: MouseEvent) {
+    event.stopPropagation();
+    this.editCustomer.emit(this.customer());
   }
 
 }
