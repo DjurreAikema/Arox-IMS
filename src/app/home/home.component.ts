@@ -1,6 +1,7 @@
 import {Component, inject} from '@angular/core';
 import {CustomerExpansionPanelListComponent} from "../customer/ui-customers/customer-expansion-panel-list.component";
 import {CustomerService} from "../customer/data-access/customer.service";
+import {ApplicationService} from "../application/data-access/application.service";
 
 @Component({
   selector: 'app-home',
@@ -16,6 +17,7 @@ import {CustomerService} from "../customer/data-access/customer.service";
 
         <app-customer-expansion-panel-list
           [customers]="customerService.customers()"
+          [applications]="applicationService.applications()"
         />
       </div>
 
@@ -39,5 +41,6 @@ export default class HomeComponent {
 
   // --- Dependencies
   public customerService: CustomerService = inject(CustomerService);
+  public applicationService: ApplicationService = inject(ApplicationService);
 
 }

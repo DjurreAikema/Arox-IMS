@@ -1,5 +1,5 @@
 import {Component, input} from '@angular/core';
-import {Customer} from "../../shared/interfaces";
+import {Application, Customer} from "../../shared/interfaces";
 import {MatExpansionModule} from "@angular/material/expansion";
 import {MatCardTitle} from "@angular/material/card";
 
@@ -24,7 +24,13 @@ import {MatCardTitle} from "@angular/material/card";
           </mat-expansion-panel-header>
 
           <!-- Panel body -->
-          <p>Applications here.</p>
+          @for (application of applications(); track application.id) {
+            @if (application.customerId == customer.id) {
+              {{ application.name }}
+            } @else {
+              No applications
+            }
+          }
 
         </mat-expansion-panel>
       }
@@ -38,5 +44,6 @@ export class CustomerExpansionPanelListComponent {
 
   // --- Inputs
   customers = input.required<Customer[]>();
+  applications = input.required<Application[]>();
 
 }
