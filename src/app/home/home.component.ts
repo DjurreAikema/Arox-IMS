@@ -56,7 +56,7 @@ import {ToolListComponent} from "./ui/tool-list.component";
       <section>
 
         <!-- Right section header -->
-        <header>
+        <header class="list-header">
           <h4>Tools</h4>
         </header>
 
