@@ -1,5 +1,5 @@
 import {Component, input, output} from '@angular/core';
-import {Application} from "../../shared/interfaces";
+import {Application, RemoveApplication} from "../../shared/interfaces";
 import {MatTooltip} from "@angular/material/tooltip";
 
 @Component({
@@ -59,12 +59,13 @@ export class ApplicationExpansionPanelItemComponent {
   selected = input.required<Boolean>();
 
   // --- Outputs
-  select = output<number>();
+  select = output<RemoveApplication>();
+  edit = output<Application>();
 
   // --- Functions
   protected onButtonClick(event: MouseEvent) {
     event.stopPropagation();
-    console.log("button clicked");
+    this.edit.emit(this.application());
   }
 
 }

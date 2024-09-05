@@ -34,9 +34,10 @@ import {CustomerExpansionPanelComponent} from "../customer/ui-customers/customer
         <mat-accordion>
           @for (customer of customerService.customers(); track customer.id) {
             <app-customer-expansion-panel
-                [customer]="customer"
-                [applications]="applicationService.applications()"
-                (addApplication)="applicationBeingEdited.set({customerId: $event})"
+              [customer]="customer"
+              [applications]="applicationService.applications()"
+              (addApplication)="applicationBeingEdited.set({customerId: $event})"
+              (editApplication)="applicationBeingEdited.set($event)"
             />
           }
         </mat-accordion>

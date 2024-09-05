@@ -38,6 +38,7 @@ import {MatTooltip} from "@angular/material/tooltip";
           [application]="application"
           [selected]="selectedApplication() === application.id"
           (select)="selectedApplication.set($event)"
+          (edit)="editApplication.emit($event)"
         />
       } @empty {
         No applications found
@@ -57,6 +58,7 @@ import {MatTooltip} from "@angular/material/tooltip";
     }
   `]
 })
+// Responsibility: TODO
 export class CustomerExpansionPanelComponent {
 
   // --- Inputs
@@ -64,7 +66,8 @@ export class CustomerExpansionPanelComponent {
   applications = input.required<Application[]>();
 
   // --- Outputs
-  addApplication = output<number>();
+  addApplication = output<RemoveApplication>();
+  editApplication = output<Application>()
 
   // --- Properties
   protected readonly panelOpenState = signal(false);
