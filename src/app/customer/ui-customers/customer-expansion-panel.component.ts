@@ -15,7 +15,7 @@ import {MatTooltip} from "@angular/material/tooltip";
     MatTooltip
   ],
   template: `
-    <mat-expansion-panel hideToggle>
+    <mat-expansion-panel (opened)="panelOpenState.set(true)" (closed)="panelOpenState.set(false)">
 
       <!-- Panel header -->
       <mat-expansion-panel-header>
@@ -67,6 +67,7 @@ export class CustomerExpansionPanelComponent {
   addApplication = output<number>();
 
   // --- Properties
+  protected readonly panelOpenState = signal(false);
   protected selectedApplication = signal<RemoveApplication | null>(null);
 
   protected filteredApplications(customerId: number) {
