@@ -24,7 +24,7 @@ import {Component, input} from '@angular/core';
       justify-content: space-between;
       align-items: center;
 
-      padding: 0 1rem;
+      padding: 5px 1rem;
       margin-bottom: 5px;
       border-bottom: 1px solid var(--color-secondary);
 

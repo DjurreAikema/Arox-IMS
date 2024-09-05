@@ -1,10 +1,13 @@
 import {Component, input, output} from '@angular/core';
 import {Application} from "../../shared/interfaces";
+import {MatTooltip} from "@angular/material/tooltip";
 
 @Component({
   selector: 'app-application-expansion-panel-item',
   standalone: true,
-  imports: [],
+  imports: [
+    MatTooltip
+  ],
   template: `
     <div class="expansion-panel-item"
          [class.selected]="selected()"
@@ -15,7 +18,8 @@ import {Application} from "../../shared/interfaces";
       </p>
 
       <div class="panel-buttons">
-        <button class="button-success small-button" (click)="onButtonClick($event)">
+        <button class="button-success small-button" (click)="onButtonClick($event)"
+                matTooltip="Edit application" matTooltipPosition="right">
           <i class="fa-solid fa-pen"></i>
         </button>
       </div>

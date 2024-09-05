@@ -4,6 +4,7 @@ import {MatExpansionModule} from "@angular/material/expansion";
 import {MatCardTitle} from "@angular/material/card";
 import {ApplicationExpansionPanelItemComponent} from "../../application/ui-applications/application-expansion-panel-item.component";
 import {ExpansionPanelListHeaderComponent} from "../../shared/ui/expansion-panel-list-header.component";
+import {MatTooltip} from "@angular/material/tooltip";
 
 @Component({
   selector: 'app-customer-expansion-panel-list',
@@ -12,7 +13,8 @@ import {ExpansionPanelListHeaderComponent} from "../../shared/ui/expansion-panel
     MatExpansionModule,
     MatCardTitle,
     ApplicationExpansionPanelItemComponent,
-    ExpansionPanelListHeaderComponent
+    ExpansionPanelListHeaderComponent,
+    MatTooltip
   ],
   template: `
     <mat-accordion>
@@ -30,7 +32,12 @@ import {ExpansionPanelListHeaderComponent} from "../../shared/ui/expansion-panel
           <!-- Panel body -->
           <app-expansion-panel-list-header
             text="Applications">
-            Here be buttons
+
+            <button class="button-success small-button"
+                    matTooltip="Add customer" matTooltipPosition="right">
+              <i class="fa-solid fa-plus"></i>
+            </button>
+
           </app-expansion-panel-list-header>
 
           @for (application of filteredApplications(customer.id); track application.id) {
