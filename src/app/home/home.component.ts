@@ -1,4 +1,4 @@
-import {Component, inject, signal} from '@angular/core';
+import {Component, computed, inject, signal} from '@angular/core';
 import {CustomerService} from "../customer/data-access/customer.service";
 import {ApplicationService} from "../application/data-access/application.service";
 import {Application, Customer, RemoveApplication} from "../shared/interfaces";
@@ -7,6 +7,8 @@ import {MatTooltip} from "@angular/material/tooltip";
 import {ApplicationFormComponent} from "../application/ui-applications/application-form.component";
 import {MatAccordion} from "@angular/material/expansion";
 import {CustomerExpansionPanelComponent} from "../customer/ui-customers/customer-expansion-panel.component";
+import {ToolService} from "../tool/data-access/tool.service";
+import {ToolListComponent} from "./ui/tool-list.component";
 
 @Component({
   selector: 'app-home',
@@ -16,7 +18,8 @@ import {CustomerExpansionPanelComponent} from "../customer/ui-customers/customer
     MatTooltip,
     ApplicationFormComponent,
     MatAccordion,
-    CustomerExpansionPanelComponent
+    CustomerExpansionPanelComponent,
+    ToolListComponent
   ],
   template: `
     <div class="wrapper">
@@ -55,8 +58,12 @@ import {CustomerExpansionPanelComponent} from "../customer/ui-customers/customer
         <!-- Right section header -->
         <header>
           <h4>Tools</h4>
-          Tools for {{selectedApplication()}}
         </header>
+
+        <app-tool-list
+          [tools]="tools()"
+        />
+
       </section>
 
     </div>
@@ -119,12 +126,19 @@ export default class HomeComponent {
   // --- Dependencies
   public customerService: CustomerService = inject(CustomerService);
   public applicationService: ApplicationService = inject(ApplicationService);
+  public toolService: ToolService = inject(ToolService);
 
   // Track the customer that is currently being edited
-  public customerBeingEdited = signal<Partial<Customer> | null>(null);
+  protected customerBeingEdited = signal<Partial<Customer> | null>(null);
 
   // Track the application that is currently being edited
-  public applicationBeingEdited = signal<Partial<Application> | null>(null);
+  protected applicationBeingEdited = signal<Partial<Application> | null>(null);
   protected selectedApplication = signal<RemoveApplication | null>(null);
+
+  protected tools = computed(() => {
+    return this.toolService
+      .tools()
+      .filter((tool) => tool.applicationId == this.selectedApplication())
+  })
 
 }
