@@ -13,6 +13,7 @@ import {RouterLink, RouterOutlet} from '@angular/router';
       </div>
 
       <div class="navbar">
+        <a class="nav-button" routerLink="home">Home</a>
         <a class="nav-button" routerLink="customers">Customers</a>
         <a class="nav-button" routerLink="applications">Applications</a>
         <a class="nav-button" routerLink="tools">Tools</a>
