@@ -32,6 +32,7 @@ import {MatTooltip} from "@angular/material/tooltip";
 
       </mat-expansion-panel-header>
 
+
       <!-- Panel body -->
       @if (filteredApplications(customer().id); as filteredApplications) {
         <app-expansion-panel-list-header [text]="'Applications (' + filteredApplications.length + ')'">

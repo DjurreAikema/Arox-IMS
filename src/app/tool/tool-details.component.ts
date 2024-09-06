@@ -10,6 +10,8 @@ import {ToolOutputService} from "./data-access/tool-output.service";
 import {ToolOutputListComponent} from "./ui-tool-outputs/tool-output-list.component";
 import {ToolInputFormComponent} from "./ui-tool-inputs/tool-input-form.component";
 import {ToolOutputFormComponent} from "./ui-tool-outputs/tool-output-form.component";
+import {MatAccordion} from "@angular/material/expansion";
+import {ToolInputExpansionPanelComponent} from "./ui-tool-inputs/tool-input-expansion-panel.component";
 
 @Component({
   selector: 'app-tool-details',
@@ -20,7 +22,9 @@ import {ToolOutputFormComponent} from "./ui-tool-outputs/tool-output-form.compon
     ToolInputListComponent,
     ToolOutputListComponent,
     ToolInputFormComponent,
-    ToolOutputFormComponent
+    ToolOutputFormComponent,
+    MatAccordion,
+    ToolInputExpansionPanelComponent
   ],
   template: `
     <!-- Header -->
@@ -35,13 +39,23 @@ import {ToolOutputFormComponent} from "./ui-tool-outputs/tool-output-form.compon
     <!-- Lists -->
     <section>
       <!-- Inputs -->
-      <app-tool-input-list
-        class="half"
-        [toolInputs]="toolInputs()"
-        (add)="toolInputBeingEdited.set({})"
-        (edit)="toolInputBeingEdited.set($event)"
-        (delete)="toolInputService.remove$.next($event)"
-      />
+      <mat-accordion>
+        @for (input of toolInputs(); track input.id) {
+          <app-tool-input-expansion-panel
+            [input]="input"
+
+            (editInput)="toolInputBeingEdited.set($event)"
+          />
+        }
+      </mat-accordion>
+
+      <!--      <app-tool-input-list-->
+      <!--        class="half"-->
+      <!--        [toolInputs]="toolInputs()"-->
+      <!--        (add)="toolInputBeingEdited.set({})"-->
+      <!--        (edit)="toolInputBeingEdited.set($event)"-->
+      <!--        (delete)="toolInputService.remove$.next($event)"-->
+      <!--      />-->
 
       <!-- Outputs -->
       <app-tool-output-list
