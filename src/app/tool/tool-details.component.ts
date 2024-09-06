@@ -33,16 +33,15 @@ import {MatTooltip} from "@angular/material/tooltip";
     <!-- Header -->
     @if (tool(); as tool) {
       <header>
-        <button class="button-primary" routerLink="/application/{{tool.applicationId}}">< Back</button>
-
         <h1>Tool: {{ tool.name }}</h1>
       </header>
     }
 
     <!-- Lists -->
     <section>
-      <!-- Inputs -->
+
       <div>
+        <!-- Inputs header -->
         <div class="list-header">
           <h4>Tool inputs</h4>
 
@@ -52,6 +51,7 @@ import {MatTooltip} from "@angular/material/tooltip";
           </button>
         </div>
 
+        <!-- Inputs list -->
         <mat-accordion>
           @for (input of toolInputs(); track input.id) {
             <app-tool-input-expansion-panel
@@ -59,6 +59,7 @@ import {MatTooltip} from "@angular/material/tooltip";
               [inputOptions]="inputOptionService.inputOptions()"
 
               (editInput)="toolInputBeingEdited.set($event)"
+              (deleteInput)="toolInputService.remove$.next($event)"
             />
           }
         </mat-accordion>

@@ -56,7 +56,6 @@ export class ConfirmModalComponent implements OnDestroy {
   // Lifecycle
   ngOnDestroy() {
     if (!this.closedByButton) {
-      console.log('here')
       this.cancel.emit();
     }
   }

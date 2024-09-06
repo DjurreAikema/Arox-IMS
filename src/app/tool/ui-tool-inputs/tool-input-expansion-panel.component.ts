@@ -1,12 +1,13 @@
 import {Component, input, output, signal} from '@angular/core';
 import {MatExpansionModule} from "@angular/material/expansion";
 import {MatTooltip} from "@angular/material/tooltip";
-import {InputOption, ToolInput, ToolInputTypeEnum} from "../../shared/interfaces";
+import {InputOption, RemoveToolInput, ToolInput, ToolInputTypeEnum} from "../../shared/interfaces";
 import {EnumToTextPipe} from "../../shared/pipes/enum-to-text.pipe";
 import {MatIcon} from "@angular/material/icon";
 import {MatSuffix} from "@angular/material/form-field";
 import {ModalComponent} from "../../shared/ui/modals/modal.component";
 import {FormArrayModalComponent} from "../../shared/ui/modals/form-array-modal.component";
+import {ConfirmModalComponent} from "../../shared/ui/modals/confirm-modal.component";
 
 @Component({
   selector: 'app-tool-input-expansion-panel',
@@ -18,7 +19,8 @@ import {FormArrayModalComponent} from "../../shared/ui/modals/form-array-modal.c
     MatIcon,
     MatSuffix,
     ModalComponent,
-    FormArrayModalComponent
+    FormArrayModalComponent,
+    ConfirmModalComponent
   ],
   template: `
     <mat-expansion-panel (opened)="panelOpenState.set(true)" (closed)="panelOpenState.set(false)">
@@ -36,6 +38,11 @@ import {FormArrayModalComponent} from "../../shared/ui/modals/form-array-modal.c
           @if (inputHasOptions()) {
             <mat-icon matSuffix matTooltip="Select input has no options">error</mat-icon>
           }
+
+          <button class="button-danger small-button" (click)="inputToDelete.set(input().id)"
+                  matTooltip="Delete tool input" matTooltipPosition="right">
+            <i class="fa-solid fa-trash"></i>
+          </button>
 
           <button class="button-info small-button" (click)="onButtonClick($event)"
                   matTooltip="Edit tool input" matTooltipPosition="right">
@@ -79,6 +86,20 @@ import {FormArrayModalComponent} from "../../shared/ui/modals/form-array-modal.c
 
           (close)="inputOptionsBeingEdited.set(null)"
           (save)="saveInputOptions($event)"
+        />
+
+      </ng-template>
+    </app-modal>
+
+    <!-- Delete modal -->
+    <app-modal [isOpen]="!!inputToDelete()">
+      <ng-template>
+
+        <app-confirm-modal
+          title="Delete Tool Input"
+          message="Are you sure you want to delete this tool input?"
+          (confirm)="handleDeleteInput()"
+          (cancel)="inputToDelete.set(null)"
         />
 
       </ng-template>
@@ -140,8 +161,18 @@ export class ToolInputExpansionPanelComponent {
 
   // --- Outputs
   editInput = output<ToolInput>();
+  deleteInput = output<RemoveToolInput>();
 
   // --- Properties
+  protected inputToDelete = signal<RemoveToolInput | null>(null);
+
+  protected handleDeleteInput() {
+    if (this.inputToDelete()) {
+      this.deleteInput.emit(this.inputToDelete()!);
+      this.inputToDelete.set(null);
+    }
+  }
+
   protected inputOptionsBeingEdited = signal<Partial<InputOption>[] | null>(null);
 
   protected readonly panelOpenState = signal(false);
