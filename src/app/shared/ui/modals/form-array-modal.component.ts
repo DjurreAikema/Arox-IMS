@@ -18,6 +18,11 @@ import {MatMiniFabButton} from "@angular/material/button";
   ],
   template: `
     <form class="options-form" [formGroup]="form">
+
+      <button mat-mini-fab (click)="addOption()">
+        <mat-icon class="add-course-btn">add</mat-icon>
+      </button>
+
       <div formArrayName="options" class="array-container">
         @for (optionForm of options.controls; track optionForm; let index = $index) {
 
@@ -42,9 +47,11 @@ import {MatMiniFabButton} from "@angular/material/button";
         }
       </div>
 
-      <button mat-mini-fab (click)="addOption()">
-        <mat-icon class="add-course-btn">add</mat-icon>
-      </button>
+      <div class="form-buttons">
+        <button class="button-danger" (click)="handleClose()">Close</button>
+        <button class="button-success" (click)="onSubmit()">Save</button>
+      </div>
+
     </form>
   `,
   styles: [`
@@ -78,7 +85,7 @@ export class FormArrayModalComponent implements OnInit, OnDestroy {
   // formGroup = input.required<FormGroup>();
 
   // --- Outputs
-  save = output();
+  save = output<{options: any[]}>();
   close = output();
 
   // --- Properties
@@ -128,7 +135,7 @@ export class FormArrayModalComponent implements OnInit, OnDestroy {
     if (!this.form.valid) return;
 
     this.closedByButton = true;
-    this.save.emit();
+    this.save.emit(this.form.getRawValue());
     this.close.emit();
   }
 

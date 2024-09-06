@@ -62,7 +62,7 @@ import {FormArrayModalComponent} from "../../shared/ui/modals/form-array-modal.c
               {{ option }}
             } @empty {
               This select input does not have a list yet.
-              <button class="button-success" (click)="testing()">Add list</button>
+              <button class="button-success" (click)="inputOptionsBeingEdited.set([])">Add list</button>
             }
           }
         </div>
@@ -71,11 +71,14 @@ import {FormArrayModalComponent} from "../../shared/ui/modals/form-array-modal.c
 
     </mat-expansion-panel>
 
-    <app-modal [isOpen]="modalOpenState()">
+    <app-modal [isOpen]="!!inputOptionsBeingEdited()">
       <ng-template>
 
         <app-form-array-modal
           [inputId]="input().id"
+
+          (close)="inputOptionsBeingEdited.set(null)"
+          (save)="saveInputOptions($event)"
         />
 
       </ng-template>
@@ -139,7 +142,8 @@ export class ToolInputExpansionPanelComponent {
   editInput = output<ToolInput>();
 
   // --- Properties
-  protected readonly modalOpenState = signal(false);
+  protected inputOptionsBeingEdited = signal<Partial<InputOption>[] | null>(null);
+
   protected readonly panelOpenState = signal(false);
 
   protected onButtonClick(event: MouseEvent) {
@@ -157,8 +161,18 @@ export class ToolInputExpansionPanelComponent {
 
   protected readonly ToolInputTypeEnum = ToolInputTypeEnum;
 
-  protected testing() {
-    this.modalOpenState.set(true);
+  protected saveInputOptions(data: any) {
+
+    data.options.forEach((option: Partial<InputOption>) => {
+      option.inputId = this.input().id;
+      console.log(option)
+
+      if (option.id) {
+
+      } else {
+
+      }
+    });
   }
 
 }
