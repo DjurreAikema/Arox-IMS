@@ -12,7 +12,7 @@ export interface ToolInput {
 export type AddToolInput = {
   item: Omit<ToolInput, 'id' | 'toolId'>;
   toolId: RemoveTool;
-}
+};
 
 export type EditToolInput = {
   id: ToolInput['id'];
