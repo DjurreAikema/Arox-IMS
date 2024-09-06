@@ -13,6 +13,7 @@ import {ToolOutputFormComponent} from "./ui-tool-outputs/tool-output-form.compon
 import {MatAccordion} from "@angular/material/expansion";
 import {ToolInputExpansionPanelComponent} from "./ui-tool-inputs/tool-input-expansion-panel.component";
 import {InputOptionService} from "../shared/data-access/input-option.service";
+import {MatTooltip} from "@angular/material/tooltip";
 
 @Component({
   selector: 'app-tool-details',
@@ -25,7 +26,8 @@ import {InputOptionService} from "../shared/data-access/input-option.service";
     ToolInputFormComponent,
     ToolOutputFormComponent,
     MatAccordion,
-    ToolInputExpansionPanelComponent
+    ToolInputExpansionPanelComponent,
+    MatTooltip
   ],
   template: `
     <!-- Header -->
@@ -40,16 +42,28 @@ import {InputOptionService} from "../shared/data-access/input-option.service";
     <!-- Lists -->
     <section>
       <!-- Inputs -->
-      <mat-accordion>
-        @for (input of toolInputs(); track input.id) {
-          <app-tool-input-expansion-panel
-            [input]="input"
-            [inputOptions]="inputOptionService.inputOptions()"
+      <div>
+        <div class="list-header">
+          <h4>Tool inputs</h4>
 
-            (editInput)="toolInputBeingEdited.set($event)"
-          />
-        }
-      </mat-accordion>
+          <button class="button-success small-button" (click)="toolInputBeingEdited.set({})"
+                  matTooltip="Add tool input" matTooltipPosition="right">
+            <i class="fa-solid fa-plus"></i>
+          </button>
+        </div>
+
+        <mat-accordion>
+          @for (input of toolInputs(); track input.id) {
+            <app-tool-input-expansion-panel
+              [input]="input"
+              [inputOptions]="inputOptionService.inputOptions()"
+
+              (editInput)="toolInputBeingEdited.set($event)"
+            />
+          }
+        </mat-accordion>
+      </div>
+
 
       <!--      <app-tool-input-list-->
       <!--        class="half"-->
@@ -114,6 +128,20 @@ import {InputOptionService} from "../shared/data-access/input-option.service";
       padding: 0 1rem;
 
       border-bottom: 1px solid var(--color-dark);
+    }
+
+    .list-header {
+      display: flex;
+      flex-flow: row nowrap;
+      justify-content: space-between;
+      align-items: center;
+
+      padding: .5rem 1rem;
+      user-select: none;
+
+      h4 {
+        margin: 0;
+      }
     }
 
     h1 {
