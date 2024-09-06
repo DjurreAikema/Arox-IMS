@@ -12,6 +12,7 @@ import {ToolInputFormComponent} from "./ui-tool-inputs/tool-input-form.component
 import {ToolOutputFormComponent} from "./ui-tool-outputs/tool-output-form.component";
 import {MatAccordion} from "@angular/material/expansion";
 import {ToolInputExpansionPanelComponent} from "./ui-tool-inputs/tool-input-expansion-panel.component";
+import {InputOptionService} from "../shared/data-access/input-option.service";
 
 @Component({
   selector: 'app-tool-details',
@@ -43,6 +44,7 @@ import {ToolInputExpansionPanelComponent} from "./ui-tool-inputs/tool-input-expa
         @for (input of toolInputs(); track input.id) {
           <app-tool-input-expansion-panel
             [input]="input"
+            [inputOptions]="inputOptionService.inputOptions()"
 
             (editInput)="toolInputBeingEdited.set($event)"
           />
@@ -135,6 +137,7 @@ export default class ToolDetailsComponent {
   protected toolService: ToolService = inject(ToolService);
   protected toolInputService: ToolInputService = inject(ToolInputService);
   protected toolOutputService: ToolOutputService = inject(ToolOutputService);
+  protected inputOptionService: InputOptionService = inject(InputOptionService);
 
   private route: ActivatedRoute = inject(ActivatedRoute);
 
