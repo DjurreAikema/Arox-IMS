@@ -3,6 +3,9 @@ import {MatExpansionModule} from "@angular/material/expansion";
 import {MatTooltip} from "@angular/material/tooltip";
 import {InputOption, ToolInput, ToolInputTypeEnum} from "../../shared/interfaces";
 import {EnumToTextPipe} from "../../shared/pipes/enum-to-text.pipe";
+import {getErrorMessages} from "../../shared/utils/get-error-messages";
+import {MatIcon} from "@angular/material/icon";
+import {MatSuffix} from "@angular/material/form-field";
 
 @Component({
   selector: 'app-tool-input-expansion-panel',
@@ -10,7 +13,9 @@ import {EnumToTextPipe} from "../../shared/pipes/enum-to-text.pipe";
   imports: [
     MatExpansionModule,
     MatTooltip,
-    EnumToTextPipe
+    EnumToTextPipe,
+    MatIcon,
+    MatSuffix
   ],
   template: `
     <mat-expansion-panel (opened)="panelOpenState.set(true)" (closed)="panelOpenState.set(false)">
@@ -24,6 +29,11 @@ import {EnumToTextPipe} from "../../shared/pipes/enum-to-text.pipe";
 
         <!-- Panel header buttons -->
         <mat-panel-description>
+
+          @if(inputHasOptions()) {
+            <mat-icon matSuffix matTooltip="Select input has no options">error</mat-icon>
+          }
+
           <button class="button-info small-button" (click)="onButtonClick($event)"
                   matTooltip="Edit tool input" matTooltipPosition="right">
             <i class="fa-solid fa-pen"></i>
@@ -97,6 +107,11 @@ import {EnumToTextPipe} from "../../shared/pipes/enum-to-text.pipe";
         font-weight: 550;
       }
     }
+
+    mat-icon {
+      color: red;
+      margin-right: 1rem;
+    }
   `]
 })
 // Responsibility: TODO
@@ -121,5 +136,10 @@ export class ToolInputExpansionPanelComponent {
     return this.inputOptions().filter(option => option.inputId === inputId);
   }
 
+  protected inputHasOptions(): boolean {
+    return this.input().type === ToolInputTypeEnum.Select && this.filteredInputOptions(this.input().id).length === 0;
+  }
+
   protected readonly ToolInputTypeEnum = ToolInputTypeEnum;
+  protected readonly getErrorMessages = getErrorMessages;
 }
