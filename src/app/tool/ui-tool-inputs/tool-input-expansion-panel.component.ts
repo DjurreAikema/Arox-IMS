@@ -3,9 +3,10 @@ import {MatExpansionModule} from "@angular/material/expansion";
 import {MatTooltip} from "@angular/material/tooltip";
 import {InputOption, ToolInput, ToolInputTypeEnum} from "../../shared/interfaces";
 import {EnumToTextPipe} from "../../shared/pipes/enum-to-text.pipe";
-import {getErrorMessages} from "../../shared/utils/get-error-messages";
 import {MatIcon} from "@angular/material/icon";
 import {MatSuffix} from "@angular/material/form-field";
+import {ModalComponent} from "../../shared/ui/modals/modal.component";
+import {FormArrayModalComponent} from "../../shared/ui/modals/form-array-modal.component";
 
 @Component({
   selector: 'app-tool-input-expansion-panel',
@@ -15,7 +16,9 @@ import {MatSuffix} from "@angular/material/form-field";
     MatTooltip,
     EnumToTextPipe,
     MatIcon,
-    MatSuffix
+    MatSuffix,
+    ModalComponent,
+    FormArrayModalComponent
   ],
   template: `
     <mat-expansion-panel (opened)="panelOpenState.set(true)" (closed)="panelOpenState.set(false)">
@@ -30,7 +33,7 @@ import {MatSuffix} from "@angular/material/form-field";
         <!-- Panel header buttons -->
         <mat-panel-description>
 
-          @if(inputHasOptions()) {
+          @if (inputHasOptions()) {
             <mat-icon matSuffix matTooltip="Select input has no options">error</mat-icon>
           }
 
@@ -59,6 +62,7 @@ import {MatSuffix} from "@angular/material/form-field";
               {{ option }}
             } @empty {
               This select input does not have a list yet.
+              <button class="button-success" (click)="testing()">Add list</button>
             }
           }
         </div>
@@ -66,6 +70,16 @@ import {MatSuffix} from "@angular/material/form-field";
       </div>
 
     </mat-expansion-panel>
+
+    <app-modal [isOpen]="modalOpenState()">
+      <ng-template>
+
+        <app-form-array-modal
+          [inputId]="input().id"
+        />
+
+      </ng-template>
+    </app-modal>
   `,
   styles: [`
     .mat-expansion-panel:last-of-type {
@@ -125,6 +139,7 @@ export class ToolInputExpansionPanelComponent {
   editInput = output<ToolInput>();
 
   // --- Properties
+  protected readonly modalOpenState = signal(false);
   protected readonly panelOpenState = signal(false);
 
   protected onButtonClick(event: MouseEvent) {
@@ -141,5 +156,9 @@ export class ToolInputExpansionPanelComponent {
   }
 
   protected readonly ToolInputTypeEnum = ToolInputTypeEnum;
-  protected readonly getErrorMessages = getErrorMessages;
+
+  protected testing() {
+    this.modalOpenState.set(true);
+  }
+
 }
