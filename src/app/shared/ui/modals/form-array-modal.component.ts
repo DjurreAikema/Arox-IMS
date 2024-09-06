@@ -1,4 +1,4 @@
-import {Component, inject, input, OnDestroy, output} from '@angular/core';
+import {Component, inject, input, OnDestroy, OnInit, output} from '@angular/core';
 import {FormArray, FormBuilder, ReactiveFormsModule, Validators} from "@angular/forms";
 import {RemoveToolInput} from "../../interfaces";
 import {MatFormField} from "@angular/material/form-field";
@@ -18,10 +18,10 @@ import {MatMiniFabButton} from "@angular/material/button";
   ],
   template: `
     <form class="options-form" [formGroup]="form">
-      <ng-container formArrayName="options">
-        @for (optionForm of options.controls; track $index) {
+      <div formArrayName="options" class="array-container">
+        @for (optionForm of options.controls; track optionForm; let index = $index) {
 
-          <div class="options-form-row">
+          <div class="options-form-row" [formGroupName]="index">
 
             <mat-form-field appearance="fill">
               <input matNativeControl
@@ -35,21 +35,41 @@ import {MatMiniFabButton} from "@angular/material/button";
                      placeholder="Option values">
             </mat-form-field>
 
-            <mat-icon class="delete-btn" (click)="removeOption($index)">delete_forever</mat-icon>
+            <mat-icon class="delete-btn" (click)="removeOption(index)">delete_forever</mat-icon>
 
           </div>
 
         }
-      </ng-container>
+      </div>
 
       <button mat-mini-fab (click)="addOption()">
         <mat-icon class="add-course-btn">add</mat-icon>
       </button>
     </form>
   `,
-  styles: ``
+  styles: [`
+    form {
+      max-height: 900px;
+    }
+
+    .array-container {
+      max-height: 700px;
+      overflow-x: hidden;
+      overflow-y: scroll;
+    }
+
+    .options-form-row {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .delete-btn {
+      cursor: pointer;
+    }
+  `]
 })
-export class FormArrayModalComponent implements OnDestroy {
+export class FormArrayModalComponent implements OnInit, OnDestroy {
 
   private fb: FormBuilder = inject(FormBuilder);
 
@@ -63,17 +83,18 @@ export class FormArrayModalComponent implements OnDestroy {
 
   // --- Properties
   protected form = this.fb.group({
-    options: this.fb.array([
-      {
-        label: ['', Validators.required],
-        value: ['', Validators.required]
-      }
-    ])
+    options: this.fb.array([])
   });
 
   private closedByButton = false;
 
   // Lifecycle
+  ngOnInit() {
+    if (this.options.length === 0) {
+      this.addOption();
+    }
+  }
+
   ngOnDestroy() {
     if (!this.closedByButton) {
       this.close.emit();
