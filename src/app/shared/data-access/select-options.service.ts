@@ -4,7 +4,7 @@ import {ToolInputTypeEnum, ToolOutputTypeEnum} from '../interfaces';
 @Injectable({
   providedIn: 'root'
 })
-// Responsibility: TODO
+// Responsibility: Turn Enum(s) into usable select options for inputs
 export class SelectOptionsService {
 
   // Turn ToolInputTypeEnum into select options for form
