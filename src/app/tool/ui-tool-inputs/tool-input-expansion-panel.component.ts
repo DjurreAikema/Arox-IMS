@@ -1,13 +1,15 @@
-import {Component, input, output, signal} from '@angular/core';
+import {Component, inject, input, output, signal} from '@angular/core';
 import {MatExpansionModule} from "@angular/material/expansion";
 import {MatTooltip} from "@angular/material/tooltip";
-import {InputOption, RemoveToolInput, ToolInput, ToolInputTypeEnum} from "../../shared/interfaces";
+import {AddInputOption, EditInputOption, InputOption, RemoveToolInput, ToolInput, ToolInputTypeEnum} from "../../shared/interfaces";
 import {EnumToTextPipe} from "../../shared/pipes/enum-to-text.pipe";
 import {MatIcon} from "@angular/material/icon";
 import {MatSuffix} from "@angular/material/form-field";
 import {ModalComponent} from "../../shared/ui/modals/modal.component";
 import {FormArrayModalComponent} from "../../shared/ui/modals/form-array-modal.component";
 import {ConfirmModalComponent} from "../../shared/ui/modals/confirm-modal.component";
+import {InputOptionService} from "../../shared/data-access/input-option.service";
+import {JsonPipe} from "@angular/common";
 
 @Component({
   selector: 'app-tool-input-expansion-panel',
@@ -20,7 +22,8 @@ import {ConfirmModalComponent} from "../../shared/ui/modals/confirm-modal.compon
     MatSuffix,
     ModalComponent,
     FormArrayModalComponent,
-    ConfirmModalComponent
+    ConfirmModalComponent,
+    JsonPipe
   ],
   template: `
     <mat-expansion-panel (opened)="panelOpenState.set(true)" (closed)="panelOpenState.set(false)">
@@ -65,12 +68,15 @@ import {ConfirmModalComponent} from "../../shared/ui/modals/confirm-modal.compon
 
         <div>
           @if (input().type == ToolInputTypeEnum.Select && filteredInputOptions(input().id); as filteredOptions) {
-            @for (option of filteredOptions; track option.id) {
-              {{ option }}
-            } @empty {
+
+            @if (filteredOptions.length > 0) {
+              {{ filteredOptions | json }}
+              <button class="button-info" (click)="inputOptionsBeingEdited.set(filteredOptions)">Edit list</button>
+            } @else {
               This select input does not have a list yet.
               <button class="button-success" (click)="inputOptionsBeingEdited.set([])">Add list</button>
             }
+
           }
         </div>
 
@@ -83,8 +89,10 @@ import {ConfirmModalComponent} from "../../shared/ui/modals/confirm-modal.compon
 
         <app-form-array-modal
           [inputId]="input().id"
+          [existingOptions]="inputOptionsBeingEdited()"
 
           (close)="inputOptionsBeingEdited.set(null)"
+          (remove)="inputOptionService.remove$.next($event)"
           (save)="saveInputOptions($event)"
         />
 
@@ -159,6 +167,8 @@ import {ConfirmModalComponent} from "../../shared/ui/modals/confirm-modal.compon
 // Responsibility: TODO
 export class ToolInputExpansionPanelComponent {
 
+  protected inputOptionService: InputOptionService = inject(InputOptionService);
+
   // --- Inputs
   input = input.required<ToolInput>();
   inputOptions = input.required<InputOption[]>();
@@ -166,6 +176,9 @@ export class ToolInputExpansionPanelComponent {
   // --- Outputs
   editInput = output<ToolInput>();
   deleteInput = output<RemoveToolInput>();
+
+  addInputOption = output<AddInputOption>()
+  editInputOption = output<EditInputOption>()
 
   // --- Properties
   protected inputToDelete = signal<RemoveToolInput | null>(null);
@@ -178,7 +191,7 @@ export class ToolInputExpansionPanelComponent {
     }
   }
 
-  protected inputOptionsBeingEdited = signal<Partial<InputOption>[] | null>(null);
+  protected inputOptionsBeingEdited = signal<InputOption[] | null>(null);
 
   protected readonly panelOpenState = signal(false);
 
@@ -199,16 +212,22 @@ export class ToolInputExpansionPanelComponent {
 
   protected saveInputOptions(data: any) {
 
-    data.options.forEach((option: Partial<InputOption>) => {
-      option.inputId = this.input().id;
+    data.options.forEach((option: any) => {
+
       console.log(option)
 
       if (option.id) {
-
+        this.inputOptionService.edit$.next({
+          id: option.id,
+          data: option
+        })
       } else {
-
+        this.inputOptionService.add$.next({
+          item: option,
+          inputId: this.input().id
+        })
       }
+
     });
   }
-
 }

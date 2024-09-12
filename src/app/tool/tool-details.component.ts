@@ -60,6 +60,11 @@ import {MatTooltip} from "@angular/material/tooltip";
 
               (editInput)="toolInputBeingEdited.set($event)"
               (deleteInput)="toolInputService.remove$.next($event)"
+
+              (addInputOption)="inputOptionService.add$.next($event)"
+              (editInputOption)="inputOptionService.edit$.next($event)"
+
+
             />
           }
         </mat-accordion>

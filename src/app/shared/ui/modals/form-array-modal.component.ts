@@ -1,6 +1,6 @@
 import {Component, inject, input, OnDestroy, OnInit, output} from '@angular/core';
 import {FormArray, FormBuilder, ReactiveFormsModule, Validators} from "@angular/forms";
-import {RemoveToolInput} from "../../interfaces";
+import {InputOption, RemoveInputOption, RemoveToolInput} from "../../interfaces";
 import {MatFormField} from "@angular/material/form-field";
 import {MatInput} from "@angular/material/input";
 import {MatIcon} from "@angular/material/icon";
@@ -82,10 +82,11 @@ export class FormArrayModalComponent implements OnInit, OnDestroy {
 
   // --- Inputs
   inputId = input.required<RemoveToolInput>();
-  // formGroup = input.required<FormGroup>();
+  existingOptions = input<InputOption[] | null>();
 
   // --- Outputs
-  save = output<{options: any[]}>();
+  save = output<{ options: any[] }>();
+  remove = output<RemoveInputOption>()
   close = output();
 
   // --- Properties
@@ -97,7 +98,9 @@ export class FormArrayModalComponent implements OnInit, OnDestroy {
 
   // Lifecycle
   ngOnInit() {
-    if (this.options.length === 0) {
+    if (this.existingOptions() && this.existingOptions()!.length > 0) {
+      this.existingOptions()!.forEach(option => this.addOption(option))
+    } else {
       this.addOption();
     }
   }
@@ -113,16 +116,19 @@ export class FormArrayModalComponent implements OnInit, OnDestroy {
     return this.form.get("options") as FormArray;
   }
 
-  protected addOption() {
+  protected addOption(option: InputOption | null = null) {
     const optionForm = this.fb.group({
-      label: ['', Validators.required],
-      value: ['', Validators.required]
+      label: [option ? option.label : '', Validators.required],
+      value: [option ? option.value : '', Validators.required]
     });
 
     this.options.push(optionForm);
   }
 
   protected removeOption(optionIndex: number) {
+    const option = this.options.at(optionIndex)?.value;
+    if (option && option.id) this.remove.emit(option.id);
+
     this.options.removeAt(optionIndex);
   }
 
