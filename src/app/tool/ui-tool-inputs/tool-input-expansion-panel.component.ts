@@ -70,11 +70,11 @@ import {JsonPipe} from "@angular/common";
           @if (input().type == ToolInputTypeEnum.Select && filteredInputOptions(input().id); as filteredOptions) {
 
             @if (filteredOptions.length > 0) {
-              {{ filteredOptions | json }}
               <button class="button-info" (click)="inputOptionsBeingEdited.set(filteredOptions)">Edit list</button>
+              ({{ filteredOptions.length }}) options
             } @else {
-              This select input does not have a list yet.
-              <button class="button-success" (click)="inputOptionsBeingEdited.set([])">Add list</button>
+              <button class="button-success" (click)="inputOptionsBeingEdited.set([])">Add list</button><br>
+              This input does not have a list yet.
             }
 
           }
