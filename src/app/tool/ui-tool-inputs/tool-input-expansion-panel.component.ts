@@ -39,7 +39,7 @@ import {ConfirmModalComponent} from "../../shared/ui/modals/confirm-modal.compon
             <mat-icon matSuffix matTooltip="Select input has no options">error</mat-icon>
           }
 
-          <button class="button-danger small-button" (click)="inputToDelete.set(input().id)"
+          <button class="button-danger small-button mr-5" (click)="inputToDelete.set(input().id)"
                   matTooltip="Delete tool input" matTooltipPosition="right">
             <i class="fa-solid fa-trash"></i>
           </button>
@@ -150,6 +150,10 @@ import {ConfirmModalComponent} from "../../shared/ui/modals/confirm-modal.compon
       color: red;
       margin-right: 1rem;
     }
+
+    .mr-5 {
+      margin-right: 5px;
+    }
   `]
 })
 // Responsibility: TODO
@@ -170,6 +174,7 @@ export class ToolInputExpansionPanelComponent {
     if (this.inputToDelete()) {
       this.deleteInput.emit(this.inputToDelete()!);
       this.inputToDelete.set(null);
+      console.log(this.inputToDelete())
     }
   }
 
