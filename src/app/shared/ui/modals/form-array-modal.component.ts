@@ -118,6 +118,8 @@ export class FormArrayModalComponent implements OnInit, OnDestroy {
 
   protected addOption(option: InputOption | null = null) {
     const optionForm = this.fb.group({
+      id: [option ? option.id : ''],
+      inputId: [option ? option.inputId : ''],
       label: [option ? option.label : '', Validators.required],
       value: [option ? option.value : '', Validators.required]
     });
