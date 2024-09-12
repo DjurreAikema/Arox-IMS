@@ -187,7 +187,6 @@ export class ToolInputExpansionPanelComponent {
     if (this.inputToDelete()) {
       this.deleteInput.emit(this.inputToDelete()!);
       this.inputToDelete.set(null);
-      console.log(this.inputToDelete())
     }
   }
 
@@ -213,9 +212,6 @@ export class ToolInputExpansionPanelComponent {
   protected saveInputOptions(data: any) {
 
     data.options.forEach((option: any) => {
-
-      console.log(option)
-
       if (option.id) {
         this.inputOptionService.edit$.next({
           id: option.id,
@@ -227,7 +223,6 @@ export class ToolInputExpansionPanelComponent {
           inputId: this.input().id
         })
       }
-
     });
   }
 }

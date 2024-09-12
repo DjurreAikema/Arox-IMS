@@ -5,6 +5,7 @@ import {MatFormField} from "@angular/material/form-field";
 import {MatInput} from "@angular/material/input";
 import {MatIcon} from "@angular/material/icon";
 import {MatMiniFabButton} from "@angular/material/button";
+import {MatTooltip} from "@angular/material/tooltip";
 
 @Component({
   selector: 'app-form-array-modal',
@@ -14,14 +15,20 @@ import {MatMiniFabButton} from "@angular/material/button";
     MatFormField,
     MatInput,
     MatIcon,
-    MatMiniFabButton
+    MatMiniFabButton,
+    MatTooltip
   ],
   template: `
-    <form class="options-form" [formGroup]="form">
+    <header>
+      <h2>Input list</h2>
 
-      <button mat-mini-fab (click)="addOption()">
-        <mat-icon class="add-course-btn">add</mat-icon>
+      <button class="button-success small-button" (click)="addOption()"
+              matTooltip="Add option" matTooltipPosition="right">
+        <i class="fa-solid fa-plus"></i>
       </button>
+    </header>
+
+    <form class="options-form" [formGroup]="form">
 
       <div formArrayName="options" class="array-container">
         @for (optionForm of options.controls; track optionForm; let index = $index) {
@@ -40,7 +47,10 @@ import {MatMiniFabButton} from "@angular/material/button";
                      placeholder="Option values">
             </mat-form-field>
 
-            <mat-icon class="delete-btn" (click)="removeOption(index)">delete_forever</mat-icon>
+            <button class="button-danger small-button" (click)="removeOption(index)"
+                    matTooltip="Delete option" matTooltipPosition="right">
+              <i class="fa-solid fa-trash"></i>
+            </button>
 
           </div>
 
@@ -55,6 +65,19 @@ import {MatMiniFabButton} from "@angular/material/button";
     </form>
   `,
   styles: [`
+    header {
+      display: flex;
+      flex-flow: row nowrap;
+      justify-content: space-between;
+      align-items: center;
+
+      padding: 1rem 0;
+
+      h2 {
+        margin: 0;
+      }
+    }
+
     form {
       max-height: 900px;
     }
@@ -62,7 +85,7 @@ import {MatMiniFabButton} from "@angular/material/button";
     .array-container {
       max-height: 700px;
       overflow-x: hidden;
-      overflow-y: scroll;
+      overflow-y: auto;
     }
 
     .options-form-row {
@@ -73,6 +96,13 @@ import {MatMiniFabButton} from "@angular/material/button";
 
     .delete-btn {
       cursor: pointer;
+    }
+
+    .form-buttons {
+      display: flex;
+      flex-flow: row nowrap;
+      justify-content: space-between;
+      gap: 1rem;
     }
   `]
 })
