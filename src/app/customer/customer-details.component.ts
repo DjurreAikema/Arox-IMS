@@ -53,16 +53,16 @@ import {ApplicationFormComponent} from "../application/ui/application-form.compo
       [applicationBeingEdited]="applicationBeingEdited()"
       (close)="applicationBeingEdited.set(null)"
       (save)="
-            applicationBeingEdited()?.id
-              ? applicationService.edit$.next({
-                id: applicationBeingEdited()!.id!,
-                data: $event
-              })
-              : applicationService.add$.next({
-                item: $event,
-                customerId: customer()?.id!
-              })
-          "
+          applicationBeingEdited()?.id
+            ? applicationService.edit$.next({
+              id: applicationBeingEdited()!.id!,
+              data: $event
+            })
+            : applicationService.add$.next({
+              item: $event,
+              customerId: customer()?.id!
+            })
+        "
     />
   `,
   styles: [`
