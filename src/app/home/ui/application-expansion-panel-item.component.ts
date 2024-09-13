@@ -98,8 +98,8 @@ export class ApplicationExpansionPanelItemComponent {
   protected handleDeleteApplication() {
     if (this.applicationToDelete()) {
       this.delete.emit(this.applicationToDelete()!);
+      this.applicationToDelete.set(null);
     }
-    this.applicationToDelete.set(null);
   }
 
 }

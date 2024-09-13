@@ -19,9 +19,10 @@ export class ModalComponent {
 
   // Open and close the dialog based on a Signal input
   @Input() set isOpen(value: boolean) {
-    if (value)
+    if (value) {
       this.dialog.open(this.template, {panelClass: 'dialog-container'});
-    else
+    } else {
       this.dialog.closeAll();
+    }
   }
 }
