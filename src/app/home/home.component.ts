@@ -48,6 +48,7 @@ import {MatCard, MatCardContent} from "@angular/material/card";
               [selectedApplication]="selectedApplication()"
 
               (editCustomer)="customerBeingEdited.set($event)"
+              (deleteCustomer)="customerService.remove$.next($event)"
 
               (addApplication)="applicationBeingEdited.set({customerId: $event})"
               (editApplication)="applicationBeingEdited.set($event)"

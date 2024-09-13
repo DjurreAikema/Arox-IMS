@@ -94,7 +94,7 @@ export class CustomerListComponent {
 
   protected deleteCustomer() {
     if (this.customerToDelete()) {
-      this.delete.emit(this.customerToDelete()!)
+      this.delete.emit(this.customerToDelete()!);
       this.customerToDelete.set(null);
     }
   }

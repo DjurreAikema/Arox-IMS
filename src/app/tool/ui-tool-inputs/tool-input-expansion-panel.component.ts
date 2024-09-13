@@ -158,10 +158,6 @@ import {JsonPipe} from "@angular/common";
       color: red;
       margin-right: 1rem;
     }
-
-    .mr-5 {
-      margin-right: 5px;
-    }
   `]
 })
 // Responsibility: TODO
