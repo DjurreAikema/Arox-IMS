@@ -57,8 +57,10 @@ import {ModalComponent} from "../../shared/ui/modals/modal.component";
           <app-application-expansion-panel-item
             [application]="application"
             [selected]="selectedApplication()?.id === application.id"
+
             (select)="selectApplication.emit($event)"
             (edit)="editApplication.emit($event)"
+            (delete)="deleteApplication.emit($event)"
           />
         } @empty {
           No applications found.
@@ -113,6 +115,7 @@ export class CustomerExpansionPanelComponent {
   editApplication = output<Application>();
   addApplication = output<RemoveApplication>();
   selectApplication = output<Application | null>();
+  deleteApplication = output<RemoveApplication>();
 
   // --- Properties
   protected readonly panelOpenState = signal(false);
