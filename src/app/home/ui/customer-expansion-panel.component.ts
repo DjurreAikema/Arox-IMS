@@ -52,7 +52,7 @@ import {MatTooltip} from "@angular/material/tooltip";
             (edit)="editApplication.emit($event)"
           />
         } @empty {
-          No applications found
+          No applications found.
         }
       }
 

@@ -9,6 +9,7 @@ import {MatAccordion} from "@angular/material/expansion";
 import {CustomerExpansionPanelComponent} from "./ui/customer-expansion-panel.component";
 import {ToolService} from "../tool/data-access/tool.service";
 import {ToolListComponent} from "./ui/tool-list.component";
+import {MatCard, MatCardContent} from "@angular/material/card";
 
 @Component({
   selector: 'app-home',
@@ -19,7 +20,9 @@ import {ToolListComponent} from "./ui/tool-list.component";
     ApplicationFormComponent,
     MatAccordion,
     CustomerExpansionPanelComponent,
-    ToolListComponent
+    ToolListComponent,
+    MatCard,
+    MatCardContent
   ],
   template: `
     <div class="wrapper">
@@ -50,6 +53,12 @@ import {ToolListComponent} from "./ui/tool-list.component";
               (editApplication)="applicationBeingEdited.set($event)"
               (selectApplication)="selectedApplication.set($event)"
             />
+          } @empty {
+            <mat-card>
+              <mat-card-content class="add-card-content">
+                No customers found.
+              </mat-card-content>
+            </mat-card>
           }
         </mat-accordion>
 
@@ -121,6 +130,38 @@ import {ToolListComponent} from "./ui/tool-list.component";
       h4 {
         margin: 0;
       }
+    }
+
+    mat-card {
+      padding: 1rem;
+      max-height: 200px;
+      background-color: var(--color-light);
+      border-radius: 0;
+    }
+
+    mat-card-header {
+      padding: 0;
+      border-bottom: 1px solid var(--color-dark);
+    }
+
+    mat-card-title {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    mat-card-content {
+      padding: 1rem 0;
+      overflow-y: auto;
+      overflow-x: hidden;
+      text-overflow: ellipsis;
+      height: 100%;
+    }
+
+    .add-card-content {
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
   `]
 })
