@@ -1,7 +1,7 @@
 import {Component, computed, inject, signal} from '@angular/core';
 import {CustomerService} from "../customer/data-access/customer.service";
 import {ApplicationService} from "../application/data-access/application.service";
-import {Application, Customer} from "../shared/interfaces";
+import {Application, Customer, Tool} from "../shared/interfaces";
 import {CustomerFormComponent} from "../customer/ui/customer-form.component";
 import {MatTooltip} from "@angular/material/tooltip";
 import {ApplicationFormComponent} from "../application/ui/application-form.component";
@@ -10,6 +10,7 @@ import {CustomerExpansionPanelComponent} from "./ui/customer-expansion-panel.com
 import {ToolService} from "../tool/data-access/tool.service";
 import {ToolListComponent} from "./ui/tool-list.component";
 import {MatCard, MatCardContent} from "@angular/material/card";
+import {ToolFormComponent} from "../tool/ui-tools/tool-form.component";
 
 @Component({
   selector: 'app-home',
@@ -22,7 +23,8 @@ import {MatCard, MatCardContent} from "@angular/material/card";
     CustomerExpansionPanelComponent,
     ToolListComponent,
     MatCard,
-    MatCardContent
+    MatCardContent,
+    ToolFormComponent
   ],
   template: `
     <div class="wrapper">
@@ -72,6 +74,13 @@ import {MatCard, MatCardContent} from "@angular/material/card";
         <!-- Right section header -->
         <header class="list-header">
           <h4>Tools {{ selectedApplication() ? 'for ' + selectedApplication()?.name : '' }}</h4>
+
+          @if (selectedApplication()) {
+            <button class="button-success small-button" (click)="toolBeingEdited.set({applicationId: selectedApplication()!.id})"
+                    matTooltip="Quick add tool" matTooltipPosition="right">
+              <i class="fa-solid fa-plus"></i>
+            </button>
+          }
         </header>
 
         <app-tool-list
@@ -109,6 +118,23 @@ import {MatCard, MatCardContent} from "@angular/material/card";
               : applicationService.add$.next({
                 item: $event,
                 customerId: applicationBeingEdited()!.customerId!
+              })
+          "
+    />
+
+    <!-- Tool form modal -->
+    <app-tool-form
+      [toolBeingEdited]="toolBeingEdited()"
+      (close)="toolBeingEdited.set(null)"
+      (save)="
+            toolBeingEdited()?.id
+              ? toolService.edit$.next({
+                id: toolBeingEdited()!.id!,
+                data: $event
+              })
+              : toolService.add$.next({
+                item: $event,
+                applicationId: toolBeingEdited()!.applicationId!
               })
           "
     />
@@ -179,6 +205,10 @@ export default class HomeComponent {
 
   // Track the application that is currently being edited
   protected applicationBeingEdited = signal<Partial<Application> | null>(null);
+
+  // Track the tool that is currently being edited
+  protected toolBeingEdited = signal<Partial<Tool> | null>(null);
+
   protected selectedApplication = signal<Application | null>(null);
 
   protected tools = computed(() => {
