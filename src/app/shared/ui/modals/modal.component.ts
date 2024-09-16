@@ -26,3 +26,5 @@ export class ModalComponent {
     }
   }
 }
+
+// TODO: Enter closes modal without saving
