@@ -97,6 +97,7 @@ export class ApplicationService {
         };
       });
 
+
     // --- Effects (effects are used to chain certain actions to state updates)
     effect((): void => {
       // this effect saves the applications to local storage every time the state changes
