@@ -33,6 +33,8 @@ import {MatTooltip} from "@angular/material/tooltip";
     <!-- Header -->
     @if (tool(); as tool) {
       <header>
+        <button class="button-primary" routerLink="/home">< Back</button>
+
         <h1>Tool: {{ tool.name }}</h1>
       </header>
     }
@@ -69,7 +71,6 @@ import {MatTooltip} from "@angular/material/tooltip";
           }
         </mat-accordion>
       </div>
-
 
       <!--      <app-tool-input-list-->
       <!--        class="half"-->
