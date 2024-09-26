@@ -60,7 +60,7 @@ import {ModalComponent} from "../../shared/ui/modals/modal.component";
 
             (select)="selectApplication.emit($event)"
             (edit)="editApplication.emit($event)"
-            (delete)="deleteApplication.emit($event)"
+            (delete)="applicationToDelete.set($event)"
           />
         } @empty {
           No applications found.
@@ -68,6 +68,20 @@ import {ModalComponent} from "../../shared/ui/modals/modal.component";
       }
 
     </mat-expansion-panel>
+
+    <!-- Application delete modal -->
+    <app-modal [isOpen]="!!applicationToDelete()">
+      <ng-template>
+
+        <app-confirm-modal
+          title="Delete Application"
+          message="Are you sure you want to delete this application?"
+          (confirm)="handleDeleteApplication()"
+          (cancel)="applicationToDelete.set(null)"
+        />
+
+      </ng-template>
+    </app-modal>
   `,
   styles: [`
     .mat-expansion-panel:last-of-type {
@@ -112,5 +126,15 @@ export class CustomerExpansionPanelComponent {
   protected onButtonClick(event: MouseEvent) {
     event.stopPropagation();
     this.editCustomer.emit(this.customer());
+  }
+
+  // Deleting applications
+  protected applicationToDelete = signal<RemoveApplication | null>(null);
+
+  protected handleDeleteApplication() {
+    if (this.applicationToDelete()) {
+      this.deleteApplication.emit(this.applicationToDelete()!);
+      this.applicationToDelete.set(null);
+    }
   }
 }

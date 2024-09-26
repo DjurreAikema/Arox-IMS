@@ -1,4 +1,4 @@
-import {Component, input, output, signal} from '@angular/core';
+import {Component, input, output} from '@angular/core';
 import {Application, RemoveApplication} from "../../shared/interfaces";
 import {MatTooltip} from "@angular/material/tooltip";
 import {ConfirmModalComponent} from "../../shared/ui/modals/confirm-modal.component";
@@ -22,7 +22,7 @@ import {ModalComponent} from "../../shared/ui/modals/modal.component";
       </p>
 
       <div class="panel-buttons">
-        <button class="button-danger small-button mr-5" (click)="applicationToDelete.set(application().id)"
+        <button class="button-danger small-button mr-5" (click)="delete.emit(application().id)"
                 matTooltip="Delete application" matTooltipPosition="right">
           <i class="fa-solid fa-trash"></i>
         </button>
@@ -34,20 +34,6 @@ import {ModalComponent} from "../../shared/ui/modals/modal.component";
       </div>
 
     </div>
-
-    <!-- Delete modal -->
-    <app-modal [isOpen]="!!applicationToDelete()">
-      <ng-template>
-
-        <app-confirm-modal
-          title="Delete Application"
-          message="Are you sure you want to delete this application?"
-          (confirm)="handleDeleteApplication()"
-          (cancel)="applicationToDelete.set(null)"
-        />
-
-      </ng-template>
-    </app-modal>
   `,
   styles: [`
     .expansion-panel-item {
@@ -91,15 +77,4 @@ export class ApplicationExpansionPanelItemComponent {
     event.stopPropagation();
     this.edit.emit(this.application());
   }
-
-  // Deleting applications
-  protected applicationToDelete = signal<RemoveApplication | null>(null);
-
-  protected handleDeleteApplication() {
-    if (this.applicationToDelete()) {
-      this.delete.emit(this.applicationToDelete()!);
-      this.applicationToDelete.set(null);
-    }
-  }
-
 }
