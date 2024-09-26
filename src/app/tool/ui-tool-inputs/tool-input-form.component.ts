@@ -75,8 +75,15 @@ export class ToolInputFormComponent {
   constructor() {
     effect((): void => {
       const toolInput: Partial<ToolInput> | null = this.inputBeingEdited();
-      if (!toolInput) this.toolInputForm.reset(); // Imperative code
-      else {
+      if (!toolInput) {
+        this.toolInputForm.reset(); // Imperative code
+        this.toolInputForm.patchValue({
+          name: 'Name',
+          label: 'Label',
+          placeholder: 'Placeholder',
+          type: ToolInputTypeEnum.Text // TODO Remove default testing values
+        });
+      } else {
         this.toolInputForm.patchValue({
           ...toolInput
         });

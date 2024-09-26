@@ -44,7 +44,7 @@ import {ToolOutputExpansionPanelComponent} from "./ui-tool-outputs/tool-output-e
     <!-- Lists -->
     <section>
 
-      <div>
+      <div class="scrollable">
         <!-- Inputs header -->
         <div class="list-header">
           <h4>Tool inputs</h4>
@@ -166,10 +166,17 @@ import {ToolOutputExpansionPanelComponent} from "./ui-tool-outputs/tool-output-e
     }
 
     section {
+      height: 100%;
       display: grid;
       grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
       gap: 1rem;
       padding: 1rem;
+    }
+
+    .scrollable {
+      height: calc(100% - 50px);
+      overflow-y: auto;
+      background-color: lightyellow;
     }
   `]
 })
