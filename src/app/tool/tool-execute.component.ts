@@ -23,10 +23,16 @@ import {ToolExecuteService} from "./data-access/tool-execute.service";
         <h1>Tool: {{ tool.name }}</h1>
       </header>
 
-      <app-inputs-to-form
-        [toolInputs]="toolInputs()"
-        (send)="toolExecuteService.postToApi($event, tool.apiUrl)"
-      />
+      <section>
+        <app-inputs-to-form
+          [toolInputs]="toolInputs()"
+          (send)="toolExecuteService.postToApi($event, tool.apiUrl)"
+        />
+
+        <div>
+          outputs
+        </div>
+      </section>
     }
   `,
   styles: [`

@@ -28,7 +28,7 @@ import {getErrorMessages} from "../utils/get-error-messages";
   template: `
     @for (control of formGroup().controls | keyvalue: originalOrder; track control.key) {
 
-      <mat-form-field appearance="fill" [formGroup]="formGroup()">
+      <mat-form-field appearance="outline" [formGroup]="formGroup()">
 
         <!-- Input label -->
         <mat-label>{{ (formGroup().getLabel(control.key) || '') }}</mat-label>

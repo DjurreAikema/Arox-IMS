@@ -30,25 +30,40 @@ import {SimpleFormGeneratorComponent} from "../../shared/ui/simple-form-generato
   template: `
     @if (inputsForm) {
 
-      <form [formGroup]="inputsForm" #form="ngForm">
+      <div class="wrapper">
+        <h6>Tool Inputs</h6>
 
-        <app-simple-form-generator
-          [form]="form"
-          [formGroup]="inputsForm"
-        />
+        <form [formGroup]="inputsForm" #form="ngForm">
 
-        <div class="form-buttons">
-          <button class="button-danger">Clear</button>
-          <button class="button-success" (click)="send.emit(inputsForm.getRawValue())">Send</button>
-        </div>
+          <app-simple-form-generator
+            [form]="form"
+            [formGroup]="inputsForm"
+          />
 
-      </form>
+          <div class="form-buttons">
+            <button class="button-warning">Clear</button>
+            <button class="button-success" (click)="send.emit(inputsForm.getRawValue())">Send</button>
+          </div>
+
+        </form>
+      </div>
 
     } @else {
       <p>No form found.</p>
     }
   `,
-  styles: ``
+  styles: [`
+    .wrapper {
+      background-color: white;
+      padding: 1rem;
+    }
+
+    .form-buttons {
+      display: flex;
+      flex-flow: row nowrap;
+      justify-content: space-between;
+    }
+  `]
 })
 export class InputsToFormComponent implements OnInit {
 

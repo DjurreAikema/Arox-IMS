@@ -35,13 +35,13 @@ import {MatTooltip} from "@angular/material/tooltip";
 
           <div class="options-form-row" [formGroupName]="index">
 
-            <mat-form-field appearance="fill">
+            <mat-form-field appearance="outline">
               <input matNativeControl
                      formControlName="label"
                      placeholder="Option label">
             </mat-form-field>
 
-            <mat-form-field appearance="fill">
+            <mat-form-field appearance="outline">
               <input matNativeControl
                      formControlName="value"
                      placeholder="Option values">
