@@ -176,7 +176,6 @@ import {ToolOutputExpansionPanelComponent} from "./ui-tool-outputs/tool-output-e
     .scrollable {
       height: calc(100% - 50px);
       overflow-y: auto;
-      background-color: lightyellow;
     }
   `]
 })
