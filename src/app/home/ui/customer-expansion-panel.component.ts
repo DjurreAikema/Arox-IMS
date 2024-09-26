@@ -135,6 +135,7 @@ export class CustomerExpansionPanelComponent {
     if (this.applicationToDelete()) {
       this.deleteApplication.emit(this.applicationToDelete()!);
       this.applicationToDelete.set(null);
+      this.selectApplication.emit(null);
     }
   }
 }
