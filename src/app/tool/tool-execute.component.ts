@@ -18,7 +18,7 @@ import {ToolExecuteService} from "./data-access/tool-execute.service";
     <!-- Header -->
     @if (tool(); as tool) {
       <header>
-        <button class="button-primary" routerLink="/application/{{tool.applicationId}}">< Back</button>
+        <button class="button-primary" routerLink="/home">< Back</button>
 
         <h1>Tool: {{ tool.name }}</h1>
       </header>
