@@ -28,7 +28,7 @@ import {ModalComponent} from "../../shared/ui/modals/modal.component";
 
         <!-- Panel header buttons -->
         <mat-panel-description>
-          <button class="button-danger small-button mr-5" (click)="customerToDelete.set(customer().id)"
+          <button class="button-danger small-button mr-5" (click)="deleteCustomer.emit(customer().id)"
                   matTooltip="Delete customer" matTooltipPosition="right">
             <i class="fa-solid fa-trash"></i>
           </button>
@@ -68,21 +68,6 @@ import {ModalComponent} from "../../shared/ui/modals/modal.component";
       }
 
     </mat-expansion-panel>
-
-
-    <!-- Delete modal -->
-    <app-modal [isOpen]="!!customerToDelete()">
-      <ng-template>
-
-        <app-confirm-modal
-          title="Delete Customer"
-          message="Are you sure you want to delete this customer?"
-          (confirm)="handleDeleteCustomer()"
-          (cancel)="customerToDelete.set(null)"
-        />
-
-      </ng-template>
-    </app-modal>
   `,
   styles: [`
     .mat-expansion-panel:last-of-type {
@@ -127,15 +112,5 @@ export class CustomerExpansionPanelComponent {
   protected onButtonClick(event: MouseEvent) {
     event.stopPropagation();
     this.editCustomer.emit(this.customer());
-  }
-
-  // Deleting customers
-  protected customerToDelete = signal<RemoveCustomer | null>(null);
-
-  protected handleDeleteCustomer() {
-    if (this.customerToDelete()) {
-      this.deleteCustomer.emit(this.customerToDelete()!);
-      this.customerToDelete.set(null);
-    }
   }
 }

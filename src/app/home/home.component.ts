@@ -1,7 +1,7 @@
 import {Component, computed, inject, signal} from '@angular/core';
 import {CustomerService} from "../customer/data-access/customer.service";
 import {ApplicationService} from "../application/data-access/application.service";
-import {Application, Customer, Tool} from "../shared/interfaces";
+import {Application, Customer, RemoveCustomer, Tool} from "../shared/interfaces";
 import {CustomerFormComponent} from "../customer/ui/customer-form.component";
 import {MatTooltip} from "@angular/material/tooltip";
 import {ApplicationFormComponent} from "../application/ui/application-form.component";
@@ -11,6 +11,8 @@ import {ToolService} from "../tool/data-access/tool.service";
 import {ToolListComponent} from "./ui/tool-list.component";
 import {MatCard, MatCardContent} from "@angular/material/card";
 import {ToolFormComponent} from "../tool/ui-tools/tool-form.component";
+import {ConfirmModalComponent} from "../shared/ui/modals/confirm-modal.component";
+import {ModalComponent} from "../shared/ui/modals/modal.component";
 
 @Component({
   selector: 'app-home',
@@ -24,7 +26,9 @@ import {ToolFormComponent} from "../tool/ui-tools/tool-form.component";
     ToolListComponent,
     MatCard,
     MatCardContent,
-    ToolFormComponent
+    ToolFormComponent,
+    ConfirmModalComponent,
+    ModalComponent
   ],
   template: `
     <div class="wrapper">
@@ -50,7 +54,7 @@ import {ToolFormComponent} from "../tool/ui-tools/tool-form.component";
               [selectedApplication]="selectedApplication()"
 
               (editCustomer)="customerBeingEdited.set($event)"
-              (deleteCustomer)="customerService.remove$.next($event)"
+              (deleteCustomer)="this.customerToDelete.set($event);"
 
               (addApplication)="applicationBeingEdited.set({customerId: $event})"
               (editApplication)="applicationBeingEdited.set($event)"
@@ -104,6 +108,20 @@ import {ToolFormComponent} from "../tool/ui-tools/tool-form.component";
                 : customerService.add$.next($event)
         "
     />
+
+    <!-- Customer delete modal -->
+    <app-modal [isOpen]="!!customerToDelete()">
+      <ng-template>
+
+        <app-confirm-modal
+          title="Delete Customer"
+          message="Are you sure you want to delete this customer?"
+          (confirm)="handleDeleteCustomer()"
+          (cancel)="customerToDelete.set(null)"
+        />
+
+      </ng-template>
+    </app-modal>
 
     <!-- Application form modal -->
     <app-application-form
@@ -223,4 +241,14 @@ export default class HomeComponent {
       .filter((tool) => tool.applicationId == this.selectedApplication()?.id)
   });
 
+
+  // Deleting customers
+  protected customerToDelete = signal<RemoveCustomer | null>(null);
+
+  protected handleDeleteCustomer() {
+    if (this.customerToDelete()) {
+      this.customerService.remove$.next(this.customerToDelete()!)
+      this.customerToDelete.set(null);
+    }
+  }
 }
