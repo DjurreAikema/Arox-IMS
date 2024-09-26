@@ -6,6 +6,7 @@ export const routes: Routes = [
     path: 'home',
     loadComponent: () => import('./home/home.component')
   },
+
   // Customer routes
   {
     path: 'customers',
@@ -15,6 +16,7 @@ export const routes: Routes = [
     path: 'customer/:id',
     loadComponent: () => import('./customer/customer-details.component')
   },
+
   // Application routes
   {
     path: 'applications',
@@ -24,6 +26,7 @@ export const routes: Routes = [
     path: 'application/:id',
     loadComponent: () => import('./application/application-details.component')
   },
+
   // Tool routes
   {
     path: 'tools',
@@ -37,6 +40,7 @@ export const routes: Routes = [
     path: 'tool/:id/execute',
     loadComponent: () => import('./tool/tool-execute.component')
   },
+
   // Default route
   {
     path: '',
