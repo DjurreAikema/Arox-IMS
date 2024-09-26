@@ -11,6 +11,9 @@ export function getErrorMessages(control: any): string {
       case 'minlength':
         return `Minimum length is ${control.value.errors![errorKey].requiredLength}`;
 
+      case 'uniqueName':
+        return `Tool input name is not unique`;
+
       default:
         return `Error: ${errorKey}`;
 
