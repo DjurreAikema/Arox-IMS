@@ -3,11 +3,9 @@ import {ToolService} from "./data-access/tool.service";
 import {ActivatedRoute, RouterLink} from "@angular/router";
 import {toSignal} from "@angular/core/rxjs-interop";
 import {JsonPipe} from "@angular/common";
-import {ToolInputListComponent} from "./ui-tool-inputs/tool-input-list.component";
 import {ToolInputService} from "./data-access/tool-input.service";
 import {ToolInput, ToolOutput} from "../shared/interfaces";
 import {ToolOutputService} from "./data-access/tool-output.service";
-import {ToolOutputListComponent} from "./ui-tool-outputs/tool-output-list.component";
 import {ToolInputFormComponent} from "./ui-tool-inputs/tool-input-form.component";
 import {ToolOutputFormComponent} from "./ui-tool-outputs/tool-output-form.component";
 import {MatAccordion} from "@angular/material/expansion";
@@ -22,8 +20,6 @@ import {ToolOutputExpansionPanelComponent} from "./ui-tool-outputs/tool-output-e
   imports: [
     JsonPipe,
     RouterLink,
-    ToolInputListComponent,
-    ToolOutputListComponent,
     ToolInputFormComponent,
     ToolOutputFormComponent,
     MatAccordion,
@@ -100,10 +96,12 @@ import {ToolOutputExpansionPanelComponent} from "./ui-tool-outputs/tool-output-e
 
 
     <!-- ToolInputForm modal -->
-    <app-tool-input-form
-      [inputBeingEdited]="toolInputBeingEdited()"
-      (close)="toolInputBeingEdited.set(null)"
-      (save)="
+    @if (inputNames()) {
+      <app-tool-input-form
+        [inputBeingEdited]="toolInputBeingEdited()"
+        [existingNames]="inputNames()"
+        (close)="toolInputBeingEdited.set(null)"
+        (save)="
             toolInputBeingEdited()?.id
               ? toolInputService.edit$.next({
                 id: toolInputBeingEdited()!.id!,
@@ -114,7 +112,8 @@ import {ToolOutputExpansionPanelComponent} from "./ui-tool-outputs/tool-output-e
                 toolId: tool()?.id!
               })
           "
-    />
+      />
+    }
 
     <!-- ToolOutputForm modal -->
     <app-tool-output-form
@@ -210,6 +209,14 @@ export default class ToolDetailsComponent {
     return this.toolInputService
       .toolInputs()
       .filter((toolInput) => toolInput.toolId == id)
+  });
+
+  public inputNames = computed(() => {
+    const inputs = this.toolInputs()
+      .map(input => input.name);
+
+    console.log(inputs);
+    return inputs;
   });
 
   // Track the toolInput that is currently being edited

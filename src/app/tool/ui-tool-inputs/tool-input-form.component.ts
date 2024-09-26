@@ -5,6 +5,7 @@ import {ToolInput, ToolInputTypeEnum} from "../../shared/interfaces";
 import {CustomFormGroup} from "../../shared/utils/custom-form-group";
 import {FormControl, Validators} from "@angular/forms";
 import {SelectOptionsService} from "../../shared/data-access/select-options.service";
+import {uniqueNameValidator} from "../../shared/validators/unique-name-validator";
 
 @Component({
   selector: 'app-tool-input-form',
@@ -31,9 +32,8 @@ import {SelectOptionsService} from "../../shared/data-access/select-options.serv
       </ng-template>
     </app-modal>
   `,
-  styles: ``
+  styles: []
 })
-// Responsibility: TODO
 export class ToolInputFormComponent {
 
   // --- Dependencies
@@ -41,19 +41,18 @@ export class ToolInputFormComponent {
 
   // --- Inputs
   inputBeingEdited = input<Partial<ToolInput> | null>(null);
+  existingNames = input<string[] | undefined>(undefined);
 
   // --- Outputs
   close = output();
-  // POI: Add to toolInputForm
   save = output<{ name: string, label: string, placeholder: string, type: number }>();
 
   // Form for creating/editing toolInputs
-  // POI: Add to toolInputForm
   public toolInputForm = new CustomFormGroup({
-    name: new FormControl('', [Validators.required, Validators.minLength(3)]),
-    label: new FormControl('', [Validators.required]),
+    name: new FormControl('', Validators.required),
+    label: new FormControl('', Validators.required),
     placeholder: new FormControl(''),
-    type: new FormControl(ToolInputTypeEnum.Text, [Validators.required]),
+    type: new FormControl(ToolInputTypeEnum.Text, Validators.required),
   }, {
     // Extra control info
     name: {
@@ -73,20 +72,34 @@ export class ToolInputFormComponent {
   });
 
   constructor() {
+    // Monitor changes to inputBeingEdited to patch form values when editing
     effect((): void => {
       const toolInput: Partial<ToolInput> | null = this.inputBeingEdited();
       if (!toolInput) {
-        this.toolInputForm.reset(); // Imperative code
+        this.toolInputForm.reset(); // Reset form on new input
         this.toolInputForm.patchValue({
           name: 'Name',
           label: 'Label',
           placeholder: 'Placeholder',
-          type: ToolInputTypeEnum.Text // TODO Remove default testing values
+          type: ToolInputTypeEnum.Text // TODO: Remove default testing values
         });
       } else {
         this.toolInputForm.patchValue({
           ...toolInput
         });
+      }
+    });
+
+    // Watch for changes to existingNames and update the validator dynamically
+    effect((): void => {
+      if (this.existingNames) {
+        // Update the name validator with the latest existingNames
+        this.toolInputForm.controls['name'].setValidators([
+          Validators.required,
+          Validators.minLength(3),
+          uniqueNameValidator(this.existingNames())
+        ]);
+        this.toolInputForm.controls['name'].updateValueAndValidity(); // Trigger validation update
       }
     });
   }
