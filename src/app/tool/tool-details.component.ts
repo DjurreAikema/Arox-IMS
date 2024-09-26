@@ -14,6 +14,7 @@ import {MatAccordion} from "@angular/material/expansion";
 import {ToolInputExpansionPanelComponent} from "./ui-tool-inputs/tool-input-expansion-panel.component";
 import {InputOptionService} from "../shared/data-access/input-option.service";
 import {MatTooltip} from "@angular/material/tooltip";
+import {ToolOutputExpansionPanelComponent} from "./ui-tool-outputs/tool-output-expansion-panel.component";
 
 @Component({
   selector: 'app-tool-details',
@@ -27,7 +28,8 @@ import {MatTooltip} from "@angular/material/tooltip";
     ToolOutputFormComponent,
     MatAccordion,
     ToolInputExpansionPanelComponent,
-    MatTooltip
+    MatTooltip,
+    ToolOutputExpansionPanelComponent
   ],
   template: `
     <!-- Header -->
@@ -65,30 +67,37 @@ import {MatTooltip} from "@angular/material/tooltip";
 
               (addInputOption)="inputOptionService.add$.next($event)"
               (editInputOption)="inputOptionService.edit$.next($event)"
-
-
             />
           }
         </mat-accordion>
       </div>
 
-      <!--      <app-tool-input-list-->
-      <!--        class="half"-->
-      <!--        [toolInputs]="toolInputs()"-->
-      <!--        (add)="toolInputBeingEdited.set({})"-->
-      <!--        (edit)="toolInputBeingEdited.set($event)"-->
-      <!--        (delete)="toolInputService.remove$.next($event)"-->
-      <!--      />-->
+      <div>
+        <!-- Outputs header -->
+        <div class="list-header">
+          <h4>Tool outputs</h4>
 
-      <!-- Outputs -->
-      <app-tool-output-list
-        class="half"
-        [toolOutputs]="toolOutputs()"
-        (add)="toolOutputBeingEdited.set({})"
-        (edit)="toolOutputBeingEdited.set($event)"
-        (delete)="toolOutputService.remove$.next($event)"
-      />
+          <button class="button-success small-button" (click)="toolOutputBeingEdited.set({})"
+                  matTooltip="Add tool output" matTooltipPosition="right">
+            <i class="fa-solid fa-plus"></i>
+          </button>
+        </div>
+
+        <!-- Outputs list -->
+        <mat-accordion>
+          @for (output of toolOutputs(); track output.id) {
+            <app-tool-output-expansion-panel
+              [output]="output"
+
+              (edit)="toolOutputBeingEdited.set($event)"
+              (delete)="toolOutputService.remove$.next($event)"
+            />
+          }
+        </mat-accordion>
+      </div>
+
     </section>
+
 
     <!-- ToolInputForm modal -->
     <app-tool-input-form

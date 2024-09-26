@@ -31,9 +31,11 @@ import {JsonPipe} from "@angular/common";
       <!-- Panel header -->
       <mat-expansion-panel-header>
 
-        <mat-panel-title><span>{{ input().label }}</span>
+        <mat-panel-title>
+          <span>{{ input().label }}</span>
           <div>-</div>
-          <span>{{ input().type | enumToText: ToolInputTypeEnum }}</span></mat-panel-title>
+          <span>{{ input().type | enumToText: ToolInputTypeEnum }}</span>
+        </mat-panel-title>
 
         <!-- Panel header buttons -->
         <mat-panel-description>
@@ -84,6 +86,7 @@ import {JsonPipe} from "@angular/common";
 
     </mat-expansion-panel>
 
+    <!-- Input options edit modal -->
     <app-modal [isOpen]="!!inputOptionsBeingEdited()">
       <ng-template>
 
