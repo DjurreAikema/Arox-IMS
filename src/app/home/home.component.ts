@@ -141,6 +141,7 @@ import {ToolFormComponent} from "../tool/ui-tools/tool-form.component";
   `,
   styles: [`
     .wrapper {
+      height: 100%;
       display: grid;
       grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
       gap: 1rem;
@@ -190,6 +191,11 @@ import {ToolFormComponent} from "../tool/ui-tools/tool-form.component";
       display: flex;
       align-items: center;
       justify-content: center;
+    }
+
+    section {
+      height: 100%;
+      overflow-y: auto;
     }
   `]
 })

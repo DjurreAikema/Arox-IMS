@@ -53,7 +53,11 @@ import {RouterLink} from "@angular/router";
     }
   `,
   styleUrls: ['../../shared/styles/default-list.scss'],
-  styles: ``
+  styles: [`
+    mat-card {
+      margin-bottom: 1rem;
+    }
+  `]
 })
 export class ToolListComponent {
 
