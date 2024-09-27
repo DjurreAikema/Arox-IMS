@@ -4,7 +4,7 @@ import {ActivatedRoute, RouterLink} from "@angular/router";
 import {toSignal} from "@angular/core/rxjs-interop";
 import {JsonPipe} from "@angular/common";
 import {ToolInputService} from "./data-access/tool-input.service";
-import {ToolInput, ToolOutput} from "../shared/interfaces";
+import {RemoveToolInput, ToolInput, ToolOutput} from "../shared/interfaces";
 import {ToolOutputService} from "./data-access/tool-output.service";
 import {ToolInputFormComponent} from "./ui-tool-inputs/tool-input-form.component";
 import {ToolOutputFormComponent} from "./ui-tool-outputs/tool-output-form.component";
@@ -13,6 +13,8 @@ import {ToolInputExpansionPanelComponent} from "./ui-tool-inputs/tool-input-expa
 import {InputOptionService} from "../shared/data-access/input-option.service";
 import {MatTooltip} from "@angular/material/tooltip";
 import {ToolOutputExpansionPanelComponent} from "./ui-tool-outputs/tool-output-expansion-panel.component";
+import {ConfirmModalComponent} from "../shared/ui/modals/confirm-modal.component";
+import {ModalComponent} from "../shared/ui/modals/modal.component";
 
 @Component({
   selector: 'app-tool-details',
@@ -25,7 +27,9 @@ import {ToolOutputExpansionPanelComponent} from "./ui-tool-outputs/tool-output-e
     MatAccordion,
     ToolInputExpansionPanelComponent,
     MatTooltip,
-    ToolOutputExpansionPanelComponent
+    ToolOutputExpansionPanelComponent,
+    ConfirmModalComponent,
+    ModalComponent
   ],
   template: `
     <!-- Header -->
@@ -59,7 +63,7 @@ import {ToolOutputExpansionPanelComponent} from "./ui-tool-outputs/tool-output-e
               [inputOptions]="inputOptionService.inputOptions()"
 
               (editInput)="toolInputBeingEdited.set($event)"
-              (deleteInput)="toolInputService.remove$.next($event)"
+              (deleteInput)="inputToDelete.set($event)"
 
               (addInputOption)="inputOptionService.add$.next($event)"
               (editInputOption)="inputOptionService.edit$.next($event)"
@@ -114,6 +118,20 @@ import {ToolOutputExpansionPanelComponent} from "./ui-tool-outputs/tool-output-e
           "
       />
     }
+
+    <!-- Tool input delete modal -->
+    <app-modal [isOpen]="!!inputToDelete()">
+      <ng-template>
+
+        <app-confirm-modal
+          title="Delete Tool Input"
+          message="Are you sure you want to delete this tool input?"
+          (confirm)="handleDeleteInput()"
+          (cancel)="inputToDelete.set(null)"
+        />
+
+      </ng-template>
+    </app-modal>
 
     <!-- ToolOutputForm modal -->
     <app-tool-output-form
@@ -221,6 +239,16 @@ export default class ToolDetailsComponent {
 
   // Track the toolInput that is currently being edited
   public toolInputBeingEdited = signal<Partial<ToolInput> | null>(null);
+
+  // Deleting tool inputs
+  protected inputToDelete = signal<RemoveToolInput | null>(null);
+
+  protected handleDeleteInput() {
+    if (this.inputToDelete()) {
+      this.toolInputService.remove$.next(this.inputToDelete()!);
+      this.inputToDelete.set(null);
+    }
+  }
 
 
   // --- ToolOutputs

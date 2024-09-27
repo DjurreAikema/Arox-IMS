@@ -44,7 +44,7 @@ import {JsonPipe} from "@angular/common";
             <mat-icon matSuffix matTooltip="Select input has no options">error</mat-icon>
           }
 
-          <button class="button-danger small-button mr-5" (click)="inputToDelete.set(input().id)"
+          <button class="button-danger small-button mr-5" (click)="deleteInput.emit(input().id)"
                   matTooltip="Delete tool input" matTooltipPosition="right">
             <i class="fa-solid fa-trash"></i>
           </button>
@@ -97,20 +97,6 @@ import {JsonPipe} from "@angular/common";
           (close)="inputOptionsBeingEdited.set(null)"
           (remove)="inputOptionService.remove$.next($event)"
           (save)="saveInputOptions($event)"
-        />
-
-      </ng-template>
-    </app-modal>
-
-    <!-- Delete modal -->
-    <app-modal [isOpen]="!!inputToDelete()">
-      <ng-template>
-
-        <app-confirm-modal
-          title="Delete Tool Input"
-          message="Are you sure you want to delete this tool input?"
-          (confirm)="handleDeleteInput()"
-          (cancel)="inputToDelete.set(null)"
         />
 
       </ng-template>
@@ -180,15 +166,6 @@ export class ToolInputExpansionPanelComponent {
   editInputOption = output<EditInputOption>()
 
   // --- Properties
-  protected inputToDelete = signal<RemoveToolInput | null>(null);
-
-  protected handleDeleteInput() {
-    if (this.inputToDelete()) {
-      this.deleteInput.emit(this.inputToDelete()!);
-      this.inputToDelete.set(null);
-    }
-  }
-
   protected inputOptionsBeingEdited = signal<InputOption[] | null>(null);
 
   protected readonly panelOpenState = signal(false);
