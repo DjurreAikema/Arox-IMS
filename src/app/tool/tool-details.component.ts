@@ -244,11 +244,8 @@ export default class ToolDetailsComponent {
   });
 
   public inputNames = computed(() => {
-    const inputs = this.toolInputs()
+    return this.toolInputs()
       .map(input => input.name);
-
-    console.log(inputs);
-    return inputs;
   });
 
   // Track the toolInput that is currently being edited

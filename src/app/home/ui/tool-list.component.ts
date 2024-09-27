@@ -2,6 +2,7 @@ import {Component, input, output} from '@angular/core';
 import {RemoveTool, Tool} from "../../shared/interfaces";
 import {MatCard, MatCardContent, MatCardFooter, MatCardHeader, MatCardTitle} from "@angular/material/card";
 import {RouterLink} from "@angular/router";
+import {MatTooltip} from "@angular/material/tooltip";
 
 @Component({
   selector: 'app-tool-list',
@@ -12,7 +13,8 @@ import {RouterLink} from "@angular/router";
     MatCardFooter,
     MatCardHeader,
     MatCardTitle,
-    RouterLink
+    RouterLink,
+    MatTooltip
   ],
   template: `
     @for (tool of tools(); track tool.id) {
@@ -33,9 +35,16 @@ import {RouterLink} from "@angular/router";
 
         <mat-card-footer>
 
-          <button class="button-info" routerLink="/tool/{{tool.id}}">
-            Edit tool
-          </button>
+          <div>
+            <button class="button-info" routerLink="/tool/{{tool.id}}">
+              Edit tool
+            </button>
+
+            <button class="button-danger small-button mr-5"
+                    matTooltip="Delete tool" matTooltipPosition="right">
+              <i class="fa-solid fa-trash"></i>
+            </button>
+          </div>
 
           <button class="button-warning" routerLink="/tool/{{tool.id}}/execute">
             Execute tool
