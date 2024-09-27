@@ -4,7 +4,7 @@ import {ActivatedRoute, RouterLink} from "@angular/router";
 import {toSignal} from "@angular/core/rxjs-interop";
 import {JsonPipe} from "@angular/common";
 import {ToolInputService} from "./data-access/tool-input.service";
-import {RemoveToolInput, ToolInput, ToolOutput} from "../shared/interfaces";
+import {RemoveToolInput, RemoveToolOutput, ToolInput, ToolOutput} from "../shared/interfaces";
 import {ToolOutputService} from "./data-access/tool-output.service";
 import {ToolInputFormComponent} from "./ui-tool-inputs/tool-input-form.component";
 import {ToolOutputFormComponent} from "./ui-tool-outputs/tool-output-form.component";
@@ -90,7 +90,7 @@ import {ModalComponent} from "../shared/ui/modals/modal.component";
               [output]="output"
 
               (edit)="toolOutputBeingEdited.set($event)"
-              (delete)="toolOutputService.remove$.next($event)"
+              (delete)="outputToDelete.set($event)"
             />
           }
         </mat-accordion>
@@ -149,6 +149,20 @@ import {ModalComponent} from "../shared/ui/modals/modal.component";
               })
           "
     />
+
+    <!-- Tool output delete modal -->
+    <app-modal [isOpen]="!!outputToDelete()">
+      <ng-template>
+
+        <app-confirm-modal
+          title="Delete Tool Output"
+          message="Are you sure you want to delete this tool output?"
+          (confirm)="handleDeleteOutput()"
+          (cancel)="outputToDelete.set(null)"
+        />
+
+      </ng-template>
+    </app-modal>
   `,
   styles: [`
     header {
@@ -261,4 +275,14 @@ export default class ToolDetailsComponent {
 
   // Track the toolInput that is currently being edited
   public toolOutputBeingEdited = signal<Partial<ToolOutput> | null>(null);
+
+  // Deleting tool outputs
+  protected outputToDelete = signal<RemoveToolOutput | null>(null);
+
+  protected handleDeleteOutput() {
+    if (this.outputToDelete()) {
+      this.toolOutputService.remove$.next(this.outputToDelete()!);
+      this.outputToDelete.set(null);
+    }
+  }
 }

@@ -35,7 +35,7 @@ import {ModalComponent} from "../../shared/ui/modals/modal.component";
         <!-- Panel header buttons -->
         <mat-panel-description>
 
-          <button class="button-danger small-button mr-5" (click)="outputToDelete.set(output().id)"
+          <button class="button-danger small-button mr-5" (click)="delete.emit(output().id)"
                   matTooltip="Delete tool input" matTooltipPosition="right">
             <i class="fa-solid fa-trash"></i>
           </button>
@@ -58,21 +58,6 @@ import {ModalComponent} from "../../shared/ui/modals/modal.component";
       </div>
 
     </mat-expansion-panel>
-
-
-    <!-- Delete modal -->
-    <app-modal [isOpen]="!!outputToDelete()">
-      <ng-template>
-
-        <app-confirm-modal
-          title="Delete Tool Output"
-          message="Are you sure you want to delete this tool output?"
-          (confirm)="handleDeleteOutput()"
-          (cancel)="outputToDelete.set(null)"
-        />
-
-      </ng-template>
-    </app-modal>
   `,
   styles: [`
     .mat-expansion-panel:last-of-type {
@@ -122,14 +107,6 @@ export class ToolOutputExpansionPanelComponent {
 
   // --- Properties
   protected readonly panelOpenState = signal(false);
-  protected outputToDelete = signal<RemoveToolOutput | null>(null);
-
-  protected handleDeleteOutput() {
-    if (this.outputToDelete()) {
-      this.delete.emit(this.outputToDelete()!);
-      this.outputToDelete.set(null);
-    }
-  }
 
   protected onButtonClick(event: MouseEvent) {
     event.stopPropagation();
