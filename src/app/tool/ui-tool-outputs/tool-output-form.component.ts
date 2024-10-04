@@ -1,5 +1,5 @@
 import {Component, effect, inject, input, output} from '@angular/core';
-import {ToolOutput, ToolOutputTypeEnum} from "../../shared/interfaces";
+import {ToolInputTypeEnum, ToolOutput} from "../../shared/interfaces";
 import {FormModalComponent} from "../../shared/ui/modals/form-modal.component";
 import {ModalComponent} from "../../shared/ui/modals/modal.component";
 import {CustomFormGroup} from "../../shared/utils/custom-form-group";
@@ -44,22 +44,22 @@ export class ToolOutputFormComponent {
   // --- Outputs
   close = output();
   // POI: Add to ToolOutputForm
-  save = output<{ name: string, type: number }>();
+  save = output<{ name: string, fieldTypeId: number }>();
 
   // Form for creating/editing toolOutputs
   // POI: Add to ToolOutputForm
   public toolOutputForm = new CustomFormGroup({
     name: new FormControl('', [Validators.required, Validators.minLength(3)]),
-    type: new FormControl(ToolOutputTypeEnum.Text, [Validators.required]),
+    fieldTypeId: new FormControl(ToolInputTypeEnum.Text, [Validators.required]),
   }, {
     // Extra control info
     name: {
       label: 'Name'
     },
-    type: {
+    fieldTypeId: {
       label: 'Output type',
       type: 'select',
-      selectOptions: this.selectOptionsService.getToolOutputTypeOptions()
+      selectOptions: this.selectOptionsService.getToolInputTypeOptions()
     },
   });
 

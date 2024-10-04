@@ -1,5 +1,5 @@
 import {Component, input, output, signal} from '@angular/core';
-import {RemoveToolOutput, ToolOutput, ToolOutputTypeEnum} from "../../shared/interfaces";
+import {RemoveToolOutput, ToolInputTypeEnum, ToolOutput} from "../../shared/interfaces";
 import {ConfirmModalComponent} from "../../shared/ui/modals/confirm-modal.component";
 import {ModalComponent} from "../../shared/ui/modals/modal.component";
 import {EnumToTextPipe} from "../../shared/pipes/enum-to-text.pipe";
@@ -29,7 +29,7 @@ import {EnumToTextPipe} from "../../shared/pipes/enum-to-text.pipe";
             </p>
 
             <p>
-              <span>Type: </span>{{ toolOutput.type | enumToText: ToolOutputTypeEnum }}
+              <span>Type: </span>{{ toolOutput.fieldTypeId | enumToText: ToolInputTypeEnum }}
             </p>
           </div>
 
@@ -117,5 +117,5 @@ export class ToolOutputListComponent {
     }
   }
 
-  protected readonly ToolOutputTypeEnum = ToolOutputTypeEnum;
+  protected readonly ToolInputTypeEnum = ToolInputTypeEnum;
 }

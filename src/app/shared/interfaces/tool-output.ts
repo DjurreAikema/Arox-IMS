@@ -1,10 +1,11 @@
 import {RemoveTool} from "./tool";
+import {ToolInputTypeEnum} from "./tool-input";
 
 export interface ToolOutput {
   id: number;
   toolId: number;
   name: string;
-  type: ToolOutputTypeEnum;
+  fieldTypeId: ToolInputTypeEnum;
   value: any;
 }
 
@@ -19,7 +20,3 @@ export type EditToolOutput = {
 };
 
 export type RemoveToolOutput = ToolOutput['id'];
-
-export enum ToolOutputTypeEnum {
-  Text = 0,
-}

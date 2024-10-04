@@ -29,7 +29,7 @@ import {ModalComponent} from "../../shared/ui/modals/modal.component";
         <mat-panel-title>
           <span>{{ output().name }}</span>
           <div>-</div>
-          <span>{{ output().type | enumToText: ToolInputTypeEnum }}</span>
+          <span>{{ output().fieldTypeId | enumToText: ToolInputTypeEnum }}</span>
         </mat-panel-title>
 
         <!-- Panel header buttons -->
@@ -53,7 +53,7 @@ import {ModalComponent} from "../../shared/ui/modals/modal.component";
       <div class="panel-body">
 
         <div class="panel-body-line"><span>Name:</span> {{ output().name }}</div>
-        <div class="panel-body-line"><span>Type:</span> {{ output().type | enumToText: ToolInputTypeEnum }}</div>
+        <div class="panel-body-line"><span>Type:</span> {{ output().fieldTypeId | enumToText: ToolInputTypeEnum }}</div>
 
       </div>
 
