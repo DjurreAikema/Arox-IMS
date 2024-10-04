@@ -1,6 +1,6 @@
 import {inject, Injectable, InjectionToken, PLATFORM_ID} from '@angular/core';
 import {map, Observable, of} from "rxjs";
-import {Application, Customer, EditCustomer, InputOption, Tool, ToolInput, ToolOutput} from "../interfaces";
+import {Application, Customer, EditApplication, EditCustomer, InputOption, Tool, ToolInput, ToolOutput} from "../interfaces";
 
 // https://angularstart.com/standard/modules/angular-quicklists/11/
 export const LOCAL_STORAGE = new InjectionToken<Storage>(
@@ -24,65 +24,92 @@ export class StorageService {
   public storage = inject(LOCAL_STORAGE);
 
   private customerKey = 'customers';
+  private applicationKey = 'applications';
 
-  // --- Customers --- //
-  public loadCustomers(): Observable<Customer[]> {
-    const customers = this.storage.getItem(this.customerKey);
-    return of(customers
-      ? (JSON.parse(customers) as Customer[])
-      : []
-    );
+  // --- Generic Functions --- //
+  private loadItems<T>(key: string): Observable<T[]> {
+    const items = this.storage.getItem(key);
+    return of(items ? (JSON.parse(items) as T[]) : []);
   }
 
-  public saveCustomers(customers: Customer[]): void {
-    this.storage.setItem(this.customerKey, JSON.stringify(customers));
+  private saveItems<T>(key: string, items: T[]): void {
+    this.storage.setItem(key, JSON.stringify(items));
   }
 
-  public addCustomer(customer: Customer): Observable<Customer> {
-    return this.loadCustomers().pipe(
-      map((customers) => {
-        customers.push(customer);
-        this.saveCustomers(customers);
-        return customer;
+  private addItem<T extends { id: number }>(key: string, item: T): Observable<T> {
+    return this.loadItems<T>(key).pipe(
+      map((items) => {
+        items.push(item);
+        this.saveItems<T>(key, items);
+        return item;
       })
     );
   }
 
-  public editCustomer(update: EditCustomer): Observable<Customer> {
-    return this.loadCustomers().pipe(
-      map((customers) => {
-        const index = customers.findIndex(c => c.id === update.id);
+  private editItem<T extends { id: number }>(key: string, id: number, data: Partial<T>): Observable<T> {
+    return this.loadItems<T>(key).pipe(
+      map((items) => {
+        const index = items.findIndex((i) => i.id === id);
         if (index !== -1) {
-          customers[index] = {...customers[index], ...update.data};
-          this.saveCustomers(customers);
-          return customers[index];
+          items[index] = {...items[index], ...data};
+          this.saveItems<T>(key, items);
+          return items[index];
         } else {
-          throw new Error('Customer not found');
+          throw new Error(`${key.slice(0, -1)} not found`);
         }
       })
     );
   }
 
-  public removeCustomer(id: number): Observable<void> {
-    return this.loadCustomers().pipe(
-      map((customers) => {
-        const updatedCustomers = customers.filter(c => c.id !== id);
-        this.saveCustomers(updatedCustomers);
+  private removeItem<T extends { id: number }>(key: string, id: number): Observable<void> {
+    return this.loadItems<T>(key).pipe(
+      map((items) => {
+        const updatedItems = items.filter((i) => i.id !== id);
+        this.saveItems<T>(key, updatedItems);
       })
     );
   }
 
+  // --- Customers --- //
+  public loadCustomers(): Observable<Customer[]> {
+    return this.loadItems<Customer>(this.customerKey);
+  }
+
+  public saveCustomers(customers: Customer[]): void {
+    this.saveItems<Customer>(this.customerKey, customers);
+  }
+
+  public addCustomer(customer: Customer): Observable<Customer> {
+    return this.addItem<Customer>(this.customerKey, customer);
+  }
+
+  public editCustomer(update: EditCustomer): Observable<Customer> {
+    return this.editItem<Customer>(this.customerKey, update.id, update.data);
+  }
+
+  public removeCustomer(id: number): Observable<void> {
+    return this.removeItem<Customer>(this.customerKey, id);
+  }
+
   // --- Applications --- //
   public loadApplications(): Observable<Application[]> {
-    const applications = this.storage.getItem('applications');
-    return of(applications
-      ? (JSON.parse(applications) as Application[])
-      : []
-    );
+    return this.loadItems<Application>(this.applicationKey);
   }
 
   public saveApplications(applications: Application[]): void {
-    this.storage.setItem('applications', JSON.stringify(applications));
+    this.saveItems<Application>(this.applicationKey, applications);
+  }
+
+  public addApplication(application: Application): Observable<Application> {
+    return this.addItem<Application>(this.applicationKey, application);
+  }
+
+  public editApplication(update: EditApplication): Observable<Application> {
+    return this.editItem<Application>(this.applicationKey, update.id, update.data);
+  }
+
+  public removeApplication(id: number): Observable<void> {
+    return this.removeItem<Application>(this.applicationKey, id);
   }
 
   // --- Tools --- //

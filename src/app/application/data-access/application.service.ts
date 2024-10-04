@@ -92,7 +92,6 @@ export class ApplicationService {
       .with(this.customerRemoved$, (state, customerId) => {
         const applicationsToRemove = state.applications.filter((application) => application.customerId === customerId);
         applicationsToRemove.forEach((application) => this.remove$.next(application.id));
-
         return {
           applications: state.applications.filter((application) => application.customerId !== customerId)
         };
