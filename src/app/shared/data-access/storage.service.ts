@@ -1,6 +1,19 @@
 import {inject, Injectable, InjectionToken, PLATFORM_ID} from '@angular/core';
 import {map, Observable, of} from "rxjs";
-import {Application, Customer, EditApplication, EditCustomer, EditTool, EditToolInput, EditToolOutput, InputOption, Tool, ToolInput, ToolOutput} from "../interfaces";
+import {
+  Application,
+  Customer,
+  EditApplication,
+  EditCustomer,
+  EditInputOption,
+  EditTool,
+  EditToolInput,
+  EditToolOutput,
+  InputOption,
+  Tool,
+  ToolInput,
+  ToolOutput
+} from "../interfaces";
 
 // https://angularstart.com/standard/modules/angular-quicklists/11/
 export const LOCAL_STORAGE = new InjectionToken<Storage>(
@@ -28,6 +41,7 @@ export class StorageService {
   private toolKey = 'tools';
   private toolInputKey = 'toolInputs';
   private toolOutputKey = 'toolOutputs';
+  private inputOptionKey = 'inputOptions';
 
   // --- Generic Functions --- //
   private loadItems<T>(key: string): Observable<T[]> {
@@ -194,14 +208,22 @@ export class StorageService {
 
   // --- Input Options --- //
   public loadInputOptions(): Observable<InputOption[]> {
-    const inputOptions = this.storage.getItem('inputOptions');
-    return of(inputOptions
-      ? (JSON.parse(inputOptions) as InputOption[])
-      : []
-    );
+    return this.loadItems<InputOption>(this.inputOptionKey);
   }
 
   public saveInputOptions(inputOptions: InputOption[]): void {
-    this.storage.setItem('inputOptions', JSON.stringify(inputOptions));
+    this.saveItems<InputOption>(this.inputOptionKey, inputOptions);
+  }
+
+  public addInputOption(inputOption: InputOption): Observable<InputOption> {
+    return this.addItem<InputOption>(this.inputOptionKey, inputOption);
+  }
+
+  public editInputOption(update: EditInputOption): Observable<InputOption> {
+    return this.editItem<InputOption>(this.inputOptionKey, update.id, update.data);
+  }
+
+  public removeInputOption(id: number): Observable<void> {
+    return this.removeItem<InputOption>(this.inputOptionKey, id);
   }
 }

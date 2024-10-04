@@ -192,12 +192,15 @@ export class ToolInputExpansionPanelComponent {
         this.inputOptionService.edit$.next({
           id: option.id,
           data: option
-        })
+        });
       } else {
         this.inputOptionService.add$.next({
-          item: option,
-          inputId: this.input().id
-        })
+          inputId: this.input().id,
+          item: {
+            label: option.label,
+            value: option.value
+          }
+        });
       }
     });
   }
