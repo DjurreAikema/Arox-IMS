@@ -127,7 +127,6 @@ export class ToolService {
   }
 
   private new(tool: AddTool): Observable<Tool> {
-    console.log(tool)
     if (environment.demoMode) return this.storageService.addTool(this.addIdToTool(tool));
     else
       return this.http.post<Tool>(`${environment.apiUrl}/tools`, {
@@ -137,7 +136,6 @@ export class ToolService {
   }
 
   private edit(update: EditTool): Observable<Tool> {
-    console.log(update)
     if (environment.demoMode) return this.storageService.editTool(update);
     else
       return this.http.put<Tool>(`${environment.apiUrl}/tools/${update.id}`, update.data);
