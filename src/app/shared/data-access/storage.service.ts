@@ -112,6 +112,14 @@ export class StorageService {
     return this.removeItem<Application>(this.applicationKey, id);
   }
 
+  public removeApplicationsByCustomer(customerId: number): Observable<void> {
+    return this.loadApplications().pipe(
+      map((applications) => {
+        this.saveApplications(applications.filter(a => a.customerId !== customerId));
+      })
+    );
+  }
+
   // --- Tools --- //
   public loadTools(): Observable<Tool[]> {
     const tools = this.storage.getItem('tools');

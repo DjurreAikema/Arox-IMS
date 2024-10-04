@@ -71,8 +71,12 @@ import {ModalComponent} from "../shared/ui/modals/modal.component";
             }
           </mat-accordion>
         } @else {
-          Loading
-            <!-- TODO: Better loading indication -->
+          <mat-card>
+            <mat-card-content class="add-card-content">
+              Loading customers.
+              <!-- TODO: Better loading indication -->
+            </mat-card-content>
+          </mat-card>
         }
 
       </section>
