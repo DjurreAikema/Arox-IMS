@@ -34,7 +34,7 @@ import {JsonPipe} from "@angular/common";
         <mat-panel-title>
           <span>{{ input().label }}</span>
           <div>-</div>
-          <span>{{ input().type | enumToText: ToolInputTypeEnum }}</span>
+          <span>{{ input().fieldTypeId | enumToText: ToolInputTypeEnum }}</span>
         </mat-panel-title>
 
         <!-- Panel header buttons -->
@@ -64,12 +64,12 @@ import {JsonPipe} from "@angular/common";
         <div>
           <div class="panel-body-line"><span>Name:</span> {{ input().name }}</div>
           <div class="panel-body-line"><span>Label:</span> {{ input().label }}</div>
-          <div class="panel-body-line"><span>Type:</span> {{ input().type | enumToText: ToolInputTypeEnum }}</div>
+          <div class="panel-body-line"><span>Type:</span> {{ input().fieldTypeId | enumToText: ToolInputTypeEnum }}</div>
           <div class="panel-body-line"><span>Placeholder:</span> {{ input().placeholder }}</div>
         </div>
 
         <div>
-          @if (input().type == ToolInputTypeEnum.Select && filteredInputOptions(input().id); as filteredOptions) {
+          @if (input().fieldTypeId == ToolInputTypeEnum.Select && filteredInputOptions(input().id); as filteredOptions) {
 
             @if (filteredOptions.length > 0) {
               <button class="button-info" (click)="inputOptionsBeingEdited.set(filteredOptions)">Edit list</button>
@@ -180,7 +180,7 @@ export class ToolInputExpansionPanelComponent {
   }
 
   protected inputHasOptions(): boolean {
-    return this.input().type === ToolInputTypeEnum.Select && this.filteredInputOptions(this.input().id).length === 0;
+    return this.input().fieldTypeId === ToolInputTypeEnum.Select && this.filteredInputOptions(this.input().id).length === 0;
   }
 
   protected readonly ToolInputTypeEnum = ToolInputTypeEnum;

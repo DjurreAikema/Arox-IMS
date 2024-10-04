@@ -1,8 +1,10 @@
 import {computed, effect, inject, Injectable, Signal, signal, WritableSignal} from '@angular/core';
 import {AddToolInput, EditToolInput, RemoveTool, RemoveToolInput, ToolInput} from "../../shared/interfaces";
 import {StorageService} from "../../shared/data-access/storage.service";
-import {catchError, EMPTY, map, merge, Observable, Subject} from "rxjs";
+import {catchError, EMPTY, exhaustMap, map, merge, Observable, of, retry, Subject} from "rxjs";
 import {connect} from "ngxtension/connect";
+import {HttpClient} from "@angular/common/http";
+import {environment} from "../../../environments/environment";
 
 // State interface
 export interface ToolInputState {
@@ -16,6 +18,7 @@ export interface ToolInputState {
 })
 export class ToolInputService {
 
+  private http: HttpClient = inject(HttpClient);
   private storageService: StorageService = inject(StorageService);
 
   // --- State (state is initialized with default values here)
@@ -30,19 +33,20 @@ export class ToolInputService {
   public loaded: Signal<boolean> = computed(() => this.state().loaded);
 
   // --- Sources (the state gets updated when these sources get a new value, the rest of the application can use these sources to alter the data in the state)
+  public toolInputs$: Observable<ToolInput[]> = this.load().pipe(
+    retry(3),
+    catchError((err) => {
+      this.error$.next(err.message);
+      return EMPTY;
+    }),
+  );
+
   public add$: Subject<AddToolInput> = new Subject<AddToolInput>();
   public edit$: Subject<EditToolInput> = new Subject<EditToolInput>();
   public remove$: Subject<RemoveToolInput> = new Subject<RemoveToolInput>();
-
   public toolRemoved$: Subject<RemoveTool> = new Subject<RemoveTool>()
 
   private error$: Subject<string> = new Subject<string>();
-  private toolInputsLoaded$: Observable<ToolInput[]> = this.storageService.loadToolInputs().pipe(
-    catchError((err) => {
-      this.error$.next(err);
-      return EMPTY;
-    })
-  );
 
   // --- Reducers (reducers subscribe to the sources and update the actual state)
   constructor() {
@@ -50,57 +54,105 @@ export class ToolInputService {
       // error$ reducer
       this.error$.pipe(map((error) => ({error}))),
 
-      // toolInputsLoaded$ reducer
-      this.toolInputsLoaded$.pipe(
-        map((toolInputs) => ({toolInputs, loaded: true}))
-      )
+      // toolInputs$ reducer
+      this.toolInputs$.pipe(map((toolInputs) => ({
+        toolInputs: toolInputs,
+        loaded: true,
+        error: null
+      }))),
+
+      // add$ reducer
+      this.add$.pipe(
+        exhaustMap((toolInput) =>
+          this.new(toolInput).pipe(
+            map((newToolInput) => ({
+              toolInputs: [...this.toolInputs(), newToolInput],
+              error: null
+            })),
+            catchError((error) => of({error: error.message}))
+          )
+        )
+      ),
+
+      // edit$ reducer
+      this.edit$.pipe(
+        exhaustMap((update) =>
+          this.edit(update).pipe(
+            map((updatedToolInput) => ({
+              toolInputs: this.toolInputs().map((toolInput) =>
+                toolInput.id === updatedToolInput.id ? updatedToolInput : toolInput
+              ),
+              error: null
+            })),
+            catchError((error) => of({error: error.message}))
+          )
+        )
+      ),
+
+      // remove$ reducer
+      this.remove$.pipe(
+        exhaustMap((id) =>
+          this.remove(id).pipe(
+            map(() => ({
+              toolInputs: this.toolInputs().filter((toolInput) => toolInput.id !== id),
+              error: null
+            })),
+            catchError((error) => of({error: error.message}))
+          )
+        )
+      ),
     );
 
     connect(this.state)
-      .with(nextState$)
-
-      // add$ reducer
-      .with(this.add$, (state, toolInput) => ({
-        toolInputs: [
-          ...state.toolInputs,
-          {
-            ...toolInput.item,
-            id: this.generateId(),
-            toolId: toolInput.toolId
-          }
-        ]
-      }))
-
-      // edit$ reducer
-      .with(this.edit$, (state, update) => ({
-        toolInputs: state.toolInputs.map((toolInput) =>
-          toolInput.id === update.id
-            ? {...toolInput, ...update.data}
-            : toolInput
-        )
-      }))
-
-      // remove$ reducer
-      .with(this.remove$, (state, id) => ({
-        toolInputs: state.toolInputs.filter((toolInput) => toolInput.id !== id),
-      }))
-
-      // toolRemoved$ reducer
-      .with(this.toolRemoved$, (state, toolId) => ({
-        toolInputs: state.toolInputs.filter((input) => input.toolId !== toolId)
-      }));
+      .with(nextState$);
 
     // --- Effects (effects are used to chain certain actions to state updates)
-    effect((): void => {
-      // this effect saves the toolInputs to local storage every time the state changes
-      if (this.loaded()) {
+    if (environment.demoMode) {
+      effect(() => {
         this.storageService.saveToolInputs(this.toolInputs());
-      }
-    });
+      });
+    }
   }
 
   // --- Functions (these functions are used exclusively inside this state)
-  private generateId() {
-    return this.toolInputs().reduce((maxId, tool) => Math.max(maxId, tool.id), 0) + 1;
+  private load(): Observable<ToolInput[]> {
+    if (environment.demoMode) return this.storageService.loadToolInputs();
+    else
+      return this.http.get<ToolInput[]>(`${environment.apiUrl}/tool-inputs`);
+  }
+
+  private new(toolInput: AddToolInput): Observable<ToolInput> {
+    if (environment.demoMode) return this.storageService.addToolInput(this.addIdToToolInput(toolInput));
+    else
+      return this.http.post<ToolInput>(`${environment.apiUrl}/tool-inputs`, {
+        toolId: toolInput.toolId,
+        ...toolInput.item
+      });
+  }
+
+  private edit(update: EditToolInput): Observable<ToolInput> {
+    if (environment.demoMode) return this.storageService.editToolInput(update);
+    else
+      return this.http.put<ToolInput>(`${environment.apiUrl}/tool-inputs/${update.id}`, update.data);
+  }
+
+  private remove(id: number): Observable<void> {
+    if (environment.demoMode) return this.storageService.removeToolInput(id);
+    else
+      return this.http.delete<void>(`${environment.apiUrl}/tool-inputs/${id}`);
+  }
+
+  // Local storage only
+  private addIdToToolInput(toolInput: AddToolInput): ToolInput {
+    const id = this.generateId();
+    return {
+      id,
+      toolId: toolInput.toolId,
+      ...toolInput.item
+    };
+  }
+
+  private generateId(): number {
+    return this.toolInputs().length > 0 ? Math.max(...this.toolInputs().map(ti => ti.id)) + 1 : 1;
   }
 }

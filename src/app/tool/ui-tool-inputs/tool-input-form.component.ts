@@ -45,14 +45,14 @@ export class ToolInputFormComponent {
 
   // --- Outputs
   close = output();
-  save = output<{ name: string, label: string, placeholder: string, type: number }>();
+  save = output<{ name: string, label: string, placeholder: string, fieldTypeId: number }>();
 
   // Form for creating/editing toolInputs
   public toolInputForm = new CustomFormGroup({
     name: new FormControl('', Validators.required),
     label: new FormControl('', Validators.required),
     placeholder: new FormControl(''),
-    type: new FormControl(ToolInputTypeEnum.Text, Validators.required),
+    fieldTypeId: new FormControl(ToolInputTypeEnum.Text, Validators.required),
   }, {
     // Extra control info
     name: {
@@ -64,7 +64,7 @@ export class ToolInputFormComponent {
     placeholder: {
       label: 'Input placeholder'
     },
-    type: {
+    fieldTypeId: {
       label: 'Input type',
       type: 'select',
       selectOptions: this.selectOptionsService.getToolInputTypeOptions()
@@ -81,7 +81,7 @@ export class ToolInputFormComponent {
           name: 'Name',
           label: 'Label',
           placeholder: 'Placeholder',
-          type: ToolInputTypeEnum.Text // TODO: Remove default testing values
+          fieldTypeId: ToolInputTypeEnum.Text // TODO: Remove default testing values
         });
       } else {
         this.toolInputForm.patchValue({

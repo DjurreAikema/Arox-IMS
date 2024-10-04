@@ -6,7 +6,7 @@ export interface ToolInput {
   name: string;
   label: string;
   placeholder: string;
-  type: ToolInputTypeEnum;
+  fieldTypeId: ToolInputTypeEnum;
 }
 
 export type AddToolInput = {
@@ -22,7 +22,7 @@ export type EditToolInput = {
 export type RemoveToolInput = ToolInput['id'];
 
 export enum ToolInputTypeEnum {
-  Text = 0,
-  Number = 1,
-  Select = 2,
+  Text = 1,
+  Number = 2,
+  Select = 3,
 }

@@ -85,7 +85,7 @@ export class InputsToFormComponent implements OnInit {
       controlConfigs[input.name] = {
         label: input.label,
         placeholder: input.placeholder,
-        type: this.getControlType(input.type),
+        type: this.getControlType(input.fieldTypeId),
         selectOptions: [{value: 'a', label: 'aa'}, {value: 'b', label: 'bb'}]
       };
     });

@@ -1,6 +1,6 @@
 import {inject, Injectable, InjectionToken, PLATFORM_ID} from '@angular/core';
 import {map, Observable, of} from "rxjs";
-import {Application, Customer, EditApplication, EditCustomer, EditTool, InputOption, Tool, ToolInput, ToolOutput} from "../interfaces";
+import {Application, Customer, EditApplication, EditCustomer, EditTool, EditToolInput, InputOption, Tool, ToolInput, ToolOutput} from "../interfaces";
 
 // https://angularstart.com/standard/modules/angular-quicklists/11/
 export const LOCAL_STORAGE = new InjectionToken<Storage>(
@@ -26,6 +26,7 @@ export class StorageService {
   private customerKey = 'customers';
   private applicationKey = 'applications';
   private toolKey = 'tools';
+  private toolInputKey = 'toolInputs';
 
   // --- Generic Functions --- //
   private loadItems<T>(key: string): Observable<T[]> {
@@ -71,6 +72,7 @@ export class StorageService {
     );
   }
 
+
   // --- Customers --- //
   public loadCustomers(): Observable<Customer[]> {
     return this.loadItems<Customer>(this.customerKey);
@@ -91,6 +93,7 @@ export class StorageService {
   public removeCustomer(id: number): Observable<void> {
     return this.removeItem<Customer>(this.customerKey, id);
   }
+
 
   // --- Applications --- //
   public loadApplications(): Observable<Application[]> {
@@ -121,6 +124,7 @@ export class StorageService {
     );
   }
 
+
   // --- Tools --- //
   public loadTools(): Observable<Tool[]> {
     return this.loadItems<Tool>(this.toolKey);
@@ -142,18 +146,28 @@ export class StorageService {
     return this.removeItem<Tool>(this.toolKey, id);
   }
 
+
   // --- Tool Inputs --- //
   public loadToolInputs(): Observable<ToolInput[]> {
-    const toolInputs = this.storage.getItem('toolInputs');
-    return of(toolInputs
-      ? (JSON.parse(toolInputs) as ToolInput[])
-      : []
-    );
+    return this.loadItems<ToolInput>(this.toolInputKey);
   }
 
   public saveToolInputs(toolInputs: ToolInput[]): void {
-    this.storage.setItem('toolInputs', JSON.stringify(toolInputs));
+    this.saveItems<ToolInput>(this.toolInputKey, toolInputs);
   }
+
+  public addToolInput(toolInput: ToolInput): Observable<ToolInput> {
+    return this.addItem<ToolInput>(this.toolInputKey, toolInput);
+  }
+
+  public editToolInput(update: EditToolInput): Observable<ToolInput> {
+    return this.editItem<ToolInput>(this.toolInputKey, update.id, update.data);
+  }
+
+  public removeToolInput(id: number): Observable<void> {
+    return this.removeItem<ToolInput>(this.toolInputKey, id);
+  }
+
 
   // --- Tool Outputs --- //
   public loadToolOutputs(): Observable<ToolOutput[]> {
