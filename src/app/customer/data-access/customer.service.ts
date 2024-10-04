@@ -108,7 +108,6 @@ export class CustomerService {
 
     // Effect to save customers to local storage when in DemoMode
     if (environment.demoMode) {
-      // Save customers to local storage whenever customers change
       effect(() => {
         this.storageService.saveCustomers(this.customers());
       });
@@ -117,35 +116,27 @@ export class CustomerService {
 
   // --- Functions (these functions are used exclusively inside this state)
   private loadCustomers(): Observable<Customer[]> {
-    if (environment.demoMode) {
-      return this.storageService.loadCustomers();
-    }
-
-    return this.http.get<Customer[]>(`${environment.apiUrl}/customers`);
+    if (environment.demoMode) return this.storageService.loadCustomers();
+    else
+      return this.http.get<Customer[]>(`${environment.apiUrl}/customers`);
   }
 
   private addNewCustomer(customer: AddCustomer): Observable<Customer> {
-    if (environment.demoMode) {
-      return this.storageService.addCustomer(this.addIdToCustomer(customer));
-    }
-
-    return this.http.post<Customer>(`${environment.apiUrl}/customers`, customer);
+    if (environment.demoMode) return this.storageService.addCustomer(this.addIdToCustomer(customer));
+    else
+      return this.http.post<Customer>(`${environment.apiUrl}/customers`, customer);
   }
 
   private editCustomer(update: EditCustomer): Observable<Customer> {
-    if (environment.demoMode) {
-      return this.storageService.editCustomer(update);
-    }
-
-    return this.http.put<Customer>(`${environment.apiUrl}/customers/${update.id}`, update.data);
+    if (environment.demoMode) return this.storageService.editCustomer(update);
+    else
+      return this.http.put<Customer>(`${environment.apiUrl}/customers/${update.id}`, update.data);
   }
 
   private removeCustomer(id: number): Observable<void> {
-    if (environment.demoMode) {
-      return this.storageService.removeCustomer(id);
-    }
-
-    return this.http.delete<void>(`${environment.apiUrl}/customers/${id}`);
+    if (environment.demoMode) return this.storageService.removeCustomer(id);
+    else
+      return this.http.delete<void>(`${environment.apiUrl}/customers/${id}`);
   }
 
   // Local storage only

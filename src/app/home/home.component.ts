@@ -46,29 +46,34 @@ import {ModalComponent} from "../shared/ui/modals/modal.component";
         </header>
 
         <!-- Customer/Application list -->
-        <mat-accordion>
-          @for (customer of customerService.customers(); track customer.id) {
-            <app-customer-expansion-panel
-              [customer]="customer"
-              [applications]="applicationService.applications()"
-              [selectedApplication]="selectedApplication()"
+        @if (customerService.loaded()) {
+          <mat-accordion>
+            @for (customer of customerService.customers(); track customer.id) {
+              <app-customer-expansion-panel
+                [customer]="customer"
+                [applications]="applicationService.applications()"
+                [selectedApplication]="selectedApplication()"
 
-              (editCustomer)="customerBeingEdited.set($event)"
-              (deleteCustomer)="this.customerToDelete.set($event);"
+                (editCustomer)="customerBeingEdited.set($event)"
+                (deleteCustomer)="this.customerToDelete.set($event);"
 
-              (addApplication)="applicationBeingEdited.set({customerId: $event})"
-              (editApplication)="applicationBeingEdited.set($event)"
-              (selectApplication)="selectedApplication.set($event)"
-              (deleteApplication)="applicationService.remove$.next($event)"
-            />
-          } @empty {
-            <mat-card>
-              <mat-card-content class="add-card-content">
-                No customers found.
-              </mat-card-content>
-            </mat-card>
-          }
-        </mat-accordion>
+                (addApplication)="applicationBeingEdited.set({customerId: $event})"
+                (editApplication)="applicationBeingEdited.set($event)"
+                (selectApplication)="selectedApplication.set($event)"
+                (deleteApplication)="applicationService.remove$.next($event)"
+              />
+            } @empty {
+              <mat-card>
+                <mat-card-content class="add-card-content">
+                  No customers found.
+                </mat-card-content>
+              </mat-card>
+            }
+          </mat-accordion>
+        } @else {
+          Loading
+            <!-- TODO: Better loading indication -->
+        }
 
       </section>
 
