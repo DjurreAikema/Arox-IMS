@@ -1,4 +1,4 @@
-import {computed, inject, Injectable, Signal, signal, WritableSignal} from '@angular/core';
+import {computed, effect, inject, Injectable, Signal, signal, WritableSignal} from '@angular/core';
 import {AddCustomer, Customer, EditCustomer, RemoveCustomer} from "../../shared/interfaces";
 import {StorageService} from "../../shared/data-access/storage.service";
 import {catchError, exhaustMap, map, merge, Observable, of, retry, Subject} from "rxjs";
@@ -105,22 +105,59 @@ export class CustomerService {
 
     connect(this.state)
       .with(nextState$);
+
+    // Effect to save customers to local storage when in DemoMode
+    if (environment.demoMode) {
+      // Save customers to local storage whenever customers change
+      effect(() => {
+        this.storageService.saveCustomers(this.customers());
+      });
+    }
   }
 
   // --- Functions (these functions are used exclusively inside this state)
   private loadCustomers(): Observable<Customer[]> {
+    if (environment.demoMode) {
+      return this.storageService.loadCustomers();
+    }
+
     return this.http.get<Customer[]>(`${environment.apiUrl}/customers`);
   }
 
   private addNewCustomer(customer: AddCustomer): Observable<Customer> {
+    if (environment.demoMode) {
+      return this.storageService.addCustomer(this.addIdToCustomer(customer));
+    }
+
     return this.http.post<Customer>(`${environment.apiUrl}/customers`, customer);
   }
 
   private editCustomer(update: EditCustomer): Observable<Customer> {
+    if (environment.demoMode) {
+      return this.storageService.editCustomer(update);
+    }
+
     return this.http.put<Customer>(`${environment.apiUrl}/customers/${update.id}`, update.data);
   }
 
   private removeCustomer(id: number): Observable<void> {
+    if (environment.demoMode) {
+      return this.storageService.removeCustomer(id);
+    }
+
     return this.http.delete<void>(`${environment.apiUrl}/customers/${id}`);
+  }
+
+  // Local storage only
+  private addIdToCustomer(customer: AddCustomer): Customer {
+    const id = this.generateId();
+    return {
+      id,
+      ...customer
+    };
+  }
+
+  private generateId(): number {
+    return this.customers().length > 0 ? Math.max(...this.customers().map(c => c.id)) + 1 : 1;
   }
 }

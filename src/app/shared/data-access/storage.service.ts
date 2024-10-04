@@ -1,6 +1,6 @@
 import {inject, Injectable, InjectionToken, PLATFORM_ID} from '@angular/core';
-import {Observable, of} from "rxjs";
-import {Application, Customer, InputOption, Tool, ToolInput, ToolOutput} from "../interfaces";
+import {map, Observable, of} from "rxjs";
+import {Application, Customer, EditCustomer, InputOption, Tool, ToolInput, ToolOutput} from "../interfaces";
 
 // https://angularstart.com/standard/modules/angular-quicklists/11/
 export const LOCAL_STORAGE = new InjectionToken<Storage>(
@@ -23,9 +23,11 @@ export class StorageService {
 
   public storage = inject(LOCAL_STORAGE);
 
+  private customerKey = 'customers';
+
   // --- Customers --- //
   public loadCustomers(): Observable<Customer[]> {
-    const customers = this.storage.getItem('customers');
+    const customers = this.storage.getItem(this.customerKey);
     return of(customers
       ? (JSON.parse(customers) as Customer[])
       : []
@@ -33,7 +35,41 @@ export class StorageService {
   }
 
   public saveCustomers(customers: Customer[]): void {
-    this.storage.setItem('customers', JSON.stringify(customers));
+    this.storage.setItem(this.customerKey, JSON.stringify(customers));
+  }
+
+  public addCustomer(customer: Customer): Observable<Customer> {
+    return this.loadCustomers().pipe(
+      map((customers) => {
+        customers.push(customer);
+        this.saveCustomers(customers);
+        return customer;
+      })
+    );
+  }
+
+  public editCustomer(update: EditCustomer): Observable<Customer> {
+    return this.loadCustomers().pipe(
+      map((customers) => {
+        const index = customers.findIndex(c => c.id === update.id);
+        if (index !== -1) {
+          customers[index] = {...customers[index], ...update.data};
+          this.saveCustomers(customers);
+          return customers[index];
+        } else {
+          throw new Error('Customer not found');
+        }
+      })
+    );
+  }
+
+  public removeCustomer(id: number): Observable<void> {
+    return this.loadCustomers().pipe(
+      map((customers) => {
+        const updatedCustomers = customers.filter(c => c.id !== id);
+        this.saveCustomers(updatedCustomers);
+      })
+    );
   }
 
   // --- Applications --- //
