@@ -31,8 +31,8 @@ import {ModalComponent} from "../../shared/ui/modals/modal.component";
 
           <mat-card-content>
             <ul>
-              <li>ApiUrl: </li>
-              <span>{{ tool.apiUrl }}</span>
+              <li>ApiEndpoint: </li>
+              <span>{{ tool.apiEndpoint }}</span>
             </ul>
           </mat-card-content>
 

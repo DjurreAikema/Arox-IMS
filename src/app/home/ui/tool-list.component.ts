@@ -28,8 +28,8 @@ import {MatTooltip} from "@angular/material/tooltip";
 
         <mat-card-content>
           <ul>
-            <li>ApiUrl:</li>
-            <span>{{ tool.apiUrl }}</span>
+            <li>ApiEndpoint:</li>
+            <span>{{ tool.apiEndpoint }}</span>
           </ul>
         </mat-card-content>
 

@@ -26,7 +26,7 @@ import {ToolExecuteService} from "./data-access/tool-execute.service";
       <section>
         <app-inputs-to-form
           [toolInputs]="toolInputs()"
-          (send)="toolExecuteService.postToApi($event, tool.apiUrl)"
+          (send)="toolExecuteService.postToApi($event, tool.apiEndpoint)"
         />
 
         <div>

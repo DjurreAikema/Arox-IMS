@@ -40,21 +40,21 @@ export class ToolFormComponent {
   // --- Outputs
   close = output();
   // POI: Add to ToolForm
-  save = output<{ name: string, apiUrl: string }>();
+  save = output<{ name: string, apiEndpoint: string }>();
 
   // Form for creating/editing tools
   // POI: Add to ToolForm
   public toolForm = new CustomFormGroup({
     name: new FormControl('', [Validators.required, Validators.minLength(3)]),
-    apiUrl: new FormControl('', [Validators.required, Validators.minLength(3)]),
+    apiEndpoint: new FormControl('', [Validators.required, Validators.minLength(3)]),
   }, {
     // Extra control info
     name: {
       label: 'Name',
       placeholder: 'Tool name'
     },
-    apiUrl: {
-      label: 'API url',
+    apiEndpoint: {
+      label: 'API Endpoint',
       placeholder: 'https://localhost:8080'
     },
   });

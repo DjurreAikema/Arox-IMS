@@ -4,7 +4,7 @@ export interface Tool {
   id: number;
   applicationId: number;
   name: string;
-  apiUrl: string;
+  apiEndpoint: string;
 }
 
 export type AddTool = {
