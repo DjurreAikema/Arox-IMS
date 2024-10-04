@@ -4,6 +4,8 @@ import {StorageService} from "../../shared/data-access/storage.service";
 import {catchError, EMPTY, map, merge, Observable, Subject} from "rxjs";
 import {connect} from "ngxtension/connect";
 import {ApplicationService} from "../../application/data-access/application.service";
+import {environment} from "../../../environments/environment";
+import {HttpClient} from "@angular/common/http";
 
 // State interface
 export interface CustomerState {
@@ -17,6 +19,7 @@ export interface CustomerState {
 })
 export class CustomerService {
 
+  private http: HttpClient = inject(HttpClient);
   private storageService: StorageService = inject(StorageService);
   private applicationService: ApplicationService = inject(ApplicationService);
 
@@ -82,12 +85,38 @@ export class CustomerService {
     effect((): void => {
       // this effect saves the customers to local storage every time the state changes
       if (this.loaded()) {
-        this.storageService.saveCustomers(this.customers());
+        this.saveCustomers(this.customers());
       }
     });
   }
 
   // --- Functions (these functions are used exclusively inside this state)
+  private addNewCustomer(customer: AddCustomer) {
+    return this.http.post<Customer>(`${environment.apiUrl}/customers`, customer).pipe(
+      catchError((err) => {
+        this.error$.next(err);
+        return EMPTY;
+      })
+    );
+  }
+
+  private saveCustomers(customers: Customer[]): void {
+    // If DemoMode is enabled, use local storage
+    if (environment.demoMode) {
+      this.storageService.saveCustomers(customers);
+      return;
+    }
+
+    // Else use the API
+    this.http.post(`${environment.apiUrl}/customers/addOrUpdate`, customers)
+      .pipe(
+        catchError((err) => {
+          // TODO: Handle error
+          return EMPTY;
+        })
+      ).subscribe();
+  }
+
   private addIdToCustomer(customer: AddCustomer) {
     return {
       ...customer,
