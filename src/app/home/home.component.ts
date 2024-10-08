@@ -98,6 +98,7 @@ import {ModalComponent} from "../shared/ui/modals/modal.component";
 
         <app-tool-list
           [tools]="tools()"
+          (edit)="toolBeingEdited.set($event)"
         />
 
       </section>

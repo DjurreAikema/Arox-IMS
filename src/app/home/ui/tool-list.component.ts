@@ -24,6 +24,10 @@ import {MatTooltip} from "@angular/material/tooltip";
 
         <mat-card-header>
           <mat-card-title>{{ tool.name }}</mat-card-title>
+
+          <button class="button-info small-button" (click)="edit.emit(tool)">
+            <i class="fa-solid fa-pen"></i>
+          </button>
         </mat-card-header>
 
         <mat-card-content>
@@ -36,8 +40,8 @@ import {MatTooltip} from "@angular/material/tooltip";
         <mat-card-footer>
 
           <div>
-            <button class="button-info" routerLink="/tool/{{tool.id}}">
-              Edit tool
+            <button class="button-success" routerLink="/tool/{{tool.id}}">
+              Manage tool form
             </button>
 
             <button class="button-danger small-button mr-5"
@@ -65,6 +69,12 @@ import {MatTooltip} from "@angular/material/tooltip";
   styles: [`
     mat-card {
       margin-bottom: 1rem;
+    }
+
+    mat-card-header {
+      display: flex;
+      flex-flow: row nowrap;
+      justify-content: space-between;
     }
   `]
 })
