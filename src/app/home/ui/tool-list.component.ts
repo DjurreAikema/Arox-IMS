@@ -25,11 +25,13 @@ import {MatTooltip} from "@angular/material/tooltip";
         <mat-card-header>
           <mat-card-title>{{ tool.name }}</mat-card-title>
 
+          <!-- Edit button -->
           <button class="button-info small-button" (click)="edit.emit(tool)">
             <i class="fa-solid fa-pen"></i>
           </button>
         </mat-card-header>
 
+        <!-- Tool details -->
         <mat-card-content>
           <ul>
             <li>ApiEndpoint:</li>
@@ -40,16 +42,19 @@ import {MatTooltip} from "@angular/material/tooltip";
         <mat-card-footer>
 
           <div>
+            <!-- Manage button -->
             <button class="button-success" routerLink="/tool/{{tool.id}}">
               Manage tool form
             </button>
 
+            <!-- Delete button -->
             <button class="button-danger small-button mr-5"
                     matTooltip="Delete tool" matTooltipPosition="right">
               <i class="fa-solid fa-trash"></i>
             </button>
           </div>
 
+          <!-- Execute button -->
           <button class="button-warning" routerLink="/tool/{{tool.id}}/execute">
             Execute tool
           </button>
