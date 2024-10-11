@@ -33,9 +33,9 @@ import {ModalComponent} from "../shared/ui/modals/modal.component";
   template: `
     <div class="wrapper">
 
-      <!-- Left section -->
+      <!-- Customer/Application section -->
       <section>
-        <!-- Left section header -->
+        <!-- Customer/Application section header -->
         <header class="list-header">
           <h4>Customers and Applications</h4>
 
@@ -81,10 +81,10 @@ import {ModalComponent} from "../shared/ui/modals/modal.component";
 
       </section>
 
-      <!-- Right section -->
+      <!-- Tools section -->
       <section>
 
-        <!-- Right section header -->
+        <!-- Tools section header -->
         <header class="list-header">
           <h4>Tools {{ selectedApplication() ? 'for ' + selectedApplication()?.name : '' }}</h4>
 
@@ -96,6 +96,7 @@ import {ModalComponent} from "../shared/ui/modals/modal.component";
           }
         </header>
 
+        <!-- Tools list -->
         <app-tool-list
           [tools]="tools()"
           (edit)="toolBeingEdited.set($event)"
