@@ -1,7 +1,7 @@
 import {Component, computed, inject, signal} from '@angular/core';
 import {CustomerService} from "../customer/data-access/customer.service";
 import {ApplicationService} from "../application/data-access/application.service";
-import {Application, Customer, RemoveCustomer, Tool} from "../shared/interfaces";
+import {Application, Customer, RemoveCustomer, RemoveTool, Tool} from "../shared/interfaces";
 import {CustomerFormComponent} from "../customer/ui/customer-form.component";
 import {MatTooltip} from "@angular/material/tooltip";
 import {ApplicationFormComponent} from "../application/ui/application-form.component";
@@ -55,7 +55,7 @@ import {ModalComponent} from "../shared/ui/modals/modal.component";
                 [selectedApplication]="selectedApplication()"
 
                 (editCustomer)="customerBeingEdited.set($event)"
-                (deleteCustomer)="this.customerToDelete.set($event);"
+                (deleteCustomer)="customerToDelete.set($event);"
 
                 (addApplication)="applicationBeingEdited.set({customerId: $event})"
                 (editApplication)="applicationBeingEdited.set($event)"
@@ -100,6 +100,7 @@ import {ModalComponent} from "../shared/ui/modals/modal.component";
         <app-tool-list
           [tools]="tools()"
           (edit)="toolBeingEdited.set($event)"
+          (delete)="toolToDelete.set($event)"
         />
 
       </section>
@@ -167,6 +168,20 @@ import {ModalComponent} from "../shared/ui/modals/modal.component";
               })
           "
     />
+
+    <!-- Tool delete modal -->
+    <app-modal [isOpen]="!!toolToDelete()">
+      <ng-template>
+
+        <app-confirm-modal
+          title="Delete Tool"
+          message="Are you sure you want to delete this tool?"
+          (confirm)="deleteTool()"
+          (cancel)="toolToDelete.set(null)"
+        />
+
+      </ng-template>
+    </app-modal>
   `,
   styles: [`
     .wrapper {
@@ -260,6 +275,16 @@ export default class HomeComponent {
     if (this.customerToDelete()) {
       this.customerService.remove$.next(this.customerToDelete()!)
       this.customerToDelete.set(null);
+    }
+  }
+
+  // Deleting tools
+  protected toolToDelete = signal<RemoveTool | null>(null);
+
+  protected deleteTool() {
+    if (this.toolToDelete()) {
+      this.toolService.remove$.next(this.toolToDelete()!);
+      this.toolToDelete.set(null);
     }
   }
 }

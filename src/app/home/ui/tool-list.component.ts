@@ -49,7 +49,8 @@ import {MatTooltip} from "@angular/material/tooltip";
 
             <!-- Delete button -->
             <button class="button-danger small-button mr-5"
-                    matTooltip="Delete tool" matTooltipPosition="right">
+                    matTooltip="Delete tool" matTooltipPosition="right"
+                    (click)="delete.emit(tool.id)">
               <i class="fa-solid fa-trash"></i>
             </button>
           </div>
