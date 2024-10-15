@@ -267,7 +267,6 @@ export default class HomeComponent {
       .filter((tool) => tool.applicationId == this.selectedApplication()?.id)
   });
 
-
   // Deleting customers
   protected customerToDelete = signal<RemoveCustomer | null>(null);
 
