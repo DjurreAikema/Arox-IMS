@@ -46,7 +46,6 @@ import {CustomerFormComponent} from "./ui/customer-form.component";
     header {
       display: flex;
       flex-flow: row nowrap;
-
       justify-content: space-between;
       align-items: center;
 
