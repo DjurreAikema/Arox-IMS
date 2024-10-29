@@ -76,7 +76,7 @@ export class OutputsToFormComponent implements OnInit {
         return 'number';
 
       case ToolInputTypeEnum.Select:
-        return 'select';
+        return 'text';
 
       default:
         return 'text';

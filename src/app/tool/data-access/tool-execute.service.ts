@@ -64,7 +64,7 @@ export class ToolExecuteService {
     return of({
       exampleOne: 'This is an example response',
       exampleTwo: 175,
-      exampleThree: 'uuuh',
+      exampleThree: 'Example choice',
     });
   }
 
