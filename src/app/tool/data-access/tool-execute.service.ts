@@ -67,5 +67,4 @@ export class ToolExecuteService {
       exampleThree: 'Example choice',
     });
   }
-
 }
