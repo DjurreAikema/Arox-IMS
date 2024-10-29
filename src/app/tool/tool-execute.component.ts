@@ -6,13 +6,15 @@ import {ActivatedRoute, RouterLink} from "@angular/router";
 import {toSignal} from "@angular/core/rxjs-interop";
 import {InputsToFormComponent} from "./ui-tool-execute/inputs-to-form.component";
 import {ToolExecuteService} from "./data-access/tool-execute.service";
+import {OutputsToFormComponent} from "./ui-tool-execute/outputs-to-form.component";
 
 @Component({
   selector: 'app-tool-execute',
   standalone: true,
   imports: [
     RouterLink,
-    InputsToFormComponent
+    InputsToFormComponent,
+    OutputsToFormComponent
   ],
   template: `
     <!-- Header -->
@@ -26,12 +28,13 @@ import {ToolExecuteService} from "./data-access/tool-execute.service";
       <section>
         <app-inputs-to-form
           [toolInputs]="toolInputs()"
-          (send)="toolExecuteService.postToApi($event, tool.apiEndpoint)"
+          (send)="toolExecuteService.postToApi$.next([$event, tool.apiEndpoint])"
         />
 
-        <div>
-          outputs
-        </div>
+        <app-outputs-to-form
+            [toolOutputs]="toolOutputs()"
+            [executeResponse]="toolExecuteService.response()"
+        />
       </section>
     }
   `,
