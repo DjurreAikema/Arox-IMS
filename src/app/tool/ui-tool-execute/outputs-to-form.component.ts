@@ -1,4 +1,4 @@
-import {Component, input, OnInit} from '@angular/core';
+import {Component, effect, input, OnInit} from '@angular/core';
 import {ToolInputTypeEnum, ToolOutput} from "../../shared/interfaces";
 import {CustomFormGroup} from "../../shared/utils/custom-form-group";
 import {FormControl, ReactiveFormsModule} from "@angular/forms";
@@ -86,5 +86,18 @@ export class OutputsToFormComponent implements OnInit {
         return 'text';
 
     }
+  }
+
+  constructor() {
+    effect((): void => {
+      const response: any = this.executeResponse();
+      if (response && this.outputsForm) {
+        for (const [key, value] of Object.entries(response)) {
+          if (this.outputsForm.controls[key]) {
+            this.outputsForm.controls[key].setValue(value);
+          }
+        }
+      }
+    });
   }
 }

@@ -18,7 +18,7 @@ export class ToolExecuteService {
 
   // --- State (state is initialized with default values here)
   private state: WritableSignal<ToolExecuteState> = signal<ToolExecuteState>({
-    response: {test: 'test'},
+    response: null,
     error: null
   });
 
