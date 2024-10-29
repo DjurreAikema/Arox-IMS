@@ -58,7 +58,7 @@ export class OutputsToFormComponent implements OnInit {
     this.toolOutputs().forEach(output => {
       controls[output.name] = new FormControl('');
       controlConfigs[output.name] = {
-        label: output.name, // TODO
+        label: output.name,
         type: this.getControlType(output.fieldTypeId),
       }
     });
