@@ -57,14 +57,15 @@ export class ToolExecuteService {
 
   // --- Functions (these functions are used exclusively inside this state)
   private postToApi(formData: any, apiUrl: string): Observable<any> {
-    console.log(formData);
-    console.log(apiUrl);
+
+    // TODO Actually execute the tool :)
+    console.log(apiUrl, formData);
 
     return of({
       exampleOne: 'This is an example response',
       exampleTwo: 175,
       exampleThree: 'uuuh',
-    }); // TODO
+    });
   }
 
 }
