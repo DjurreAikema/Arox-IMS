@@ -3,15 +3,13 @@ import {ToolInputTypeEnum, ToolOutput} from "../../shared/interfaces";
 import {CustomFormGroup} from "../../shared/utils/custom-form-group";
 import {FormControl, ReactiveFormsModule} from "@angular/forms";
 import {SimpleFormGeneratorComponent} from "../../shared/ui/simple-form-generator.component";
-import {JsonPipe} from "@angular/common";
 
 @Component({
   selector: 'app-outputs-to-form',
   standalone: true,
   imports: [
     ReactiveFormsModule,
-    SimpleFormGeneratorComponent,
-    JsonPipe
+    SimpleFormGeneratorComponent
   ],
   template: `
     @if (outputsForm) {
@@ -28,8 +26,6 @@ import {JsonPipe} from "@angular/common";
 
         </form>
       </div>
-
-      {{ executeResponse() | json }}
 
     }
   `,
