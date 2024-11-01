@@ -27,7 +27,7 @@ export class ToolExecuteService {
   public error: Signal<any> = computed(() => this.state().error);
 
   // --- Sources (the state gets updated when these sources get a new value, the rest of the application can use these sources to alter the data in the state)
-  public postToApi$: Subject<[any,  string]> = new Subject<[any, string]>();
+  public postToApi$: Subject<[any, string]> = new Subject<[any, string]>();
 
   private error$: Subject<string> = new Subject<string>();
 
