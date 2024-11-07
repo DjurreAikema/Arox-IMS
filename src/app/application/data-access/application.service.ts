@@ -7,6 +7,7 @@ import {ToolService} from "../../tool/data-access/tool.service";
 import {HttpClient} from "@angular/common/http";
 import {environment} from "../../../environments/environment";
 
+
 // State interface
 export interface ApplicationState {
   applications: Application[];
