@@ -1,16 +1,12 @@
 import {Component, input, output} from '@angular/core';
 import {Application, RemoveApplication} from "../../shared/interfaces";
 import {MatTooltip} from "@angular/material/tooltip";
-import {ConfirmModalComponent} from "../../shared/ui/modals/confirm-modal.component";
-import {ModalComponent} from "../../shared/ui/modals/modal.component";
 
 @Component({
   selector: 'app-application-expansion-panel-item',
   standalone: true,
   imports: [
-    MatTooltip,
-    ConfirmModalComponent,
-    ModalComponent
+    MatTooltip
   ],
   template: `
     <div class="expansion-panel-item"
@@ -23,12 +19,12 @@ import {ModalComponent} from "../../shared/ui/modals/modal.component";
 
       <div class="panel-buttons">
         <button class="button-danger small-button mr-5" (click)="delete.emit(application().id)"
-                matTooltip="Delete application" matTooltipPosition="right">
+                matTooltip="Delete application" matTooltipPosition="below">
           <i class="fa-solid fa-trash"></i>
         </button>
 
         <button class="button-info small-button" (click)="onButtonClick($event)"
-                matTooltip="Edit application" matTooltipPosition="right">
+                matTooltip="Edit application" matTooltipPosition="below">
           <i class="fa-solid fa-pen"></i>
         </button>
       </div>

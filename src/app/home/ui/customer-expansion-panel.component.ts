@@ -29,12 +29,12 @@ import {ModalComponent} from "../../shared/ui/modals/modal.component";
         <!-- Panel header buttons -->
         <mat-panel-description>
           <button class="button-danger small-button mr-5" (click)="deleteCustomer.emit(customer().id)"
-                  matTooltip="Delete customer" matTooltipPosition="right">
+                  matTooltip="Delete customer" matTooltipPosition="below">
             <i class="fa-solid fa-trash"></i>
           </button>
 
           <button class="button-info small-button" (click)="onButtonClick($event)"
-                  matTooltip="Edit customer" matTooltipPosition="right">
+                  matTooltip="Edit customer" matTooltipPosition="below">
             <i class="fa-solid fa-pen"></i>
           </button>
         </mat-panel-description>
