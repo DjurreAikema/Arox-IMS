@@ -2,28 +2,12 @@ import {Component, input, OnInit, output} from '@angular/core';
 import {ToolInput, ToolInputTypeEnum} from "../../shared/interfaces";
 import {CustomFormGroup} from "../../shared/utils/custom-form-group";
 import {FormControl, ReactiveFormsModule} from "@angular/forms";
-import {KeyValuePipe} from "@angular/common";
-import {MatFormField, MatLabel, MatSuffix} from "@angular/material/form-field";
-import {MatIcon} from "@angular/material/icon";
-import {MatInput} from "@angular/material/input";
-import {MatOption} from "@angular/material/core";
-import {MatSelect} from "@angular/material/select";
-import {MatTooltip} from "@angular/material/tooltip";
 import {SimpleFormGeneratorComponent} from "../../shared/ui/simple-form-generator.component";
 
 @Component({
   selector: 'app-inputs-to-form',
   standalone: true,
   imports: [
-    KeyValuePipe,
-    MatFormField,
-    MatIcon,
-    MatInput,
-    MatLabel,
-    MatOption,
-    MatSelect,
-    MatSuffix,
-    MatTooltip,
     ReactiveFormsModule,
     SimpleFormGeneratorComponent
   ],
@@ -41,7 +25,7 @@ import {SimpleFormGeneratorComponent} from "../../shared/ui/simple-form-generato
           />
 
           <div class="form-buttons">
-            <button class="button-warning">Clear</button>
+            <button class="button-warning" (click)="inputsForm.reset()">Clear</button>
             <button class="button-success" (click)="send.emit(inputsForm.getRawValue())">Send</button>
           </div>
 

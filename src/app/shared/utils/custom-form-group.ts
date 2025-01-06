@@ -49,6 +49,7 @@ export class CustomFormGroup extends FormGroup {
   }
 
   public getOptions(controlKey: string): { value: any, label: string }[] {
+    console.log(this.controlConfigs[controlKey].selectOptions);
     return this.controlConfigs[controlKey].selectOptions;
   }
 
