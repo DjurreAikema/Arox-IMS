@@ -78,10 +78,10 @@ export class ToolInputFormComponent {
       if (!toolInput) {
         this.toolInputForm.reset(); // Reset form on new input
         this.toolInputForm.patchValue({
-          name: 'Name',
-          label: 'Label',
-          placeholder: 'Placeholder',
-          fieldTypeId: ToolInputTypeEnum.Text // TODO: Remove default testing values
+          name: '',
+          label: '',
+          placeholder: '',
+          fieldTypeId: ''
         });
       } else {
         this.toolInputForm.patchValue({

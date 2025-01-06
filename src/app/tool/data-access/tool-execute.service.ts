@@ -62,6 +62,9 @@ export class ToolExecuteService {
     console.log(apiUrl, formData);
 
     return of({
+      TextOutput: 'This is an example response',
+      NumberOutput: 175,
+      SelectOutput: 'Example choice',
       exampleOne: 'This is an example response',
       exampleTwo: 175,
       exampleThree: 'Example choice',
